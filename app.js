@@ -121,6 +121,11 @@ class ExpedicionApp {
     return emblem.tierLabel || tier;
   }
 
+  getEmblemArticle(tier) {
+    const emblem = getThemedEmblem(this.currentTheme, tier);
+    return emblem.article || 'el';
+  }
+
   renderThemeToggleBtn() {
     const isExpedicion = this.currentTheme === 'andina';
     const icon = isExpedicion 
