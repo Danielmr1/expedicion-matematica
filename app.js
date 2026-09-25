@@ -469,20 +469,101 @@ class ExpedicionApp {
     this.attachThemeToggleEvent();
     const form = document.getElementById('login-form');
     const errorEl = document.getElementById('login-error');
+    const userInput = document.getElementById('login-username');
+    const passInput = document.getElementById('login-password');
+    const submitBtn = form?.querySelector('button[type="submit"]');
+
+    // Función auxiliar para chequear si hay un bloqueo activo
+    const checkLockout = () => {
+      const lockoutUntil = parseInt(localStorage.getItem('expedicion_login_lockout_until') || '0', 10);
+      const now = Date.now();
+      if (lockoutUntil > now) {
+        const remainingSec = Math.ceil((lockoutUntil - now) / 1000);
+        if (userInput) userInput.disabled = true;
+        if (passInput) passInput.disabled = true;
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = '0.5';
+          submitBtn.style.cursor = 'not-allowed';
+        }
+        if (errorEl) {
+          errorEl.style.display = 'block';
+          errorEl.innerHTML = `
+            <div style="font-weight: 800; margin-bottom: 3px;">⏳ PAUSA DE SEGURIDAD</div>
+            <div>Demasiados intentos incorrectos. Espera <strong id="lockout-countdown" style="font-size: 15px; color: var(--neon-green);">${remainingSec}s</strong> o revisa tu Tarjeta de Credenciales con tu profesor.</div>
+          `;
+        }
+
+        if (this._lockoutInterval) clearInterval(this._lockoutInterval);
+        this._lockoutInterval = setInterval(() => {
+          const currentRemaining = Math.ceil((lockoutUntil - Date.now()) / 1000);
+          const countEl = document.getElementById('lockout-countdown');
+          if (currentRemaining > 0) {
+            if (countEl) countEl.textContent = `${currentRemaining}s`;
+          } else {
+            clearInterval(this._lockoutInterval);
+            this._lockoutInterval = null;
+            localStorage.removeItem('expedicion_login_lockout_until');
+            if (userInput) userInput.disabled = false;
+            if (passInput) passInput.disabled = false;
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = '1';
+              submitBtn.style.cursor = 'pointer';
+            }
+            if (errorEl) {
+              errorEl.style.display = 'none';
+            }
+          }
+        }, 1000);
+        return true;
+      }
+      return false;
+    };
+
+    // Verificar si ya existe un bloqueo activo al cargar la pantalla
+    checkLockout();
 
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const u = document.getElementById('login-username').value;
-      const p = document.getElementById('login-password').value;
+      if (checkLockout()) return;
+
+      const u = userInput?.value;
+      const p = passInput?.value;
 
       const res = await storage.login(u, p);
       if (res.success) {
+        // Éxito: Limpiar contador de fallos y pausas
+        localStorage.removeItem('expedicion_login_fails');
+        localStorage.removeItem('expedicion_login_lockout_until');
+        if (this._lockoutInterval) clearInterval(this._lockoutInterval);
+
         this.user = res.user;
         this.currentView = res.role === 'teacher' ? 'TEACHER_DASHBOARD' : 'STUDENT_HOME';
         this.render();
       } else {
-        errorEl.textContent = res.message;
-        errorEl.style.display = 'block';
+        this.playFeedbackTone('error');
+        let fails = parseInt(localStorage.getItem('expedicion_login_fails') || '0', 10) + 1;
+        localStorage.setItem('expedicion_login_fails', String(fails));
+
+        if (fails >= 4) {
+          // Activar pausa de seguridad progresiva: 30s al 4to fallo, 60s al 5to, 120s al 6to+
+          const cooldownSec = fails === 4 ? 30 : fails === 5 ? 60 : 120;
+          const lockoutUntil = Date.now() + (cooldownSec * 1000);
+          localStorage.setItem('expedicion_login_lockout_until', String(lockoutUntil));
+          checkLockout();
+        } else {
+          const remainingAttempts = 4 - fails;
+          if (errorEl) {
+            errorEl.innerHTML = `
+              <div>${escapeHtml(res.message)}</div>
+              <div style="font-size: 11px; margin-top: 4px; color: #fca5a5;">
+                ⚠️ Te quedan <strong>${remainingAttempts} intento${remainingAttempts === 1 ? '' : 's'}</strong> antes de una pausa de seguridad.
+              </div>
+            `;
+            errorEl.style.display = 'block';
+          }
+        }
       }
     });
   }
