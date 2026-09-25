@@ -270,7 +270,17 @@ class StorageManager {
   }
 
   recordTaskAttempt(studentId, taskData) {
-    const student = this.students.find(s => s.id === studentId);
+    let student = this.students.find(s => s.id === studentId);
+
+    // Soporte para alumno virtual de simulación docente
+    if (!student && String(studentId).startsWith('virtual-')) {
+      if (!this._virtualStudents) this._virtualStudents = {};
+      if (!this._virtualStudents[studentId]) {
+        this.initVirtualStudent(studentId, studentId === 'virtual-sigma' ? 'sigma' : 'delta');
+      }
+      student = this._virtualStudents[studentId];
+    }
+
     if (!student) return null;
 
     student.stationProgress = student.stationProgress || {};
@@ -335,26 +345,74 @@ class StorageManager {
     }
     student.trophies['patrones'] = newTrophy;
 
-    this.saveStudents();
-    if (this.currentUser && this.currentUser.id === studentId) {
-      this.currentUser = { ...student, isTeacher: false };
-      this.setCurrentUser(this.currentUser);
+    // Guardado local y en Supabase (Solo para alumnos reales, para no contaminar Supabase con pruebas virtuales)
+    if (!String(student.id).startsWith('virtual-')) {
+      this.saveStudents();
+      if (this.currentUser && this.currentUser.id === studentId) {
+        this.currentUser = { ...student, isTeacher: false };
+        this.setCurrentUser(this.currentUser);
+      }
+
+      const dbId = student.dbId || student.id;
+      saveStationProgressToSupabase(dbId, this.getActiveTopic(), taskData.stationId, {
+        completed: sp.completed,
+        correctCount: sp.correctCount,
+        errorCount: sp.errorCount,
+        timeSpentSec: student.activeSeconds,
+        trophies: [newTrophy]
+      });
     }
 
-    // Guardado asíncrono en Supabase
-    const dbId = student.dbId || student.id;
-    saveStationProgressToSupabase(dbId, this.getActiveTopic(), taskData.stationId, {
-      completed: sp.completed,
-      correctCount: sp.correctCount,
-      errorCount: sp.errorCount,
-      timeSpentSec: student.activeSeconds,
-      trophies: [newTrophy]
-    });
+    return student;
+  }
 
-    return sp;
+  initVirtualStudent(id, classroom = 'sigma') {
+    if (!this._virtualStudents) this._virtualStudents = {};
+    const isSigma = classroom === 'sigma';
+    if (!this._virtualStudents[id]) {
+      this._virtualStudents[id] = {
+        id: id,
+        num: 0,
+        classroom: classroom,
+        classroomName: isSigma ? '4.° Sigma' : '4.° Delta',
+        name: isSigma ? 'Alumno Virtual Sigma' : 'Alumna Virtual Delta',
+        displayName: isSigma ? 'Alumno Sigma' : 'Alumna Delta',
+        firstName: isSigma ? 'Alumno' : 'Alumna',
+        username: isSigma ? 'virtual.sigma' : 'virtual.delta',
+        avatar: isSigma ? 'robot' : 'astronaut',
+        stars: 0,
+        xp: 0,
+        timeMinutes: 0,
+        activeSeconds: 0,
+        completedChallenges: [],
+        stationProgress: {},
+        trophies: { patrones: 'ninguno' },
+        lastActive: 'Hoy'
+      };
+    }
+    return this._virtualStudents[id];
+  }
+
+  resetVirtualStudent(id) {
+    if (this._virtualStudents && this._virtualStudents[id]) {
+      const st = this._virtualStudents[id];
+      st.stars = 0;
+      st.xp = 0;
+      st.timeMinutes = 0;
+      st.activeSeconds = 0;
+      st.completedChallenges = [];
+      st.stationProgress = {};
+      st.trophies = { patrones: 'ninguno' };
+      st.lastActive = 'Sin actividad';
+      return st;
+    }
+    return null;
   }
 
   getStudentById(id) {
+    if (this._virtualStudents && this._virtualStudents[id]) {
+      return this._virtualStudents[id];
+    }
     return this.students.find(s => s.id === id);
   }
 

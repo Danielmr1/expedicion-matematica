@@ -372,7 +372,7 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
     `);
 
     const isStationComplete = (app.currentTaskIndex === app.selectedStation.tasks.length - 1);
-    storage.recordTaskAttempt(app.user.id, {
+    const updatedStudent = storage.recordTaskAttempt(app.user.id, {
       stationId: app.selectedStation.id,
       taskId: task.id,
       taskIndex: app.currentTaskIndex,
@@ -381,6 +381,15 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
       timeSpentSec: durationSec,
       isStationComplete
     });
+
+    if (updatedStudent) {
+      app.user.stars = updatedStudent.stars;
+      app.user.xp = updatedStudent.xp;
+      app.user.completedChallenges = updatedStudent.completedChallenges;
+      app.user.stationProgress = updatedStudent.stationProgress;
+      app.user.trophies = updatedStudent.trophies;
+      app.user.timeMinutes = updatedStudent.timeMinutes;
+    }
 
     const starsBadge = document.getElementById('student-stars-badge');
     if (starsBadge) starsBadge.textContent = app.user.stars || 0;
@@ -432,7 +441,7 @@ export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffold
     `);
 
     const isStationComplete = (app.currentTaskIndex === app.selectedStation.tasks.length - 1);
-    storage.recordTaskAttempt(app.user.id, {
+    const updatedStudent = storage.recordTaskAttempt(app.user.id, {
       stationId: app.selectedStation.id,
       taskId: app.selectedStation.tasks[app.currentTaskIndex].id,
       taskIndex: app.currentTaskIndex,
@@ -441,6 +450,15 @@ export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffold
       timeSpentSec: durationSec,
       isStationComplete
     });
+
+    if (updatedStudent) {
+      app.user.stars = updatedStudent.stars;
+      app.user.xp = updatedStudent.xp;
+      app.user.completedChallenges = updatedStudent.completedChallenges;
+      app.user.stationProgress = updatedStudent.stationProgress;
+      app.user.trophies = updatedStudent.trophies;
+      app.user.timeMinutes = updatedStudent.timeMinutes;
+    }
 
     const starsBadge = document.getElementById('student-stars-badge');
     if (starsBadge) starsBadge.textContent = app.user.stars || 0;

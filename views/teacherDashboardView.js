@@ -544,20 +544,8 @@ export function startVirtualSimulation(app, classroom) {
   app.isTeacherSimulating = true;
   app.simulatedTopicId = app.selectedWorksheetTopicId || storage.getActiveTopic();
   const isSigma = classroom === 'sigma';
-  app.user = {
-    id: isSigma ? 'virtual-sigma' : 'virtual-delta',
-    num: 0,
-    classroom: classroom,
-    name: isSigma ? 'Alumno Virtual Sigma' : 'Alumna Virtual Delta',
-    displayName: isSigma ? 'Alumno Sigma' : 'Alumna Delta',
-    username: isSigma ? 'virtual.sigma' : 'virtual.delta',
-    avatar: isSigma ? 'robot' : 'astronaut',
-    stars: 0,
-    xp: 0,
-    timeMinutes: 0,
-    completedChallenges: [],
-    trophies: {}
-  };
+  const virtualId = isSigma ? 'virtual-sigma' : 'virtual-delta';
+  app.user = storage.initVirtualStudent(virtualId, classroom);
   app.currentView = 'STUDENT_HOME';
   app.render();
 }
