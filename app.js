@@ -1727,22 +1727,6 @@ class ExpedicionApp {
               4.° Delta [${statsDelta.count}]
             </button>
           </div>
-
-          <!-- Accesos de Prueba Alumno Virtual (Simulador para el Docente del Salón Seleccionado) -->
-          <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-surface-elevated); padding: 6px 12px; border-radius: 10px; border: 1.5px dashed var(--border-subtle); flex-wrap: wrap;">
-            <span style="font-size: 11px; font-weight: 800; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; display: flex; align-items: center; gap: 5px;">
-              <span>🧪</span> Modo Prueba Alumno:
-            </span>
-            ${filter === 'sigma' ? `
-              <button id="simulate-student-sigma-btn" class="btn-dark" style="padding: 7px 14px; font-size: 12px; border-color: var(--color-sigma); color: var(--color-sigma); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 700;" title="Ingresar a la plataforma como Alumno de prueba en 4.° Sigma">
-                <span>🎒</span> Alumno Virtual Sigma
-              </button>
-            ` : `
-              <button id="simulate-student-delta-btn" class="btn-dark" style="padding: 7px 14px; font-size: 12px; border-color: var(--color-delta); color: var(--color-delta); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 700;" title="Ingresar a la plataforma como Alumna de prueba en 4.° Delta">
-                <span>🎒</span> Alumna Virtual Delta
-              </button>
-            `}
-          </div>
         </div>
 
         <!-- Tarjetas de Métricas Globales Adaptativas -->
@@ -1832,6 +1816,9 @@ class ExpedicionApp {
               </div>
             </div>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button id="simulate-student-btn" class="btn-dark" style="padding: 10px 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; border-color: ${filter === 'sigma' ? 'var(--color-sigma)' : 'var(--color-delta)'}; color: var(--text-white); cursor: pointer;" title="Ingresar a la plataforma como Alumno Virtual de ${filter === 'sigma' ? '4.° Sigma' : '4.° Delta'} para probar la semana seleccionada">
+                <span>🎒</span> Alumno Virtual (${filter === 'sigma' ? '4.° Sigma' : '4.° Delta'})
+              </button>
               <button id="open-worksheet-modal-btn" class="btn-neon" style="padding: 10px 18px; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
                 ${ICONS.printer(16, 'var(--text-black)')} Ver / Imprimir Ficha A4
               </button>
@@ -1874,9 +1861,14 @@ class ExpedicionApp {
               </div>
             </div>
 
-            <div style="display: flex; gap: 10px; align-items: center;">
-              <label style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase;">Mostrar contraseñas:</label>
-              <input type="checkbox" id="toggle-pins" style="cursor: pointer; width: 16px; height: 16px; accent-color: var(--neon-green);" />
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button id="open-add-student-modal-btn" class="btn-neon" style="padding: 7px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                <span>➕</span> Agregar Alumno a ${filter === 'sigma' ? '4.° Sigma' : '4.° Delta'}
+              </button>
+              <div style="display: flex; gap: 8px; align-items: center; background: var(--bg-surface-elevated); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-subtle);">
+                <label style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; cursor: pointer;" for="toggle-pins">Ver PINs:</label>
+                <input type="checkbox" id="toggle-pins" style="cursor: pointer; width: 15px; height: 15px; accent-color: var(--neon-green);" />
+              </div>
             </div>
           </div>
 
@@ -1929,27 +1921,21 @@ class ExpedicionApp {
             </div>
           </div>
 
-          <!-- Selector de Salón dentro del Modal de Tarjetas -->
+          <!-- Salón seleccionado para las Tarjetas (Sin filtros, toma el salón activo) -->
           <div style="background: var(--bg-surface-elevated); padding: 12px 20px; border-bottom: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Filtrar:</span>
-              <button class="cards-filter-btn" data-class="todos" style="padding: 6px 14px; border-radius: 6px; border: 1.5px solid var(--neon-green); font-weight: 800; font-size: 12px; cursor: pointer; font-family: var(--font-mono); background: var(--neon-green); color: var(--text-black);">
-                TODOS 4.° (59)
-              </button>
-              <button class="cards-filter-btn" data-class="sigma" style="padding: 6px 14px; border-radius: 6px; border: 1.5px solid var(--border-subtle); font-weight: 800; font-size: 12px; cursor: pointer; font-family: var(--font-mono); background: var(--bg-surface); color: var(--text-muted);">
-                4.° SIGMA (30)
-              </button>
-              <button class="cards-filter-btn" data-class="delta" style="padding: 6px 14px; border-radius: 6px; border: 1.5px solid var(--border-subtle); font-weight: 800; font-size: 12px; cursor: pointer; font-family: var(--font-mono); background: var(--bg-surface); color: var(--text-muted);">
-                4.° DELTA (29)
-              </button>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 11px; font-weight: 800; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Salón Seleccionado:</span>
+              <span class="badge-tech ${filter === 'sigma' ? '' : 'badge-delta'}" style="font-size: 12.5px; padding: 4px 14px;">
+                ${filter === 'sigma' ? '4.° Grado Sigma' : '4.° Grado Delta'}
+              </span>
             </div>
             <div style="font-size: 11px; color: var(--text-dim); font-family: var(--font-mono);">
-              ⚡ <em>Sigma y Delta nunca se mezclan en la misma hoja A4.</em>
+              ⚡ <em>Generando únicamente las tarjetas de credenciales del salón seleccionado en pantalla.</em>
             </div>
           </div>
 
           <div id="cards-modal-preview" style="overflow-y: auto; padding: 20px; flex: 1; background: var(--bg-canvas);">
-            ${this.renderCardsHtmlForPreview('todos')}
+            ${this.renderCardsHtmlForPreview(filter)}
           </div>
         </div>
       </div>
@@ -1984,6 +1970,174 @@ class ExpedicionApp {
       <!-- Contenedor invisible en pantalla para impresión directa con window.print -->
       <div id="worksheet-print-area" style="display: none;">
         ${this.renderWorksheetA4Html(this.selectedWorksheetTopicId || activeTopicId)}
+      </div>
+
+      <!-- Modal: Editar Estudiante -->
+      <div id="edit-student-modal" class="worksheet-modal-overlay" style="display: none; z-index: 10000;">
+        <div class="worksheet-modal-content glass-panel animate-pop" style="max-width: 520px; padding: 26px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">✏️</span>
+              <div>
+                <h3 style="font-size: 17px; color: var(--text-white); font-family: var(--font-title); margin: 0;">Editar Estudiante</h3>
+                <div id="edit-student-classroom-badge" style="font-size: 11px; color: var(--neon-green); font-family: var(--font-mono); margin-top: 2px;">4.° Grado</div>
+              </div>
+            </div>
+            <button type="button" id="close-edit-modal-btn" class="btn-dark" style="padding: 6px 12px; font-size: 12px; cursor: pointer;">✕</button>
+          </div>
+
+          <form id="edit-student-form" style="display: flex; flex-direction: column; gap: 14px;">
+            <input type="hidden" id="edit-student-id" />
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Apellidos (Paterno y Materno):
+              </label>
+              <input type="text" id="edit-student-lastname" required style="width: 100%; padding: 9px 12px; font-size: 13.5px;" />
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Nombres:
+              </label>
+              <input type="text" id="edit-student-firstname" required style="width: 100%; padding: 9px 12px; font-size: 13.5px;" />
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Nombre de Usuario:
+              </label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="text" id="edit-student-username" style="flex: 1; padding: 9px 12px; font-size: 13px; font-family: var(--font-mono); background: var(--bg-surface-elevated);" />
+                <button type="button" id="edit-reset-username-btn" class="btn-dark" style="padding: 9px 12px; font-size: 11px; white-space: nowrap;" title="Regenerar usuario según nombres">
+                  🔄 Auto
+                </button>
+              </div>
+              <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px; font-family: var(--font-mono);">
+                💡 Se actualiza automáticamente si cambias el 1.er nombre o el apellido paterno.
+              </div>
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Clave PIN (4 dígitos numéricos únicos):
+              </label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="text" id="edit-student-pin" maxlength="4" required style="width: 120px; padding: 9px 12px; font-size: 16px; font-family: var(--font-mono); letter-spacing: 2px; text-align: center;" />
+                <button type="button" id="edit-generate-pin-btn" class="btn-dark" style="padding: 9px 12px; font-size: 11px; white-space: nowrap;">
+                  🎲 Generar PIN
+                </button>
+              </div>
+              <div id="edit-pin-status" style="font-size: 11.5px; margin-top: 5px; font-family: var(--font-mono);"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 10px;">
+              <button type="button" id="open-delete-modal-btn" style="background: rgba(239, 68, 68, 0.12); border: 1.5px solid #ef4444; color: #f87171; padding: 9px 14px; font-size: 12px; border-radius: 8px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                🗑️ Eliminar Alumno
+              </button>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" id="cancel-edit-btn" class="btn-dark" style="padding: 9px 14px; font-size: 12px;">
+                  Cancelar
+                </button>
+                <button type="submit" id="save-student-edit-btn" class="btn-neon" style="padding: 9px 18px; font-size: 12.5px;">
+                  💾 Guardar Cambios
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal: Agregar Alumno al Salón -->
+      <div id="add-student-modal" class="worksheet-modal-overlay" style="display: none; z-index: 10000;">
+        <div class="worksheet-modal-content glass-panel animate-pop" style="max-width: 520px; padding: 26px 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">➕</span>
+              <div>
+                <h3 style="font-size: 17px; color: var(--text-white); font-family: var(--font-title); margin: 0;">Matricular Nuevo Alumno</h3>
+                <div id="add-student-classroom-badge" style="font-size: 11px; color: var(--neon-green); font-family: var(--font-mono); margin-top: 2px;">
+                  Salón: ${filter === 'sigma' ? '4.° Sigma' : '4.° Delta'}
+                </div>
+              </div>
+            </div>
+            <button type="button" id="close-add-modal-btn" class="btn-dark" style="padding: 6px 12px; font-size: 12px; cursor: pointer;">✕</button>
+          </div>
+
+          <form id="add-student-form" style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Apellidos (Paterno y Materno):
+              </label>
+              <input type="text" id="add-student-lastname" placeholder="ej: Mendoza Salas" required style="width: 100%; padding: 9px 12px; font-size: 13.5px;" />
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Nombres:
+              </label>
+              <input type="text" id="add-student-firstname" placeholder="ej: Joaquín Mateo" required style="width: 100%; padding: 9px 12px; font-size: 13.5px;" />
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Usuario Asignado (Automático):
+              </label>
+              <div id="add-student-username-preview" style="padding: 9px 12px; font-size: 13px; font-family: var(--font-mono); background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; color: var(--neon-green); font-weight: 700;">
+                (Escribe apellidos y nombres)
+              </div>
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 6px;">
+                Clave PIN (4 dígitos numéricos únicos):
+              </label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="text" id="add-student-pin" maxlength="4" required style="width: 120px; padding: 9px 12px; font-size: 16px; font-family: var(--font-mono); letter-spacing: 2px; text-align: center;" />
+                <button type="button" id="add-generate-pin-btn" class="btn-dark" style="padding: 9px 12px; font-size: 11px; white-space: nowrap;">
+                  🎲 Generar PIN
+                </button>
+              </div>
+              <div id="add-pin-status" style="font-size: 11.5px; margin-top: 5px; font-family: var(--font-mono);"></div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle);">
+              <button type="button" id="cancel-add-btn" class="btn-dark" style="padding: 9px 14px; font-size: 12px;">
+                Cancelar
+              </button>
+              <button type="submit" id="confirm-add-student-btn" class="btn-neon" style="padding: 9px 18px; font-size: 12.5px;">
+                ➕ Matricular y Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal: Confirmar Eliminación Permanente -->
+      <div id="delete-confirm-modal" class="worksheet-modal-overlay" style="display: none; z-index: 10002;">
+        <div class="worksheet-modal-content glass-panel animate-pop" style="max-width: 460px; padding: 28px 24px; text-align: center;">
+          <div style="font-size: 40px; margin-bottom: 12px;">⚠️</div>
+          <h3 style="font-size: 18px; color: #f87171; font-family: var(--font-title); margin: 0 0 8px 0;">
+            ¿Eliminar Alumno Permanentemente?
+          </h3>
+          <p style="font-size: 13.5px; color: var(--text-white); margin-bottom: 12px;">
+            Estás a punto de retirar a <strong id="delete-student-name" style="color: var(--neon-green); font-size: 14.5px;"></strong> del registro escolar.
+          </p>
+          <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 12px; font-size: 12px; color: var(--text-muted); line-height: 1.5; text-align: left; margin-bottom: 20px;">
+            <div style="font-weight: 800; color: #f87171; margin-bottom: 4px;">Impacto en el sistema:</div>
+            • Sus puntos y estrellas se descontarán de las estadísticas del aula.<br/>
+            • El orden alfabético y los números (N° 01, 02...) se reasignarán automáticamente.<br/>
+            • Esta acción es <strong>permanente e irreversible</strong>.
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <button type="button" id="cancel-delete-btn" class="btn-dark" style="padding: 9px 16px; font-size: 12.5px;">
+              Cancelar
+            </button>
+            <button type="button" id="confirm-delete-btn" style="background: #ef4444; color: white; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 800; font-size: 12.5px; cursor: pointer;">
+              ⚠️ Sí, Eliminar Permanentemente
+            </button>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -2135,7 +2289,12 @@ class ExpedicionApp {
           <td>
             <div style="display: flex; align-items: center; gap: 10px;">
               ${renderCyberAvatar(s.avatar, 28)}
-              <span style="font-weight: 700; color: var(--text-white); font-family: var(--font-title); font-size: 13px;">${escapeHtml(s.name)}</span>
+              <span 
+                class="student-name-click" 
+                data-id="${s.id}" 
+                style="font-weight: 700; color: var(--text-white); font-family: var(--font-title); font-size: 13px; cursor: pointer; text-decoration: underline dotted var(--text-dim);" 
+                title="Hacer clic para editar estudiante"
+              >${escapeHtml(s.name)}</span>
             </div>
           </td>
           <td><span style="font-family: var(--font-mono); background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); padding: 2px 7px; border-radius: 4px; font-size: 11px; color: var(--text-muted);">${escapeHtml(s.username)}</span></td>
@@ -2156,14 +2315,14 @@ class ExpedicionApp {
           </td>
           <td>
             <button 
-              class="edit-pin-btn btn-dark" 
+              class="edit-student-btn btn-dark" 
               data-id="${s.id}" 
               data-name="${escapeHtml(s.name)}" 
               data-pin="${escapeHtml(s.pin)}"
-              style="padding: 4px 10px; font-size: 11px; font-family: var(--font-mono);"
-              title="Cambiar clave"
+              style="padding: 4px 10px; font-size: 11px; font-family: var(--font-mono); display: inline-flex; align-items: center; gap: 4px;"
+              title="Editar datos del estudiante"
             >
-              ${ICONS.lock(12, 'var(--neon-green)')} PIN
+              ✏️ Editar
             </button>
           </td>
         </tr>
@@ -2203,13 +2362,14 @@ class ExpedicionApp {
       this.render();
     });
 
-    // Simulador de alumnos virtuales para el docente
-    document.getElementById('simulate-student-sigma-btn')?.addEventListener('click', () => {
-      this.startVirtualSimulation('sigma');
+    // Simulador de alumno virtual (ligado al salón y tema activo)
+    document.getElementById('simulate-student-btn')?.addEventListener('click', () => {
+      this.startVirtualSimulation(this.selectedClassroomFilter);
     });
 
-    document.getElementById('simulate-student-delta-btn')?.addEventListener('click', () => {
-      this.startVirtualSimulation('delta');
+    // Abrir modal de matriculación de nuevo alumno
+    document.getElementById('open-add-student-modal-btn')?.addEventListener('click', () => {
+      this.openAddStudentModal();
     });
 
     document.querySelectorAll('.classroom-filter-btn').forEach(btn => {
@@ -2273,40 +2433,28 @@ class ExpedicionApp {
     document.getElementById('download-csv-btn')?.addEventListener('click', handleDownloadCsv);
     document.getElementById('download-topic-csv-btn')?.addEventListener('click', handleDownloadCsv);
 
-    // Modal de Tarjetas de Credenciales (PIN)
-    this._currentCardsFilter = 'todos';
+    // Modal de Tarjetas de Credenciales (PIN) - Directo del salón seleccionado
     const cardsModalEl = document.getElementById('cards-modal');
     document.getElementById('print-cards-btn')?.addEventListener('click', () => {
-      if (cardsModalEl) cardsModalEl.style.display = 'flex';
+      if (cardsModalEl) {
+        const previewEl = document.getElementById('cards-modal-preview');
+        if (previewEl) {
+          previewEl.innerHTML = this.renderCardsHtmlForPreview(this.selectedClassroomFilter);
+        }
+        cardsModalEl.style.display = 'flex';
+      }
     });
 
     document.getElementById('close-cards-modal-btn')?.addEventListener('click', () => {
       if (cardsModalEl) cardsModalEl.style.display = 'none';
     });
 
-    document.querySelectorAll('.cards-filter-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const cls = e.target.getAttribute('data-class');
-        this._currentCardsFilter = cls;
-        document.querySelectorAll('.cards-filter-btn').forEach(b => {
-          const isSelected = b.getAttribute('data-class') === cls;
-          b.style.background = isSelected ? 'var(--neon-green)' : 'var(--bg-surface)';
-          b.style.color = isSelected ? 'var(--text-black)' : 'var(--text-muted)';
-          b.style.borderColor = isSelected ? 'var(--neon-green)' : 'var(--border-subtle)';
-        });
-        const previewEl = document.getElementById('cards-modal-preview');
-        if (previewEl) {
-          previewEl.innerHTML = this.renderCardsHtmlForPreview(cls);
-        }
-      });
-    });
-
     document.getElementById('print-cards-now-btn')?.addEventListener('click', () => {
-      this.printIsolatedCards(this._currentCardsFilter || 'todos');
+      this.printIsolatedCards(this.selectedClassroomFilter);
     });
 
     document.getElementById('open-cards-tab-btn')?.addEventListener('click', () => {
-      const targetUrl = `tarjetas_credenciales_${this._currentCardsFilter || 'todos'}.html`;
+      const targetUrl = `tarjetas_credenciales_${this.selectedClassroomFilter}.html`;
       window.open(targetUrl, '_blank');
     });
 
@@ -3479,25 +3627,272 @@ class ExpedicionApp {
     `;
   }
 
+  openEditStudentModal(studentId) {
+    const student = storage.getStudentById(studentId);
+    if (!student) return;
+
+    const modalEl = document.getElementById('edit-student-modal');
+    if (!modalEl) return;
+
+    const parts = (student.name || '').split(',');
+    const lastName = (parts[0] || '').trim();
+    const firstName = student.firstName || (parts[1] || '').trim();
+
+    const idInput = document.getElementById('edit-student-id');
+    const lastInput = document.getElementById('edit-student-lastname');
+    const firstInput = document.getElementById('edit-student-firstname');
+    const userInput = document.getElementById('edit-student-username');
+    const pinInput = document.getElementById('edit-student-pin');
+    const badgeEl = document.getElementById('edit-student-classroom-badge');
+    const statusEl = document.getElementById('edit-pin-status');
+    const saveBtn = document.getElementById('save-student-edit-btn');
+    const form = document.getElementById('edit-student-form');
+
+    if (idInput) idInput.value = student.id;
+    if (lastInput) lastInput.value = lastName;
+    if (firstInput) firstInput.value = firstName;
+    if (userInput) userInput.value = student.username;
+    if (pinInput) pinInput.value = student.pin;
+    if (badgeEl) {
+      badgeEl.textContent = `Salón: ${student.classroom === 'sigma' ? '4.° Grado Sigma' : '4.° Grado Delta'} • Alumno N° ${String(student.num).padStart(2, '0')}`;
+    }
+
+    const validateEditPin = () => {
+      const clean = (pinInput?.value || '').replace(/[^0-9]/g, '');
+      if (pinInput) pinInput.value = clean.slice(0, 4);
+      if (clean.length < 4) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:#f87171;">⚠️ El PIN debe tener 4 dígitos numéricos.</span>';
+        if (saveBtn) saveBtn.disabled = true;
+        return false;
+      }
+      const takenBy = storage.isPinTaken(clean, student.id);
+      if (takenBy) {
+        if (statusEl) {
+          statusEl.innerHTML = `<span style="color:#f87171;">❌ Este PIN ya pertenece a <strong>${escapeHtml(takenBy.name)}</strong> (${takenBy.classroom === 'sigma' ? '4.° Sigma' : '4.° Delta'}). Debe ser único.</span>`;
+        }
+        if (saveBtn) saveBtn.disabled = true;
+        return false;
+      }
+      if (statusEl) {
+        statusEl.innerHTML = '<span style="color:var(--neon-green);">✔️ PIN único y disponible para este alumno.</span>';
+      }
+      if (saveBtn) saveBtn.disabled = false;
+      return true;
+    };
+
+    pinInput?.addEventListener('input', validateEditPin);
+    validateEditPin();
+
+    document.getElementById('edit-generate-pin-btn')?.onclick = () => {
+      if (pinInput) {
+        pinInput.value = storage.generateUniquePin();
+        validateEditPin();
+      }
+    };
+
+    document.getElementById('edit-reset-username-btn')?.onclick = () => {
+      const f = firstInput?.value || '';
+      const l = lastInput?.value || '';
+      if (userInput) {
+        userInput.value = storage.generateUniqueUsername(f, l, student.id);
+      }
+    };
+
+    // Live auto-updating username if first name or last name changes
+    const onNameChange = () => {
+      const f = firstInput?.value || '';
+      const l = lastInput?.value || '';
+      if (userInput && f.trim() && l.trim()) {
+        userInput.value = storage.generateUniqueUsername(f, l, student.id);
+      }
+    };
+    lastInput?.addEventListener('input', onNameChange);
+    firstInput?.addEventListener('input', onNameChange);
+
+    document.getElementById('open-delete-modal-btn')?.onclick = () => {
+      this.openDeleteConfirmModal(student.id);
+    };
+
+    if (form) {
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        if (!validateEditPin()) return;
+
+        const newLast = lastInput?.value || '';
+        const newFirst = firstInput?.value || '';
+        const newPin = pinInput?.value || '';
+        const customUser = userInput?.value || '';
+
+        storage.updateStudentFull(student.id, {
+          lastName: newLast,
+          firstName: newFirst,
+          pin: newPin,
+          customUsername: customUser
+        });
+
+        modalEl.style.display = 'none';
+        this.render();
+      };
+    }
+
+    modalEl.style.display = 'flex';
+  }
+
+  openAddStudentModal() {
+    const modalEl = document.getElementById('add-student-modal');
+    if (!modalEl) return;
+
+    const classroom = this.selectedClassroomFilter || 'sigma';
+    const badgeEl = document.getElementById('add-student-classroom-badge');
+    const lastInput = document.getElementById('add-student-lastname');
+    const firstInput = document.getElementById('add-student-firstname');
+    const previewEl = document.getElementById('add-student-username-preview');
+    const pinInput = document.getElementById('add-student-pin');
+    const statusEl = document.getElementById('add-pin-status');
+    const addBtn = document.getElementById('confirm-add-student-btn');
+    const form = document.getElementById('add-student-form');
+
+    if (badgeEl) {
+      badgeEl.textContent = `Salón Destino: ${classroom === 'sigma' ? '4.° Grado Sigma' : '4.° Grado Delta'}`;
+    }
+    if (lastInput) lastInput.value = '';
+    if (firstInput) firstInput.value = '';
+    if (previewEl) previewEl.textContent = '(Escribe apellidos y nombres)';
+    if (pinInput) pinInput.value = storage.generateUniquePin();
+
+    const validateAddPin = () => {
+      const clean = (pinInput?.value || '').replace(/[^0-9]/g, '');
+      if (pinInput) pinInput.value = clean.slice(0, 4);
+      if (clean.length < 4) {
+        if (statusEl) statusEl.innerHTML = '<span style="color:#f87171;">⚠️ El PIN debe tener 4 dígitos numéricos.</span>';
+        if (addBtn) addBtn.disabled = true;
+        return false;
+      }
+      const takenBy = storage.isPinTaken(clean);
+      if (takenBy) {
+        if (statusEl) {
+          statusEl.innerHTML = `<span style="color:#f87171;">❌ Este PIN ya pertenece a <strong>${escapeHtml(takenBy.name)}</strong> (${takenBy.classroom === 'sigma' ? '4.° Sigma' : '4.° Delta'}).</span>`;
+        }
+        if (addBtn) addBtn.disabled = true;
+        return false;
+      }
+      if (statusEl) {
+        statusEl.innerHTML = '<span style="color:var(--neon-green);">✔️ PIN único generado y disponible.</span>';
+      }
+      if (addBtn) addBtn.disabled = false;
+      return true;
+    };
+
+    pinInput?.addEventListener('input', validateAddPin);
+    validateAddPin();
+
+    document.getElementById('add-generate-pin-btn')?.onclick = () => {
+      if (pinInput) {
+        pinInput.value = storage.generateUniquePin();
+        validateAddPin();
+      }
+    };
+
+    const updateAddUsernamePreview = () => {
+      const l = lastInput?.value || '';
+      const f = firstInput?.value || '';
+      if (l.trim() && f.trim()) {
+        const generated = storage.generateUniqueUsername(f, l);
+        if (previewEl) previewEl.textContent = generated;
+      } else {
+        if (previewEl) previewEl.textContent = '(Escribe apellidos y nombres)';
+      }
+    };
+
+    lastInput?.addEventListener('input', updateAddUsernamePreview);
+    firstInput?.addEventListener('input', updateAddUsernamePreview);
+
+    if (form) {
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        if (!validateAddPin()) return;
+
+        const lastName = lastInput?.value || '';
+        const firstName = firstInput?.value || '';
+        const pin = pinInput?.value || '';
+
+        storage.addStudent({
+          lastName,
+          firstName,
+          classroom,
+          pin
+        });
+
+        modalEl.style.display = 'none';
+        this.render();
+      };
+    }
+
+    modalEl.style.display = 'flex';
+  }
+
+  openDeleteConfirmModal(studentId) {
+    const student = storage.getStudentById(studentId);
+    if (!student) return;
+
+    this._pendingDeleteStudentId = studentId;
+    const modalEl = document.getElementById('delete-confirm-modal');
+    const nameEl = document.getElementById('delete-student-name');
+    if (nameEl) nameEl.textContent = student.name;
+
+    document.getElementById('confirm-delete-btn')?.onclick = () => {
+      if (this._pendingDeleteStudentId) {
+        storage.deleteStudentPermanent(this._pendingDeleteStudentId);
+        this._pendingDeleteStudentId = null;
+      }
+      if (modalEl) modalEl.style.display = 'none';
+      const editModal = document.getElementById('edit-student-modal');
+      if (editModal) editModal.style.display = 'none';
+      this.render();
+    };
+
+    document.getElementById('cancel-delete-btn')?.onclick = () => {
+      if (modalEl) modalEl.style.display = 'none';
+    };
+
+    if (modalEl) modalEl.style.display = 'flex';
+  }
+
   attachStudentEditEvents() {
-    document.querySelectorAll('.edit-pin-btn').forEach(btn => {
+    // Click en el nombre del estudiante para editar
+    document.querySelectorAll('.student-name-click').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        this.openEditStudentModal(id);
+      });
+    });
+
+    // Click en el botón ✏️ Editar
+    document.querySelectorAll('.edit-student-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = e.currentTarget.getAttribute('data-id');
-        const name = e.currentTarget.getAttribute('data-name');
-        const currentPin = e.currentTarget.getAttribute('data-pin');
-
-        const rawPin = prompt(`Cambiar PIN para ${name} (Actual: ${currentPin}):`, currentPin);
-        if (rawPin && rawPin.trim() !== '') {
-          const newPin = sanitizePin(rawPin.trim());
-          const student = storage.getStudentById(id);
-          if (student) {
-            student.pin = newPin;
-            storage.updateStudent(student);
-            alert(`PIN actualizado exitosamente a: ${newPin}`);
-            this.render();
-          }
-        }
+        this.openEditStudentModal(id);
       });
+    });
+
+    // Modal de edición: botones de cerrar y cancelar
+    document.getElementById('close-edit-modal-btn')?.addEventListener('click', () => {
+      const m = document.getElementById('edit-student-modal');
+      if (m) m.style.display = 'none';
+    });
+    document.getElementById('cancel-edit-btn')?.addEventListener('click', () => {
+      const m = document.getElementById('edit-student-modal');
+      if (m) m.style.display = 'none';
+    });
+
+    // Modal de agregar: botones de cerrar y cancelar
+    document.getElementById('close-add-modal-btn')?.addEventListener('click', () => {
+      const m = document.getElementById('add-student-modal');
+      if (m) m.style.display = 'none';
+    });
+    document.getElementById('cancel-add-btn')?.addEventListener('click', () => {
+      const m = document.getElementById('add-student-modal');
+      if (m) m.style.display = 'none';
     });
   }
 }
