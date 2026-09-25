@@ -51,8 +51,8 @@ export function renderPracticeStationView(app) {
       </div>
     </header>
 
-    <main style="max-width: 820px; margin: 30px auto; padding: 0 20px; flex: 1;">
-      <div class="glass-panel" style="padding: 34px 30px; border-top: 4px solid var(--neon-green);">
+    <main class="practice-station-main" style="max-width: 820px; margin: 30px auto; padding: 0 20px; flex: 1;">
+      <div class="glass-panel practice-station-card" style="padding: 34px 30px; border-top: 4px solid var(--neon-green);">
         
         <div style="text-align: center; margin-bottom: 24px;">
           <span class="badge-tech" style="letter-spacing: 0.8px; font-size: 11px;">
@@ -82,7 +82,7 @@ export function renderTaskWorkspace(app, station, task) {
     return `
       <div>
         <!-- Números de la Secuencia en Cajas Adaptativas -->
-        <div style="display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; margin: 20px 0 30px 0;">
+        <div class="sequence-box-container" style="display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; margin: 20px 0 30px 0;">
           ${task.sequence.map((num, i) => `
             <div class="sequence-box">
               ${num}
@@ -338,6 +338,22 @@ export function attachPracticeStationEvents(app) {
   }
 }
 
+export function showFeedbackBox(feedbackBox, isCorrect, htmlContent) {
+  if (!feedbackBox) return;
+  feedbackBox.className = `scaffold-feedback-box ${isCorrect ? 'correct' : 'try-again'}`;
+  feedbackBox.innerHTML = htmlContent;
+  feedbackBox.style.display = 'flex';
+  
+  // Garantizar visibilidad inmediata en celulares sin requerir scroll manual
+  requestAnimationFrame(() => {
+    try {
+      feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (err) {
+      feedbackBox.scrollIntoView(false);
+    }
+  });
+}
+
 export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
   app.currentAttemptCount++;
   const isCorrect = (chosen.trim() === task.correctOption.trim());
@@ -347,17 +363,13 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
   if (isCorrect) {
     app.playFeedbackTone('correct');
     clickedBtn.classList.add('selected-correct');
-    if (feedbackBox) {
-      feedbackBox.className = 'scaffold-feedback-box correct';
-      feedbackBox.innerHTML = `
-        <div style="font-size: 24px;">🎉</div>
-        <div>
-          <div style="font-weight: 800; font-size: 15px;">¡Excelente! Regla Correcta</div>
-          <div style="font-size: 13px; margin-top: 2px;">${task.reason}</div>
-        </div>
-      `;
-      feedbackBox.style.display = 'flex';
-    }
+    showFeedbackBox(feedbackBox, true, `
+      <div style="font-size: 24px;">🎉</div>
+      <div>
+        <div style="font-weight: 800; font-size: 15px;">¡Excelente! Regla Correcta</div>
+        <div style="font-size: 13px; margin-top: 2px;">${task.reason}</div>
+      </div>
+    `);
 
     const isStationComplete = (app.currentTaskIndex === app.selectedStation.tasks.length - 1);
     storage.recordTaskAttempt(app.user.id, {
@@ -375,24 +387,20 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
 
     setTimeout(() => {
       advanceToNextTask(app);
-    }, 1200);
+    }, 1400);
 
   } else {
     app.playFeedbackTone('error');
     clickedBtn.classList.add('selected-wrong');
     const hint = task.commonMistakeHint?.[chosen] || 'Prueba multiplicando en lugar de sumar para ver si funciona con todos los términos.';
     
-    if (feedbackBox) {
-      feedbackBox.className = 'scaffold-feedback-box try-again';
-      feedbackBox.innerHTML = `
-        <div style="font-size: 24px;">💡</div>
-        <div>
-          <div style="font-weight: 800; font-size: 15px;">Pista de Razonamiento Finlandés:</div>
-          <div style="font-size: 13px; margin-top: 2px;">${hint}</div>
-        </div>
-      `;
-      feedbackBox.style.display = 'flex';
-    }
+    showFeedbackBox(feedbackBox, false, `
+      <div style="font-size: 24px;">💡</div>
+      <div>
+        <div style="font-weight: 800; font-size: 15px;">Pista de Razonamiento Finlandés:</div>
+        <div style="font-size: 13px; margin-top: 2px;">${hint}</div>
+      </div>
+    `);
 
     storage.recordTaskAttempt(app.user.id, {
       stationId: app.selectedStation.id,
@@ -415,17 +423,13 @@ export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffold
 
   if (isCorrect) {
     app.playFeedbackTone('correct');
-    if (feedbackBox) {
-      feedbackBox.className = 'scaffold-feedback-box correct';
-      feedbackBox.innerHTML = `
-        <div style="font-size: 24px;">🎉</div>
-        <div>
-          <div style="font-weight: 800; font-size: 15px;">¡Correcto! +1 Estrella ⭐</div>
-          <div style="font-size: 13px; margin-top: 2px;">${scaffoldHint}</div>
-        </div>
-      `;
-      feedbackBox.style.display = 'flex';
-    }
+    showFeedbackBox(feedbackBox, true, `
+      <div style="font-size: 24px;">🎉</div>
+      <div>
+        <div style="font-weight: 800; font-size: 15px;">¡Correcto! +1 Estrella ⭐</div>
+        <div style="font-size: 13px; margin-top: 2px;">${scaffoldHint}</div>
+      </div>
+    `);
 
     const isStationComplete = (app.currentTaskIndex === app.selectedStation.tasks.length - 1);
     storage.recordTaskAttempt(app.user.id, {
@@ -443,22 +447,18 @@ export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffold
 
     setTimeout(() => {
       advanceToNextTask(app);
-    }, 1200);
+    }, 1400);
 
   } else {
     app.playFeedbackTone('error');
-    if (feedbackBox) {
-      feedbackBox.className = 'scaffold-feedback-box try-again';
-      feedbackBox.innerHTML = `
-        <div style="font-size: 24px;">💡</div>
-        <div>
-          <div style="font-weight: 800; font-size: 15px;">Pista de Apoyo (Descomposición):</div>
-          <div style="font-size: 13px; margin-top: 2px;">${scaffoldHint}</div>
-          <div style="font-size: 12px; margin-top: 4px; font-weight: 600;">Corrige tu número e inténtalo de nuevo.</div>
-        </div>
-      `;
-      feedbackBox.style.display = 'flex';
-    }
+    showFeedbackBox(feedbackBox, false, `
+      <div style="font-size: 24px;">💡</div>
+      <div>
+        <div style="font-weight: 800; font-size: 15px;">Pista de Apoyo (Descomposición):</div>
+        <div style="font-size: 13px; margin-top: 2px;">${scaffoldHint}</div>
+        <div style="font-size: 12px; margin-top: 4px; font-weight: 600;">Corrige tu número e inténtalo de nuevo.</div>
+      </div>
+    `);
 
     storage.recordTaskAttempt(app.user.id, {
       stationId: app.selectedStation.id,

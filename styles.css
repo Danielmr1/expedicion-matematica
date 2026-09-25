@@ -1335,4 +1335,48 @@ body[data-theme="expedicion"],
   .btn-neon, .btn-dark {
     min-height: 42px;
   }
+
+  /* Estación de práctica compacta para celular (evita scroll para ver corrección) */
+  .practice-station-main {
+    margin: 8px auto !important;
+    padding: 0 10px !important;
+  }
+
+  .practice-station-card {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .sequence-box-container {
+    margin: 8px 0 12px 0 !important;
+    gap: 8px !important;
+  }
+
+  .rule-options-grid {
+    gap: 8px !important;
+  }
+
+  .rule-option-btn {
+    padding: 12px 8px !important;
+    font-size: 16px !important;
+    min-height: 46px !important;
+  }
+
+  /* Aviso de corrección o felicitación: destacado, visible de inmediato */
+  .scaffold-feedback-box {
+    margin-top: 12px !important;
+    padding: 12px 14px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .scaffold-feedback-box.correct {
+    background: rgba(132, 255, 0, 0.16) !important;
+    border: 2px solid var(--neon-green) !important;
+  }
+
+  .scaffold-feedback-box.try-again {
+    background: rgba(245, 158, 11, 0.18) !important;
+    border: 2px solid #f59e0b !important;
+  }
 }
