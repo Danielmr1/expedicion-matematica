@@ -368,11 +368,13 @@ class ExpedicionApp {
     if (this.isTeacherSimulating) {
       document.getElementById('reset-simulation-btn')?.addEventListener('click', () => {
         if (this.isTeacherSimulating && this.user) {
+          storage.resetVirtualStudent(this.user.id);
           this.user.stars = 0;
           this.user.xp = 0;
           this.user.timeMinutes = 0;
           this.user.completedChallenges = [];
-          this.user.trophies = {};
+          this.user.stationProgress = {};
+          this.user.trophies = { patrones: 'ninguno' };
           if (this.currentView === 'PRACTICE_STATION') {
             this.currentView = 'STUDENT_HOME';
             this.selectedStation = null;
