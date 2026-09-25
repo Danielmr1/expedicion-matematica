@@ -3683,20 +3683,26 @@ class ExpedicionApp {
     pinInput?.addEventListener('input', validateEditPin);
     validateEditPin();
 
-    document.getElementById('edit-generate-pin-btn')?.onclick = () => {
-      if (pinInput) {
-        pinInput.value = storage.generateUniquePin();
-        validateEditPin();
-      }
-    };
+    const genPinBtn = document.getElementById('edit-generate-pin-btn');
+    if (genPinBtn) {
+      genPinBtn.onclick = () => {
+        if (pinInput) {
+          pinInput.value = storage.generateUniquePin();
+          validateEditPin();
+        }
+      };
+    }
 
-    document.getElementById('edit-reset-username-btn')?.onclick = () => {
-      const f = firstInput?.value || '';
-      const l = lastInput?.value || '';
-      if (userInput) {
-        userInput.value = storage.generateUniqueUsername(f, l, student.id);
-      }
-    };
+    const resetUserBtn = document.getElementById('edit-reset-username-btn');
+    if (resetUserBtn) {
+      resetUserBtn.onclick = () => {
+        const f = firstInput?.value || '';
+        const l = lastInput?.value || '';
+        if (userInput) {
+          userInput.value = storage.generateUniqueUsername(f, l, student.id);
+        }
+      };
+    }
 
     // Live auto-updating username if first name or last name changes
     const onNameChange = () => {
@@ -3706,12 +3712,15 @@ class ExpedicionApp {
         userInput.value = storage.generateUniqueUsername(f, l, student.id);
       }
     };
-    lastInput?.addEventListener('input', onNameChange);
-    firstInput?.addEventListener('input', onNameChange);
+    if (lastInput) lastInput.oninput = onNameChange;
+    if (firstInput) firstInput.oninput = onNameChange;
 
-    document.getElementById('open-delete-modal-btn')?.onclick = () => {
-      this.openDeleteConfirmModal(student.id);
-    };
+    const openDeleteBtn = document.getElementById('open-delete-modal-btn');
+    if (openDeleteBtn) {
+      openDeleteBtn.onclick = () => {
+        this.openDeleteConfirmModal(student.id);
+      };
+    }
 
     if (form) {
       form.onsubmit = (e) => {
@@ -3783,15 +3792,18 @@ class ExpedicionApp {
       return true;
     };
 
-    pinInput?.addEventListener('input', validateAddPin);
+    if (pinInput) pinInput.oninput = validateAddPin;
     validateAddPin();
 
-    document.getElementById('add-generate-pin-btn')?.onclick = () => {
-      if (pinInput) {
-        pinInput.value = storage.generateUniquePin();
-        validateAddPin();
-      }
-    };
+    const genAddPinBtn = document.getElementById('add-generate-pin-btn');
+    if (genAddPinBtn) {
+      genAddPinBtn.onclick = () => {
+        if (pinInput) {
+          pinInput.value = storage.generateUniquePin();
+          validateAddPin();
+        }
+      };
+    }
 
     const updateAddUsernamePreview = () => {
       const l = lastInput?.value || '';
@@ -3804,8 +3816,8 @@ class ExpedicionApp {
       }
     };
 
-    lastInput?.addEventListener('input', updateAddUsernamePreview);
-    firstInput?.addEventListener('input', updateAddUsernamePreview);
+    if (lastInput) lastInput.oninput = updateAddUsernamePreview;
+    if (firstInput) firstInput.oninput = updateAddUsernamePreview;
 
     if (form) {
       form.onsubmit = (e) => {
@@ -3840,20 +3852,26 @@ class ExpedicionApp {
     const nameEl = document.getElementById('delete-student-name');
     if (nameEl) nameEl.textContent = student.name;
 
-    document.getElementById('confirm-delete-btn')?.onclick = () => {
-      if (this._pendingDeleteStudentId) {
-        storage.deleteStudentPermanent(this._pendingDeleteStudentId);
-        this._pendingDeleteStudentId = null;
-      }
-      if (modalEl) modalEl.style.display = 'none';
-      const editModal = document.getElementById('edit-student-modal');
-      if (editModal) editModal.style.display = 'none';
-      this.render();
-    };
+    const confirmDelBtn = document.getElementById('confirm-delete-btn');
+    if (confirmDelBtn) {
+      confirmDelBtn.onclick = () => {
+        if (this._pendingDeleteStudentId) {
+          storage.deleteStudentPermanent(this._pendingDeleteStudentId);
+          this._pendingDeleteStudentId = null;
+        }
+        if (modalEl) modalEl.style.display = 'none';
+        const editModal = document.getElementById('edit-student-modal');
+        if (editModal) editModal.style.display = 'none';
+        this.render();
+      };
+    }
 
-    document.getElementById('cancel-delete-btn')?.onclick = () => {
-      if (modalEl) modalEl.style.display = 'none';
-    };
+    const cancelDelBtn = document.getElementById('cancel-delete-btn');
+    if (cancelDelBtn) {
+      cancelDelBtn.onclick = () => {
+        if (modalEl) modalEl.style.display = 'none';
+      };
+    }
 
     if (modalEl) modalEl.style.display = 'flex';
   }
