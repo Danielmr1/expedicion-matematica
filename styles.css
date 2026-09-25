@@ -689,22 +689,27 @@ select:focus {
 }
 
 .jump-node-box.jump-node-target {
+  min-width: 90px;
   border-color: var(--neon-green);
   box-shadow: 0 0 18px var(--neon-green-glow);
+  padding: 0 4px;
 }
 
 .jump-target-input {
-  width: 70px;
+  width: 82px;
+  min-width: 80px;
   height: 52px;
   background: var(--bg-canvas) !important;
   border: 2px solid var(--neon-green) !important;
   color: var(--neon-green) !important;
   font-family: var(--font-mono) !important;
-  font-size: 26px !important;
+  font-size: 22px !important;
   font-weight: 900 !important;
   text-align: center;
   border-radius: 8px;
   outline: none;
+  padding: 0 4px;
+  letter-spacing: 1px;
   -moz-appearance: textfield !important;
 }
 
@@ -791,16 +796,19 @@ select:focus {
 }
 
 .machine-input-cell {
-  width: 90px;
-  height: 44px;
+  width: 108px;
+  min-width: 100px;
+  height: 46px;
   background: var(--bg-canvas) !important;
   border: 2px solid var(--neon-green) !important;
   color: var(--neon-green) !important;
   font-family: var(--font-mono) !important;
-  font-size: 22px !important;
+  font-size: 20px !important;
   font-weight: 900 !important;
   text-align: center;
   border-radius: 8px;
+  padding: 0 6px;
+  letter-spacing: 1px;
   -moz-appearance: textfield !important;
 }
 
@@ -1324,6 +1332,32 @@ body[data-theme="expedicion"],
     min-width: 48px !important;
     height: 48px !important;
     font-size: 15px !important;
+  }
+
+  /* Nodo objetivo y entrada numérica amplia para respuestas de 3 dígitos en celular */
+  .jump-node-box.jump-node-target {
+    min-width: 84px !important;
+    width: auto !important;
+    height: 48px !important;
+    padding: 0 3px !important;
+  }
+
+  .jump-target-input {
+    width: 78px !important;
+    min-width: 74px !important;
+    height: 40px !important;
+    font-size: 19px !important;
+    padding: 0 4px !important;
+    letter-spacing: 1px !important;
+  }
+
+  .machine-input-cell {
+    width: 96px !important;
+    min-width: 90px !important;
+    height: 42px !important;
+    font-size: 19px !important;
+    padding: 0 4px !important;
+    letter-spacing: 1px !important;
   }
 
   /* Asegurar que las tarjetas de compañeros se vean fluidas */
