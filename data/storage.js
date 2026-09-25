@@ -19,6 +19,12 @@ const STORAGE_KEYS = {
   ACTIVE_TOPIC: 'expedicion_supabase_topic_v4'
 };
 
+// Control de Sesión Escolar Adaptativa (Opción 1: Expiración por inactividad)
+export const SESSION_TIMEOUTS = {
+  TEACHER_MS: 60 * 60 * 1000,     // 60 minutos de inactividad para Docente
+  STUDENT_MS: 2 * 60 * 60 * 1000  // 120 minutos (2 horas) de inactividad para Alumno
+};
+
 class StorageManager {
   constructor() {
     this.students = [];
@@ -56,10 +62,7 @@ class StorageManager {
         this.attempts = JSON.parse(storedAttempts);
       }
 
-      const storedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-      if (storedUser) {
-        this.currentUser = JSON.parse(storedUser);
-      }
+      this.currentUser = this.getCurrentUser();
     } catch (e) {
       console.warn("Storage init warning (fallback in-memory):", e);
       this.students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
@@ -177,14 +180,84 @@ class StorageManager {
   setCurrentUser(user) {
     this.currentUser = user;
     if (user) {
-      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+      try {
+        const sessionEnvelope = {
+          user,
+          lastActivity: Date.now(),
+          loginDate: new Date().toISOString().slice(0, 10),
+          isTeacher: !!user.isTeacher
+        };
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(sessionEnvelope));
+      } catch (e) {
+        console.error("Error guardando sesión:", e);
+      }
     } else {
       localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
     }
   }
 
+  touchSession() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data && data.user) {
+        data.lastActivity = Date.now();
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(data));
+      }
+    } catch (e) {
+      // Ignorar errores silenciosamente
+    }
+  }
+
   getCurrentUser() {
-    return this.currentUser;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+      if (!raw) {
+        this.currentUser = null;
+        return null;
+      }
+
+      const data = JSON.parse(raw);
+      const user = data.user || data;
+      const lastActivity = data.lastActivity || 0;
+      const loginDate = data.loginDate || '';
+      const isTeacher = !!user.isTeacher;
+      const now = Date.now();
+      const todayStr = new Date().toISOString().slice(0, 10);
+
+      // Si es una sesión antigua sin timestamp de actividad, forzar nuevo login seguro
+      if (!lastActivity) {
+        console.log("🔒 Sesión previa sin registro de actividad. Requiere autenticación.");
+        this.logout();
+        return null;
+      }
+
+      // 1. Docente: Expiración por inactividad a los 60 minutos
+      if (isTeacher) {
+        if ((now - lastActivity) > SESSION_TIMEOUTS.TEACHER_MS) {
+          console.log("🔒 Sesión docente expirada por inactividad (60 min).");
+          this.logout();
+          return null;
+        }
+      } else {
+        // 2. Alumno: Expiración por inactividad a las 2 horas (120 min) o cambio de día
+        const isTimeExpired = (now - lastActivity) > SESSION_TIMEOUTS.STUDENT_MS;
+        const isNewDay = (loginDate && loginDate !== todayStr);
+        if (isTimeExpired || isNewDay) {
+          console.log(`🔒 Sesión de alumno expirada (${isNewDay ? 'nuevo día' : 'inactividad 2h'}).`);
+          this.logout();
+          return null;
+        }
+      }
+
+      this.currentUser = user;
+      return user;
+    } catch (e) {
+      console.warn("Error evaluando sesión:", e);
+      this.currentUser = null;
+      return null;
+    }
   }
 
   async login(username, pinOrPassword) {
@@ -290,6 +363,7 @@ class StorageManager {
   }
 
   recordTaskAttempt(studentId, taskData) {
+    this.touchSession();
     let student = this.students.find(s => s.id === studentId);
 
     // Soporte para alumno virtual de simulación docente
