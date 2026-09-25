@@ -430,6 +430,144 @@ class StorageManager {
     };
   }
 
+  isPinTaken(pin, excludeStudentId = null) {
+    const cleanPin = String(pin || '').trim();
+    if (!cleanPin) return null;
+    const found = this.students.find(s => s.pin === cleanPin && s.id !== excludeStudentId);
+    return found || null;
+  }
+
+  generateUniquePin() {
+    let pin;
+    let attempts = 0;
+    do {
+      pin = String(Math.floor(1000 + Math.random() * 9000));
+      attempts++;
+    } while (this.isPinTaken(pin) && attempts < 1000);
+    return pin;
+  }
+
+  cleanTextForUsername(text = '') {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Quitar tildes
+      .replace(/ñ/g, 'n')
+      .replace(/[^a-z0-9]/g, '')
+      .trim();
+  }
+
+  generateUniqueUsername(firstName = '', lastName = '', excludeStudentId = null) {
+    const fPart = this.cleanTextForUsername(firstName.trim().split(' ')[0]) || 'alumno';
+    const lPart = this.cleanTextForUsername(lastName.trim().split(' ')[0]) || 'estudiante';
+    const base = `${fPart}.${lPart}`;
+    
+    let candidate = base;
+    let counter = 2;
+    while (this.students.some(s => s.username === candidate && s.id !== excludeStudentId)) {
+      candidate = `${base}${counter}`;
+      counter++;
+    }
+    return candidate;
+  }
+
+  reorderClassroom(classroom) {
+    if (!classroom) return;
+    const classStudents = this.students.filter(s => s.classroom === classroom);
+    const otherStudents = this.students.filter(s => s.classroom !== classroom);
+
+    classStudents.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'es', { sensitivity: 'base' }));
+    classStudents.forEach((s, idx) => {
+      s.num = idx + 1;
+    });
+
+    this.students = [...classStudents, ...otherStudents];
+  }
+
+  addStudent({ lastName, firstName, classroom, pin, avatar = null }) {
+    const cleanLast = (lastName || '').trim();
+    const cleanFirst = (firstName || '').trim();
+    const fullName = `${cleanLast}, ${cleanFirst}`;
+    const cleanPin = String(pin || this.generateUniquePin()).trim();
+    const username = this.generateUniqueUsername(cleanFirst, cleanLast);
+    const id = `${classroom}-${Date.now()}`;
+    const defaultAvatars = ['condor', 'vicuna', 'chasqui', 'delfin', 'puma', 'alpaca'];
+    const chosenAvatar = avatar || defaultAvatars[Math.floor(Math.random() * defaultAvatars.length)];
+
+    const newStudent = {
+      id,
+      num: 99,
+      classroom,
+      name: fullName,
+      displayName: `${cleanFirst} ${cleanLast.split(' ')[0]}`,
+      firstName: cleanFirst,
+      username,
+      pin: cleanPin,
+      avatar: chosenAvatar,
+      stars: 0,
+      xp: 0,
+      timeMinutes: 0,
+      activeSeconds: 0,
+      completedChallenges: [],
+      stationProgress: {},
+      trophies: { patrones: 'ninguno' }
+    };
+
+    this.students.push(newStudent);
+    this.reorderClassroom(classroom);
+    this.saveStudents();
+    return newStudent;
+  }
+
+  updateStudentFull(studentId, { lastName, firstName, pin, customUsername = null }) {
+    const student = this.getStudentById(studentId);
+    if (!student) return null;
+
+    const cleanLast = (lastName || '').trim();
+    const cleanFirst = (firstName || '').trim();
+    const oldParts = (student.name || '').split(',');
+    const oldFirst = (student.firstName || (oldParts[1] || '').trim()).split(' ')[0].toLowerCase();
+    const oldLast = (oldParts[0] || '').trim().split(' ')[0].toLowerCase();
+
+    const newFirst = cleanFirst.split(' ')[0].toLowerCase();
+    const newLast = cleanLast.split(' ')[0].toLowerCase();
+
+    // Solo actualizar username si cambiaron el primer nombre o el apellido paterno principal
+    let newUsername = student.username;
+    if (customUsername && customUsername.trim()) {
+      newUsername = this.cleanTextForUsername(customUsername);
+    } else if (newFirst !== oldFirst || newLast !== oldLast) {
+      newUsername = this.generateUniqueUsername(cleanFirst, cleanLast, studentId);
+    }
+
+    student.name = `${cleanLast}, ${cleanFirst}`;
+    student.firstName = cleanFirst;
+    student.displayName = `${cleanFirst} ${cleanLast.split(' ')[0]}`;
+    student.username = newUsername;
+    if (pin) student.pin = String(pin).trim();
+
+    this.reorderClassroom(student.classroom);
+    this.saveStudents();
+
+    if (student.pin) {
+      const dbId = student.dbId || student.id;
+      updateStudentPinInSupabase(dbId, student.pin);
+    }
+
+    return student;
+  }
+
+  deleteStudentPermanent(studentId) {
+    const idx = this.students.findIndex(s => s.id === studentId);
+    if (idx === -1) return false;
+
+    const classroom = this.students[idx].classroom;
+    this.students.splice(idx, 1);
+    this.reorderClassroom(classroom);
+    this.saveStudents();
+    return true;
+  }
+
   updateStudent(updatedStudent) {
     const idx = this.students.findIndex(s => s.id === updatedStudent.id);
     if (idx !== -1) {
