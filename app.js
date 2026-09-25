@@ -1,5 +1,5 @@
 import { storage } from './data/storage.js';
-import { WEEKLY_CYCLE, WEEKLY_MISSION, TROPHY_THRESHOLDS, AVAILABLE_TOPICS } from './data/curriculum.js';
+import { WEEKLY_CYCLE, WEEKLY_MISSION, TROPHY_THRESHOLDS, AVAILABLE_TOPICS, getWeeklyMission } from './data/curriculum.js';
 import { CLASSROOMS } from './data/students.js';
 import { ICONS, CYBER_AVATARS, getThemedEmblem } from './data/icons.js';
 import { validateFullCurriculum, escapeHtml, sanitizePin } from './data/guardrails.js';
@@ -38,6 +38,7 @@ class ExpedicionApp {
     this.sessionTimerInterval = null;
     this.selectedClassroomFilter = 'sigma'; // 'sigma' | 'delta' (Nunca todos)
     this.selectedWorksheetTopicId = storage.getActiveTopic();
+    this.simulatedTopicId = null;
     this.tableMetricMode = 'semana'; // 'semana' | 'bimestre'
     this.isTeacherSimulating = false;
     this.simulatedTeacherSession = null;
@@ -58,6 +59,13 @@ class ExpedicionApp {
     if (document.body) {
       document.body.setAttribute('data-theme', theme);
     }
+  }
+
+  getCurrentMission() {
+    const activeTopicId = this.isTeacherSimulating 
+      ? (this.simulatedTopicId || this.selectedWorksheetTopicId || storage.getActiveTopic())
+      : storage.getActiveTopic();
+    return getWeeklyMission(activeTopicId);
   }
 
   toggleTheme() {
@@ -340,18 +348,26 @@ class ExpedicionApp {
 
     let simulationBannerHtml = '';
     if (this.isTeacherSimulating && this.currentView !== 'TEACHER_DASHBOARD' && this.currentView !== 'LOGIN') {
+      const activeTopicId = this.simulatedTopicId || this.selectedWorksheetTopicId || storage.getActiveTopic();
+      const topicObj = AVAILABLE_TOPICS.find(t => t.id === activeTopicId) || AVAILABLE_TOPICS[0];
+
       simulationBannerHtml = `
         <div style="background: linear-gradient(90deg, #091e3a 0%, #1e293b 100%); border-bottom: 2px solid var(--neon-green); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 99999; box-shadow: 0 4px 16px rgba(0,0,0,0.5); flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 18px;">🎒</span>
             <div>
               <span style="font-size: 11.5px; font-weight: 800; color: var(--neon-green); font-family: var(--font-mono); letter-spacing: 0.5px;">MODO SIMULADOR DOCENTE:</span>
-              <span style="font-size: 12px; color: #ffffff; font-family: var(--font-body); margin-left: 6px;">Viendo y probando como <strong>${this.user.name}</strong> (${this.user.classroom === 'sigma' ? '4.° Sigma' : '4.° Delta'})</span>
+              <span style="font-size: 12px; color: #ffffff; font-family: var(--font-body); margin-left: 6px;">Viendo como <strong>${this.user.name}</strong> • <strong>${topicObj.title.split(':')[0]}</strong> (${this.user.classroom === 'sigma' ? '4.° Sigma' : '4.° Delta'})</span>
             </div>
           </div>
-          <button id="exit-simulation-btn" class="btn-neon" style="padding: 6px 16px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-            ⬅️ Volver al Panel Docente
-          </button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button id="reset-simulation-btn" class="btn-dark" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-color: var(--neon-green); color: var(--neon-green); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Reiniciar el avance del alumno virtual desde cero">
+              🔄 Reiniciar simulador
+            </button>
+            <button id="exit-simulation-btn" class="btn-neon" style="padding: 6px 16px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+              ⬅️ Volver al Panel Docente
+            </button>
+          </div>
         </div>
       `;
     }
@@ -381,6 +397,24 @@ class ExpedicionApp {
     }
 
     if (this.isTeacherSimulating) {
+      document.getElementById('reset-simulation-btn')?.addEventListener('click', () => {
+        if (this.isTeacherSimulating && this.user) {
+          this.user.stars = 0;
+          this.user.xp = 0;
+          this.user.timeMinutes = 0;
+          this.user.completedChallenges = [];
+          this.user.trophies = {};
+          if (this.currentView === 'PRACTICE_STATION') {
+            this.currentView = 'STUDENT_HOME';
+            this.selectedStation = null;
+            this.currentTaskIndex = 0;
+            this.currentAttemptCount = 0;
+          }
+          this.playFeedbackTone('correct');
+          this.render();
+        }
+      });
+
       document.getElementById('exit-simulation-btn')?.addEventListener('click', () => {
         this.isTeacherSimulating = false;
         this.user = this.simulatedTeacherSession || { username: 'profesor', role: 'teacher', isTeacher: true };
@@ -576,7 +610,11 @@ class ExpedicionApp {
     const isSigma = student.classroom === 'sigma';
     const classBadgeClass = isSigma ? 'badge-tech' : 'badge-tech badge-delta';
     const classroomMeta = CLASSROOMS[student.classroom] || { name: '4.° Grado', motto: 'Exploradores' };
-    const mission = WEEKLY_MISSION;
+    const activeTopicId = this.isTeacherSimulating 
+      ? (this.simulatedTopicId || this.selectedWorksheetTopicId || storage.getActiveTopic())
+      : storage.getActiveTopic();
+    const currentTopicObj = AVAILABLE_TOPICS.find(t => t.id === activeTopicId) || AVAILABLE_TOPICS[0];
+    const mission = this.getCurrentMission();
     const completedChallenges = student.completedChallenges || [];
 
     // Progreso hacia la meta de oro
@@ -630,13 +668,13 @@ class ExpedicionApp {
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div>
               <span class="badge-tech" style="margin-bottom: 6px;">
-                ⚡ 3.° BIMESTRE
+                ⚡ ${currentTopicObj.bimestreName || '3.° BIMESTRE'} • SEMANA ${currentTopicObj.weekNumber}
               </span>
               <h2 style="font-size: 24px; color: var(--text-white); margin: 6px 0 6px 0;">
-                Semana 1: Patrones Multiplicativos
+                ${currentTopicObj.title}
               </h2>
               <p style="font-size: 13px; color: var(--text-muted);">
-                Supera las estaciones de cálculo para ganar el <strong>Trofeo de Oro</strong> de la semana.
+                ${currentTopicObj.description} Supera las estaciones para ganar el <strong>Trofeo de Oro</strong> de la semana.
               </p>
             </div>
             <div style="text-align: right;">
@@ -720,7 +758,7 @@ class ExpedicionApp {
                       class="btn-dark"
                       style="opacity: 0.45; cursor: not-allowed; font-size: 12px;"
                     >
-                      ${ICONS.lock(14, 'var(--text-dim)')} ENCRIPTADO
+                      ${ICONS.lock(14, 'var(--text-dim)')} BLOQUEADO
                     </button>
                   `}
                 </div>
@@ -733,17 +771,17 @@ class ExpedicionApp {
         <!-- Pasaporte de Emblemas Adaptativo -->
         <div class="glass-panel" style="padding: 22px 26px; border: 1px solid var(--border-subtle);">
           <h4 style="font-size: 14px; color: var(--text-white); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; font-family: var(--font-title); text-transform: uppercase;">
-            ${this.getEmblemSvg(student.trophies?.patrones || 'oro', 20)} Pasaporte de Emblemas Semanal:
+            ${this.getEmblemSvg(student.stars >= 26 ? 'oro' : student.stars >= 18 ? 'plata' : student.stars >= 8 ? 'bronce' : 'ninguno', 20)} Pasaporte de Emblemas Semanal:
           </h4>
           <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 18px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
             <div style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15)); flex-shrink: 0;">
-              ${this.getEmblemSvg(student.trophies?.patrones || 'ninguno', 52)}
+              ${this.getEmblemSvg(student.stars >= 29 ? 'diamante' : student.stars >= 26 ? 'oro' : student.stars >= 18 ? 'plata' : student.stars >= 8 ? 'bronce' : 'ninguno', 52)}
             </div>
             <div>
-              <div style="font-size: 16px; font-weight: 800; color: var(--text-white); font-family: var(--font-title);">Semana 1: Patrones Multiplicativos</div>
-              <div class="trophy-badge trophy-${student.trophies?.patrones || 'ninguno'}" style="margin-top: 6px; display: inline-flex; align-items: center; gap: 6px;">
-                ${this.getEmblemSvg(student.trophies?.patrones || 'ninguno', 16)}
-                <span>Rango actual: ${this.getEmblemName(student.trophies?.patrones || 'ninguno')}</span>
+              <div style="font-size: 16px; font-weight: 800; color: var(--text-white); font-family: var(--font-title);">${currentTopicObj.title}</div>
+              <div class="trophy-badge trophy-${student.stars >= 29 ? 'diamante' : student.stars >= 26 ? 'oro' : student.stars >= 18 ? 'plata' : student.stars >= 8 ? 'bronce' : 'ninguno'}" style="margin-top: 6px; display: inline-flex; align-items: center; gap: 6px;">
+                ${this.getEmblemSvg(student.stars >= 29 ? 'diamante' : student.stars >= 26 ? 'oro' : student.stars >= 18 ? 'plata' : student.stars >= 8 ? 'bronce' : 'ninguno', 16)}
+                <span>Rango actual: ${this.getEmblemName(student.stars >= 29 ? 'diamante' : student.stars >= 26 ? 'oro' : student.stars >= 18 ? 'plata' : student.stars >= 8 ? 'bronce' : 'ninguno')}</span>
               </div>
               <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px; font-family: var(--font-sans);">
                 ${(student.stars || 0) >= 29 
@@ -882,7 +920,8 @@ class ExpedicionApp {
     document.querySelectorAll('.start-station-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const stationId = e.currentTarget.getAttribute('data-station-id');
-        this.selectedStation = WEEKLY_MISSION.stations.find(s => s.id === stationId);
+        const mission = this.getCurrentMission();
+        this.selectedStation = mission.stations.find(s => s.id === stationId);
         if (this.selectedStation) {
           this.currentTaskIndex = 0;
           this.currentAttemptCount = 0;
@@ -1106,7 +1145,7 @@ class ExpedicionApp {
         <div>
           <div style="text-align: center; margin-bottom: 12px;">
             <span class="badge-tech badge-delta" style="font-size: 12px; padding: 4px 14px;">
-              Regla del salto: Multiplicar por ${task.rule.replace('×', '').trim()} (${task.rule})
+              ${task.ruleLabel || `Regla del salto: ${task.rule.startsWith('×') ? 'Multiplicar por ' + task.rule.replace('×', '').trim() + ' (' + task.rule + ')' : task.rule}`}
             </span>
           </div>
 
@@ -1526,9 +1565,10 @@ class ExpedicionApp {
 
     document.getElementById('victory-next-btn')?.addEventListener('click', () => {
       // Encontrar la siguiente estación
-      const currentIdx = WEEKLY_MISSION.stations.findIndex(s => s.id === station.id);
-      if (currentIdx !== -1 && currentIdx < WEEKLY_MISSION.stations.length - 1) {
-        this.selectedStation = WEEKLY_MISSION.stations[currentIdx + 1];
+      const mission = this.getCurrentMission();
+      const currentIdx = mission.stations.findIndex(s => s.id === station.id);
+      if (currentIdx !== -1 && currentIdx < mission.stations.length - 1) {
+        this.selectedStation = mission.stations[currentIdx + 1];
         this.currentTaskIndex = 0;
         this.currentAttemptCount = 0;
         this.taskStartTime = Date.now();
@@ -2134,6 +2174,7 @@ class ExpedicionApp {
   startVirtualSimulation(classroom) {
     this.simulatedTeacherSession = this.user || { username: 'profesor', role: 'teacher', isTeacher: true };
     this.isTeacherSimulating = true;
+    this.simulatedTopicId = this.selectedWorksheetTopicId || storage.getActiveTopic();
     const isSigma = classroom === 'sigma';
     this.user = {
       id: isSigma ? 'virtual-sigma' : 'virtual-delta',
@@ -2143,11 +2184,11 @@ class ExpedicionApp {
       displayName: isSigma ? 'Alumno Sigma' : 'Alumna Delta',
       username: isSigma ? 'virtual.sigma' : 'virtual.delta',
       avatar: isSigma ? 'robot' : 'astronaut',
-      stars: 12,
-      xp: 240,
-      timeMinutes: 8,
-      completedChallenges: ['estacion-1'],
-      trophies: { patrones: isSigma ? 'bronce' : 'plata' }
+      stars: 0,
+      xp: 0,
+      timeMinutes: 0,
+      completedChallenges: [],
+      trophies: {}
     };
     this.currentView = 'STUDENT_HOME';
     this.render();
