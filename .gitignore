@@ -1,0 +1,23 @@
+# ==============================================================
+# SEGURIDAD Y LIMPIEZA - GITHUB PAGES
+# ==============================================================
+
+# Claves privadas del docente y tarjetas con credenciales de estudiantes
+claves_docente_2026.txt
+tarjetas_credenciales_*.*
+tarjetas_credenciales_*
+
+# Dependencias locales y scripts batch de Windows
+node_modules/
+*.bat
+
+# Archivos temporales o de entorno
+.env
+.env.local
+*.log
+.DS_Store
+Thumbs.db
+
+# Especificaciones de desarrollo interno
+PRODUCT_SPEC.md
+TECH_SPEC.md

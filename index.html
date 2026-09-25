@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="andina">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Expedición Matemática Perú - 4.° Grado (Patrones Multiplicativos)</title>
+  <meta name="description" content="Software adaptativo de matemáticas para niños de 4to de primaria en Perú. Basado en el método finlandés Eduten/ViLLE y la didáctica Santillana." />
+  
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#244663" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23244663%22><rect x=%226%22 y=%222%22 width=%2212%22 height=%223%22/><rect x=%223%22 y=%225%22 width=%224%22 height=%223%22/><rect x=%225%22 y=%228%22 width=%2214%22 height=%223%22/><rect x=%2211%22 y=%2211%22 width=%228%22 height=%223%22/><rect x=%225%22 y=%2214%22 width=%2214%22 height=%223%22/><rect x=%223%22 y=%2217%22 width=%224%22 height=%223%22/><rect x=%226%22 y=%2220%22 width=%2212%22 height=%223%22/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=24" />
+
+  <!-- Script de limpieza forzada de caché antiguo -->
+  <script>
+    // Limpiar service workers antiguos y caché del navegador para forzar la versión nueva
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        for (let r of regs) r.unregister();
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(names => {
+        for (let name of names) caches.delete(name);
+      });
+    }
+  </script>
+</head>
+<body data-theme="andina">
+  <div id="app"></div>
+
+  <!-- Carga forzada del script más reciente sin caché -->
+  <script type="module" src="app.js?v=44"></script>
+</body>
+</html>

@@ -1,0 +1,1269 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap');
+
+:root, [data-theme="cyber"] {
+  --theme-id: 'cyber';
+  --font-title: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Tema 1: Ciber-Nave (Dark & Neon Acid Green) */
+  --bg-canvas: #09090b;
+  --bg-header: #101012;
+  --bg-surface: #141416;
+  --bg-surface-elevated: #1a1a1e;
+  --bg-surface-active: #232328;
+  
+  --border-subtle: #27272a;
+  --border-glow: rgba(132, 255, 0, 0.3);
+  
+  --neon-green: #84ff00;
+  --neon-green-glow: rgba(132, 255, 0, 0.25);
+  --neon-green-hover: #9cff26;
+  
+  --color-delta: #38bdf8;
+  --color-sigma: #84ff00;
+  --color-success: #84ff00;
+  
+  --text-white: #ffffff;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
+  --text-black: #000000;
+  
+  --color-gold: #f59e0b;
+  --color-silver: #94a3b8;
+  --color-bronze: #d97706;
+  --color-diamond: #38bdf8;
+  
+  --grid-line: rgba(255, 255, 255, 0.035);
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* ===================================================
+   TEMA 2: EXPEDICIÓN (Inspirado en Lago Titicaca y Totora)
+   Paleta: Azul Profundo (#244663), Totora (#B78F5C), Vegetación (#686F49), Tierra Clara (#CEBDAA)
+   =================================================== */
+:root[data-theme="andina"], :root[data-theme="expedicion"], [data-theme="andina"], [data-theme="expedicion"] {
+  --theme-id: 'expedicion';
+  
+  /* Lienzo y Superficies */
+  --bg-canvas: #f8f6f0;            /* Lienzo suave cálido arena */
+  --bg-header: #ffffff;
+  --bg-surface: #ffffff;           /* Tarjetas limpias de alto contraste */
+  --bg-surface-elevated: #f3ede4;  /* Superficies elevadas cálidas */
+  --bg-surface-active: #e8dfd2;
+  
+  --border-subtle: #cebdaa;        /* TIERRA CLARA */
+  --border-glow: rgba(183, 143, 92, 0.35); /* Resplandor dorado Totora */
+  
+  /* Acentos Clave */
+  --neon-green: #244663;           /* AZUL PROFUNDO (Color principal de acción) */
+  --neon-green-glow: rgba(36, 70, 99, 0.25);
+  --neon-green-hover: #1b364e;
+  
+  --color-andina-azul: #244663;    /* AZUL PROFUNDO */
+  --color-andina-totora: #b78f5c;  /* TOTORA */
+  --color-andina-vegetacion: #686f49; /* VEGETACIÓN */
+  --color-andina-tierra: #cebdaa;  /* TIERRA CLARA */
+  
+  --color-delta: #b78f5c;          /* 4.° Delta representado con Totora dorada */
+  --color-sigma: #686f49;          /* 4.° Sigma representado con Vegetación andina */
+  --color-success: #686f49;        /* Correcto / Logro en Vegetación */
+  
+  /* Tipografía */
+  --text-white: #244663;           /* Títulos en Azul Profundo nítido */
+  --text-muted: #5c5549;           /* Texto secundario cálido y legible */
+  --text-dim: #8c8273;             /* Texto tenue */
+  --text-black: #ffffff;           /* Texto dentro de botones de acción Azul Profundo */
+  
+  --color-gold: #b78f5c;           /* Estrellas y trofeos dorados Totora */
+  --color-silver: #9ca3af;
+  --color-bronze: #9a6a3b;
+  --color-diamond: #244663;
+  
+  --grid-line: rgba(183, 143, 92, 0.08); /* Cuadrícula sutil color Totora */
+  --card-shadow: 0 4px 18px rgba(36, 70, 99, 0.07), 0 1px 4px rgba(183, 143, 92, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--text-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .brand-font {
+  font-family: var(--font-title);
+  letter-spacing: -0.02em;
+}
+
+/* Glassmorphism & Cyber Panels */
+.glass-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+
+.interactive-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 20px rgba(132, 255, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.8);
+}
+
+/* Buttons (Satrix Cyber Style) */
+.btn-neon {
+  background: var(--neon-green);
+  color: var(--text-black);
+  font-family: var(--font-title);
+  font-weight: 800;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--neon-green-glow);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-neon:hover {
+  background: var(--neon-green-hover);
+  box-shadow: 0 0 28px rgba(132, 255, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-neon:active {
+  transform: translateY(1px);
+}
+
+.btn-dark {
+  background: var(--bg-surface);
+  color: var(--text-white);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-dark:hover {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  background: var(--bg-surface-elevated);
+}
+
+/* Form Controls */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+  background: #101012;
+  border: 1.5px solid var(--border-subtle);
+  color: var(--text-white);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+/* Quitar flechitas/spinners que tapan los números */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--neon-green) !important;
+  box-shadow: 0 0 0 3px rgba(132, 255, 0, 0.2) !important;
+  outline: none;
+}
+
+/* Avatars */
+.avatar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+  position: relative;
+}
+
+/* Badges */
+.badge-tech {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(132, 255, 0, 0.1);
+  color: var(--neon-green);
+  border: 1px solid rgba(132, 255, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.badge-delta {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--color-delta);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+/* Trophy Gamification */
+.trophy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.trophy-diamante {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--color-diamond);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.trophy-oro {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-gold);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.trophy-plata {
+  background: rgba(148, 163, 184, 0.15);
+  color: var(--color-silver);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.trophy-bronce {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--color-bronze);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+}
+
+.trophy-ninguno {
+  background: rgba(113, 113, 122, 0.15);
+  color: var(--text-dim);
+  border: 1px solid rgba(113, 113, 122, 0.3);
+}
+
+/* Secuencias Numéricas (Estación 1) */
+.sequence-box {
+  min-width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  background: #0c0c0e;
+  border: 2px solid var(--neon-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  box-shadow: 0 0 16px rgba(132, 255, 0, 0.2);
+}
+
+.sequence-arrow {
+  font-size: 20px;
+  color: var(--neon-green);
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Eduten / Progress Bar */
+.eduten-bar {
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.eduten-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #84ff00, #38bdf8);
+  box-shadow: 0 0 12px rgba(132, 255, 0, 0.5);
+  transition: width 0.4s ease;
+}
+
+/* Data Table (Teacher Dashboard) */
+.data-table-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background: var(--bg-surface-elevated);
+  padding: 12px 16px;
+  font-family: var(--font-title);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #1c1c20;
+  font-size: 14px;
+}
+
+.data-table tr:hover td {
+  background: rgba(132, 255, 0, 0.03);
+}
+
+/* Card Preview Grid in Modal */
+.cards-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card-box {
+  border: 1.5px dashed var(--border-subtle);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  background: var(--bg-surface);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card-cut-corner {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 12px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+}
+
+.card-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brand-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--text-white);
+  line-height: 1.1;
+  font-family: var(--font-title);
+}
+
+.brand-sub {
+  font-size: 9px;
+  color: var(--neon-green);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.card-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.student-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.student-num {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+}
+
+.student-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-white);
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.creds-box {
+  background: #0d0d0f;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 6px 0;
+}
+
+.cred-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.cred-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+}
+
+.cred-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.cred-pin-row {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed #27272a;
+}
+
+.cred-pin {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--neon-green);
+}
+
+/* Modals */
+.worksheet-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.worksheet-modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9);
+}
+
+.worksheet-modal-bar {
+  background: var(--bg-surface-elevated);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Animations */
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes neonPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(132, 255, 0, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(132, 255, 0, 0.5); }
+}
+
+.pulse-neon {
+  animation: neonPulse 2.5s infinite;
+}
+
+/* Gameplay Components */
+.rule-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.rule-option-btn {
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--border-subtle);
+  color: var(--text-white);
+  padding: 16px;
+  border-radius: 10px;
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.rule-option-btn:hover {
+  border-color: var(--neon-green);
+  background: rgba(132, 255, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.rule-option-btn.selected-correct {
+  border-color: var(--neon-green) !important;
+  background: rgba(132, 255, 0, 0.2) !important;
+  color: var(--neon-green) !important;
+  box-shadow: 0 0 20px var(--neon-green-glow);
+}
+
+.rule-option-btn.selected-wrong {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+}
+
+/* Eduten Session Bar */
+.eduten-session-bar {
+  background: #101012;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.eduten-dots-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eduten-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  transition: all 0.2s ease;
+}
+
+.eduten-dot.completed {
+  background: var(--neon-green);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green-glow);
+}
+
+.eduten-dot.active {
+  background: var(--color-delta);
+  border-color: #ffffff;
+  transform: scale(1.25);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+}
+
+/* Jump Track Component */
+.jump-track-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0;
+}
+
+.jump-node-box {
+  min-width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: var(--bg-surface-elevated);
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.jump-node-box.jump-node-target {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 18px var(--neon-green-glow);
+}
+
+.jump-target-input {
+  width: 70px;
+  height: 52px;
+  background: var(--bg-canvas) !important;
+  border: 2px solid var(--neon-green) !important;
+  color: var(--neon-green) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  text-align: center;
+  border-radius: 8px;
+  outline: none;
+  -moz-appearance: textfield !important;
+}
+
+.jump-target-input::-webkit-outer-spin-button,
+.jump-target-input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+.jump-arc-bridge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.jump-arc-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--neon-green);
+  background: rgba(132, 255, 0, 0.12);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(132, 255, 0, 0.3);
+}
+
+.jump-arc-symbol {
+  font-size: 22px;
+  color: var(--color-delta);
+  line-height: 1;
+}
+
+/* Function Machine Component */
+.machine-card-container {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.machine-rule-banner {
+  background: rgba(132, 255, 0, 0.1);
+  border: 1px solid rgba(132, 255, 0, 0.35);
+  color: var(--neon-green);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.machine-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.machine-table th {
+  background: #101012;
+  padding: 12px;
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.machine-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-white);
+}
+
+.machine-input-cell {
+  width: 90px;
+  height: 44px;
+  background: var(--bg-canvas) !important;
+  border: 2px solid var(--neon-green) !important;
+  color: var(--neon-green) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  text-align: center;
+  border-radius: 8px;
+  -moz-appearance: textfield !important;
+}
+
+.machine-input-cell::-webkit-outer-spin-button,
+.machine-input-cell::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* Feedback Boxes */
+.scaffold-feedback-box {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: popIn 0.25s ease;
+}
+
+.scaffold-feedback-box.correct {
+  background: rgba(132, 255, 0, 0.1);
+  border: 1.5px solid var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: 0 0 20px rgba(132, 255, 0, 0.2);
+}
+
+.scaffold-feedback-box.try-again {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1.5px solid #f59e0b;
+  color: #fbbf24;
+}
+
+/* Victory Overlay & Card */
+.victory-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.victory-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 0 50px rgba(132, 255, 0, 0.35);
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  padding: 36px 28px;
+  text-align: center;
+  animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ===================================================
+   OVERRIDES TEMA 2: EXPEDICIÓN (Lago Titicaca y Totora)
+   Paleta: Azul Profundo (#244663), Totora (#B78F5C), Vegetación (#686F49), Tierra Clara (#CEBDAA)
+   =================================================== */
+
+/* Lienzo y paneles andinos / Expedición con fondo Vecteezy */
+html[data-theme="andina"] body,
+html[data-theme="expedicion"] body,
+body[data-theme="andina"],
+body[data-theme="expedicion"],
+[data-theme="andina"] body,
+[data-theme="expedicion"] body {
+  background-color: #62c3e8 !important;
+  background-image: url('bg_expedicion.jpg') !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  color: #244663 !important;
+}
+
+[data-theme="andina"] .glass-panel,
+[data-theme="expedicion"] .glass-panel {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1.5px solid #cebdaa !important;
+  box-shadow: 0 8px 24px rgba(36, 70, 99, 0.08), 0 2px 6px rgba(183, 143, 92, 0.1) !important;
+}
+
+[data-theme="andina"] .glass-panel::before,
+[data-theme="expedicion"] .glass-panel::before {
+  background: linear-gradient(90deg, transparent, rgba(183, 143, 92, 0.22), transparent) !important;
+}
+
+[data-theme="andina"] .interactive-card:hover,
+[data-theme="expedicion"] .interactive-card:hover {
+  border-color: #b78f5c !important;
+  box-shadow: 0 8px 26px rgba(183, 143, 92, 0.24) !important;
+}
+
+/* Tipografía en Azul Profundo */
+[data-theme="andina"] h1,
+[data-theme="andina"] h2,
+[data-theme="andina"] h3,
+[data-theme="andina"] h4,
+[data-theme="andina"] .brand-font {
+  color: #244663 !important;
+}
+
+/* Botón Principal (Azul Profundo de Lago Titicaca) */
+[data-theme="andina"] .btn-neon {
+  background: #244663 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #1a354c !important;
+  box-shadow: 0 4px 14px rgba(36, 70, 99, 0.28) !important;
+}
+
+[data-theme="andina"] .btn-neon:hover {
+  background: #1b364e !important;
+  box-shadow: 0 6px 20px rgba(36, 70, 99, 0.38) !important;
+}
+
+/* Botón Secundario (Blanco con borde Tierra Clara y hover Totora) */
+[data-theme="andina"] .btn-dark {
+  background: #ffffff !important;
+  color: #244663 !important;
+  border: 1.5px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .btn-dark:hover {
+  background: #f3ede4 !important;
+  border-color: #b78f5c !important;
+  color: #b78f5c !important;
+}
+
+/* Inputs y Selects */
+[data-theme="andina"] input[type="text"],
+[data-theme="andina"] input[type="password"],
+[data-theme="andina"] input[type="number"],
+[data-theme="andina"] select {
+  background: #ffffff !important;
+  border: 1.5px solid #cebdaa !important;
+  color: #244663 !important;
+}
+
+[data-theme="andina"] input:focus,
+[data-theme="andina"] select:focus {
+  border-color: #244663 !important;
+  box-shadow: 0 0 0 3px rgba(36, 70, 99, 0.18) !important;
+}
+
+/* Cabecera y barra de sesión */
+[data-theme="andina"] header,
+[data-theme="expedicion"] header,
+[data-theme="andina"] .eduten-session-bar,
+[data-theme="expedicion"] .eduten-session-bar {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-bottom: 2px solid #cebdaa !important;
+  box-shadow: 0 2px 12px rgba(36, 70, 99, 0.05) !important;
+}
+
+/* Estación 1: Detector de la regla */
+[data-theme="andina"] .sequence-box {
+  background: #ffffff !important;
+  border: 2.5px solid #244663 !important;
+  color: #244663 !important;
+  box-shadow: 0 4px 14px rgba(36, 70, 99, 0.12) !important;
+}
+
+[data-theme="andina"] .sequence-arrow {
+  color: #b78f5c !important;
+}
+
+[data-theme="andina"] .rule-option-btn {
+  background: #ffffff !important;
+  border: 1.5px solid #cebdaa !important;
+  color: #244663 !important;
+}
+
+[data-theme="andina"] .rule-option-btn:hover {
+  background: #f8f6f0 !important;
+  border-color: #b78f5c !important;
+  color: #b78f5c !important;
+}
+
+[data-theme="andina"] .rule-option-btn.selected-correct {
+  border-color: #686f49 !important;
+  background: rgba(104, 111, 73, 0.14) !important;
+  color: #474e2a !important;
+  box-shadow: 0 0 16px rgba(104, 111, 73, 0.25) !important;
+}
+
+[data-theme="andina"] .rule-option-btn.selected-wrong {
+  border-color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.1) !important;
+  color: #b91c1c !important;
+}
+
+/* Estación 2: La Recta de Saltos */
+[data-theme="andina"] .jump-node-box {
+  background: #ffffff !important;
+  border: 2px solid #cebdaa !important;
+  color: #244663 !important;
+  box-shadow: 0 4px 10px rgba(36, 70, 99, 0.06) !important;
+}
+
+[data-theme="andina"] .jump-node-box.jump-node-target {
+  border-color: #244663 !important;
+  box-shadow: 0 0 15px rgba(36, 70, 99, 0.25) !important;
+}
+
+[data-theme="andina"] .jump-target-input {
+  background: #ffffff !important;
+  color: #244663 !important;
+  border-color: #244663 !important;
+}
+
+[data-theme="andina"] .jump-arc-label {
+  color: #ffffff !important;
+  background: #b78f5c !important;
+  border: 1px solid #997241 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="andina"] .jump-arc-symbol {
+  color: #244663 !important;
+}
+
+/* Estación 3: Máquina de Funciones */
+[data-theme="andina"] .machine-rule-banner {
+  background: rgba(104, 111, 73, 0.14) !important;
+  border: 1.5px solid #686f49 !important;
+  color: #474e2a !important;
+}
+
+[data-theme="andina"] .machine-table {
+  background: #ffffff !important;
+  border: 1.5px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .machine-table th {
+  background: #f3ede4 !important;
+  color: #244663 !important;
+  border-bottom: 2px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .machine-table td {
+  color: #244663 !important;
+  border-bottom: 1px solid #eae3d8 !important;
+}
+
+[data-theme="andina"] .machine-input-cell {
+  background: #ffffff !important;
+  color: #244663 !important;
+  border-color: #244663 !important;
+}
+
+/* Badges de Salón */
+[data-theme="andina"] .badge-tech {
+  background: rgba(104, 111, 73, 0.12) !important;
+  color: #4f5533 !important;
+  border: 1.5px solid #686f49 !important;
+}
+
+[data-theme="andina"] .badge-delta {
+  background: rgba(183, 143, 92, 0.15) !important;
+  color: #875f2c !important;
+  border: 1.5px solid #b78f5c !important;
+}
+
+/* Trofeos */
+[data-theme="andina"] .trophy-badge.trophy-ninguno {
+  background: #f3ede4 !important;
+  color: #8c8273 !important;
+  border: 1px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .trophy-badge.trophy-oro {
+  background: rgba(183, 143, 92, 0.18) !important;
+  color: #875f2c !important;
+  border: 1.5px solid #b78f5c !important;
+}
+
+[data-theme="andina"] .trophy-badge.trophy-diamante {
+  background: rgba(36, 70, 99, 0.12) !important;
+  color: #244663 !important;
+  border: 1.5px solid #244663 !important;
+}
+
+[data-theme="andina"] .trophy-badge.trophy-bronce {
+  background: rgba(183, 143, 92, 0.12) !important;
+  color: #9a6a3b !important;
+  border: 1.5px solid #b78f5c !important;
+}
+
+/* Tabla del Docente */
+[data-theme="andina"] .data-table-container {
+  background: #ffffff !important;
+  border: 1.5px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .data-table th {
+  background: #f3ede4 !important;
+  color: #244663 !important;
+  border-bottom: 2px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .data-table td {
+  border-bottom: 1px solid #eae3d8 !important;
+  color: #244663 !important;
+}
+
+[data-theme="andina"] .data-table tr:hover td {
+  background: rgba(183, 143, 92, 0.08) !important;
+}
+
+/* Modales y Barra de Progreso Eduten */
+[data-theme="andina"] .card-box {
+  background: #ffffff !important;
+  border: 1.5px dashed #cebdaa !important;
+}
+
+[data-theme="andina"] .creds-box {
+  background: #f8f6f0 !important;
+  border: 1px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .avatar-badge {
+  background: #f3ede4 !important;
+  border-color: #cebdaa !important;
+}
+
+[data-theme="andina"] .victory-card {
+  background: #ffffff !important;
+  border: 2.5px solid #244663 !important;
+  box-shadow: 0 12px 45px rgba(36, 70, 99, 0.25) !important;
+}
+
+[data-theme="andina"] .worksheet-modal-bar {
+  background: #f3ede4 !important;
+  border-bottom: 1.5px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .worksheet-modal-content {
+  background: #ffffff !important;
+  border: 1.5px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .eduten-bar {
+  background: #eae3d8 !important;
+  border: 1px solid #cebdaa !important;
+}
+
+[data-theme="andina"] .eduten-bar-fill {
+  background: linear-gradient(90deg, #b78f5c, #244663) !important;
+  box-shadow: 0 0 10px rgba(183, 143, 92, 0.35) !important;
+}
+
+[data-theme="andina"] .eduten-dot {
+  background: #cebdaa !important;
+  border-color: #b8a895 !important;
+}
+
+[data-theme="andina"] .eduten-dot.completed {
+  background: #686f49 !important;
+  border-color: #686f49 !important;
+  box-shadow: 0 0 8px rgba(104, 111, 73, 0.4) !important;
+}
+
+[data-theme="andina"] .eduten-dot.active {
+  background: #244663 !important;
+  border-color: #b78f5c !important;
+  box-shadow: 0 0 10px rgba(36, 70, 99, 0.4) !important;
+}
+
+/* PRINT RULES - ALWAYS CLEAN WHITE FOR PAPER */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm 8mm 10mm;
+  }
+  
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: #000000 !important;
+    height: auto !important;
+  }
+
+  #app, .worksheet-modal-overlay, .no-print {
+    display: none !important;
+  }
+
+  .page {
+    background: white !important;
+    page-break-after: always;
+  }
+}
+
+/* ==============================================================
+   MENÚ DE AJUSTES TRES PUNTOS (⋮) Y OPTIMIZACIÓN MÓVIL
+   ============================================================== */
+.settings-menu-item {
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.settings-menu-item:hover {
+  background: var(--bg-surface-elevated) !important;
+  transform: translateX(2px);
+}
+
+[data-theme="andina"] .settings-menu-item:hover {
+  background: #f3ede4 !important;
+}
+
+/* Reglas específicas para pantallas de Celulares y Tablets */
+@media screen and (max-width: 768px) {
+  /* Cabeceras adaptables en una sola fila compacta */
+  header {
+    padding: 10px 14px !important;
+  }
+
+  /* Reducir márgenes y paddings en móviles */
+  main {
+    margin: 14px auto !important;
+    padding: 0 12px !important;
+  }
+
+  .glass-panel {
+    padding: 18px 16px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Área de trabajo de ejercicios táctil */
+  .eduten-session-bar {
+    padding: 8px 12px !important;
+  }
+
+  /* Recta de saltos en celular */
+  .jump-track-wrapper {
+    gap: 6px !important;
+    margin: 16px 0 !important;
+  }
+
+  .jump-node-box {
+    min-width: 48px !important;
+    height: 48px !important;
+    font-size: 15px !important;
+  }
+
+  /* Asegurar que las tarjetas de compañeros se vean fluidas */
+  .classroom-wall-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Botones grandes y cómodos para tocar con dedos de niños */
+  .btn-neon, .btn-dark {
+    min-height: 42px;
+  }
+}
