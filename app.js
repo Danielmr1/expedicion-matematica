@@ -3916,9 +3916,9 @@ class ExpedicionApp {
 }
 
 function initExpedicion() {
-  if (!window.app) {
+  if (!window.expedicionAppInstance) {
     try {
-      window.app = new ExpedicionApp();
+      window.expedicionAppInstance = new ExpedicionApp();
     } catch (e) {
       console.error('Error al inicializar ExpedicionApp:', e);
       const root = document.getElementById('app');

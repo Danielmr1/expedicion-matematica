@@ -29,9 +29,8 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=25" />
 
-  <!-- Script de limpieza forzada de caché antiguo y captura de errores -->
+  <!-- Script de limpieza forzada de caché antiguo -->
   <script>
-    // Limpiar service workers antiguos y caché del navegador para forzar la versión nueva
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(regs => {
         for (let r of regs) r.unregister();
@@ -42,16 +41,6 @@
         for (let name of names) caches.delete(name);
       });
     }
-
-    // Si algún script falla por caché corrupto en el navegador, mostrar botón de solución inmediata
-    window.addEventListener('error', function(e) {
-      console.error('Error de carga:', e);
-      var app = document.getElementById('app');
-      if (app && (!app.innerHTML || app.innerHTML.trim() === '')) {
-        var msg = (e && e.message) ? e.message : (e.target && e.target.src) ? 'Fallo al cargar: ' + e.target.src : 'Error desconocido';
-        app.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:9999;"><div style="background:rgba(15,23,42,0.95);border:2px solid #00ff9d;border-radius:12px;padding:28px;max-width:460px;text-align:center;color:white;font-family:sans-serif;box-shadow:0 10px 30px rgba(0,0,0,0.6);"><h2 style="color:#00ff9d;margin-bottom:10px;font-size:20px;">🎒 Expedición Matemática</h2><p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin-bottom:18px;">Se detectó una nueva versión de la plataforma. Presiona el botón para cargarla.</p><div style="font-size:11px;color:#f87171;margin-bottom:12px;font-family:monospace;">Detalle: ' + msg + '</div><button onclick="localStorage.clear();location.reload();" style="background:#00ff9d;color:#000;font-weight:800;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:14px;">🔄 Actualizar Ahora</button></div></div>';
-      }
-    });
   </script>
 </head>
 <body data-theme="andina">
