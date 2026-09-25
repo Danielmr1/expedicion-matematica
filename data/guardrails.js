@@ -247,25 +247,52 @@ export function validateAndAssertTaskOptions(task) {
  *    el andamiaje cognitivo del estudiante (Finlandia/Eduten).
  */
 export function validateScaffoldPedagogy(task) {
-  if (!task || !task.scaffold || task.correctAnswer === undefined) return true;
+  if (!task) return true;
 
-  const ansStr = String(task.correctAnswer).trim();
-  const scaffold = String(task.scaffold).trim();
+  // 1. Validación de Scaffold (preguntas numéricas/procedimentales)
+  if (task.scaffold && task.correctAnswer !== undefined) {
+    const ansStr = String(task.correctAnswer).trim();
+    const scaffold = String(task.scaffold).trim();
 
-  // 1. Prohibir expresiones directas de respuesta: "= [ans]" o "= [ans]."
-  const regexEquals = new RegExp('=\\s*' + ansStr + '(\\D|$)', 'i');
-  if (regexEquals.test(scaffold)) {
-    throw new CurriculumGuardrailError(
-      `Fuga pedagógica en la pista de la tarea ${task.id || ''}: La pista regala la respuesta final "= ${ansStr}".`
-    );
+    // Prohibir expresiones directas de respuesta: "= [ans]" o "= [ans]."
+    const regexEquals = new RegExp('=\\s*' + ansStr + '(\\D|$)', 'i');
+    if (regexEquals.test(scaffold)) {
+      throw new CurriculumGuardrailError(
+        `Fuga pedagógica en la pista de la tarea ${task.id || ''}: La pista regala la respuesta final "= ${ansStr}".`
+      );
+    }
+
+    // Prohibir que la pista termine revelando el número exacto
+    const regexEnds = new RegExp('\\b' + ansStr + '\\.?$', 'i');
+    if (regexEnds.test(scaffold)) {
+      throw new CurriculumGuardrailError(
+        `Fuga pedagógica en la pista de la tarea ${task.id || ''}: La pista termina revelando el número ${ansStr}.`
+      );
+    }
   }
 
-  // 2. Prohibir que la pista termine revelando el número exacto
-  const regexEnds = new RegExp('\\b' + ansStr + '\\.?$', 'i');
-  if (regexEnds.test(scaffold)) {
-    throw new CurriculumGuardrailError(
-      `Fuga pedagógica en la pista de la tarea ${task.id || ''}: La pista termina revelando el número ${ansStr}.`
-    );
+  // 2. Validación de commonMistakeHint (preguntas de alternativas y detector de reglas)
+  if (task.commonMistakeHint && typeof task.commonMistakeHint === 'object') {
+    const correctOpt = (task.correctOption || '').trim();
+    const cleanOpt = correctOpt.replace(/^[×+÷-]\s*/, '').trim();
+
+    for (const [wrongChoice, hint] of Object.entries(task.commonMistakeHint)) {
+      const hintStr = String(hint || '').trim().toLowerCase();
+
+      // Prohibir frases que regalen directamente la regla o la respuesta
+      if (
+        (cleanOpt && hintStr.includes(`es multiplicar por ${cleanOpt}`)) ||
+        (cleanOpt && hintStr.includes(`es dividir entre ${cleanOpt}`)) ||
+        (correctOpt && hintStr.includes(`la regla es ${correctOpt.toLowerCase()}`)) ||
+        (correctOpt && hintStr.includes(`la regla correcta es ${correctOpt.toLowerCase()}`)) ||
+        (cleanOpt && hintStr.includes(`la respuesta es ${cleanOpt}`)) ||
+        (cleanOpt && hintStr.includes(`el resultado es ${cleanOpt}`))
+      ) {
+        throw new CurriculumGuardrailError(
+          `Fuga pedagógica en commonMistakeHint de ${task.id || ''}: La pista para "${wrongChoice}" regala la respuesta o regla directa.`
+        );
+      }
+    }
   }
 
   return true;

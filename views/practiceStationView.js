@@ -406,7 +406,7 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
     showFeedbackBox(feedbackBox, false, `
       ${ICONS.feedbackHint(30)}
       <div>
-        <div style="font-weight: 800; font-size: 15px;">Pista de Razonamiento Finlandés:</div>
+        <div style="font-weight: 800; font-size: 15px;">Pista de Razonamiento:</div>
         <div style="font-size: 13px; margin-top: 2px;">${hint}</div>
       </div>
     `);

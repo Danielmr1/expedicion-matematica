@@ -16,7 +16,7 @@ export const WEEKLY_CYCLE = {
 export const WEEKLY_MISSION = {
   id: "patrones-multiplicativos",
   title: "Misión Semanal: Patrones Multiplicativos",
-  subtitle: "Entrenamiento de Fluidez Matemática Finlandesa",
+  subtitle: "Entrenamiento de Fluidez y Razonamiento Matemático",
   icon: "🧭",
   stations: [
     // ==============================================================
@@ -42,8 +42,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 2",
           reason: "Multiplicar por 2 (cada número se duplica: 2×2=4, 4×2=8, 8×2=16).",
           commonMistakeHint: {
-            "+ 2": "¡Atención! 2 + 2 = 4, pero 4 + 2 = 6 (¡no da 8!). La regla es multiplicar por 2.",
-            "+ 4": "4 + 4 = 8, pero 2 + 4 = 6 (no empieza con 4). La regla que funciona para todos es multiplicar por 2."
+            "+ 2": "¡Atención! 2 + 2 = 4, pero 4 + 2 = 6 (no da 8). La suma no se cumple en toda la secuencia. Prueba con otra operación.",
+            "+ 4": "2 + 4 = 6 (no da 4). Sumar 4 no conecta los primeros números. Prueba si funciona una multiplicación."
           }
         },
         {
@@ -53,8 +53,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 3",
           reason: "Multiplicar por 3 (3×3=9, 9×3=27).",
           commonMistakeHint: {
-            "+ 6": "3 + 6 = 9, pero 9 + 6 = 15 (¡no da 27!). La regla correcta es multiplicar por 3.",
-            "+ 3": "3 + 3 = 6 (no da 9). Prueba con la multiplicación."
+            "+ 6": "3 + 6 = 9, pero 9 + 6 = 15 (no da 27). La regla de sumar no se mantiene en los siguientes términos. Prueba multiplicando.",
+            "+ 3": "3 + 3 = 6 (no da 9). Prueba con una operación que haga crecer los números más rápido."
           }
         },
         {
@@ -64,8 +64,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 4",
           reason: "Multiplicar por 4 (5×4=20, 20×4=80).",
           commonMistakeHint: {
-            "+ 15": "5 + 15 = 20, pero 20 + 15 = 35 (¡no da 80!). En un patrón multiplicativo se multiplica: 20 × 4 = 80.",
-            "+ 5": "5 + 5 = 10 (no da 20). Prueba multiplicando."
+            "+ 15": "5 + 15 = 20, pero 20 + 15 = 35 (no da 80). Sumar 15 no funciona en todos los pasos. Prueba con la multiplicación.",
+            "+ 5": "5 + 5 = 10 (no da 20). Revisa qué operación conecta el 5 con el 20 y el 80."
           }
         },
         {
@@ -75,8 +75,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 5",
           reason: "Multiplicar por 5 (10×5=50, 50×5=250).",
           commonMistakeHint: {
-            "+ 40": "10 + 40 = 50, pero 50 + 40 = 90 (¡no da 250!). Cada término se quintuplica: multiplica por 5.",
-            "+ 10": "10 + 10 = 20 (no da 50)."
+            "+ 40": "10 + 40 = 50, pero 50 + 40 = 90 (no da 250). La suma constante no conecta toda la serie. Prueba una regla que multiplique.",
+            "+ 10": "10 + 10 = 20 (no da 50). Prueba buscando una operación que multiplique."
           }
         },
         {
@@ -86,8 +86,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 2",
           reason: "Multiplicar por 2 (4×2=8, 8×2=16, 16×2=32).",
           commonMistakeHint: {
-            "+ 4": "4 + 4 = 8, pero 8 + 4 = 12 (no da 16). La regla no es sumar, es multiplicar por 2.",
-            "+ 8": "4 + 8 = 12 (no da 8)."
+            "+ 4": "4 + 4 = 8, pero 8 + 4 = 12 (no da 16). La suma no funciona para toda la serie. Prueba con la multiplicación.",
+            "+ 8": "4 + 8 = 12 (no da 8). Sumar 8 no conecta los primeros números. Prueba multiplicando."
           }
         },
         {
@@ -97,8 +97,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 3",
           reason: "Multiplicar por 3 (6×3=18, 18×3=54).",
           commonMistakeHint: {
-            "+ 12": "6 + 12 = 18, pero 18 + 12 = 30 (no da 54). La regla es multiplicar por 3.",
-            "+ 6": "6 + 6 = 12 (no da 18)."
+            "+ 12": "6 + 12 = 18, pero 18 + 12 = 30 (no da 54). Al sumar 12 no se mantiene el crecimiento. Prueba multiplicando.",
+            "+ 6": "6 + 6 = 12 (no da 18). Prueba con un operador multiplicativo."
           }
         },
         {
@@ -108,8 +108,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 5",
           reason: "Multiplicar por 5 (1×5=5, 5×5=25, 25×5=125).",
           commonMistakeHint: {
-            "+ 4": "1 + 4 = 5, pero 5 + 4 = 9 (no da 25). La regla es multiplicar por 5.",
-            "+ 20": "1 + 20 = 21 (no da 5)."
+            "+ 4": "1 + 4 = 5, pero 5 + 4 = 9 (no da 25). Sumar 4 no funciona en el siguiente paso. Prueba multiplicando.",
+            "+ 20": "1 + 20 = 21 (no da 5). Prueba con una operación de multiplicar."
           }
         },
         {
@@ -119,8 +119,8 @@ export const WEEKLY_MISSION = {
           correctOption: "× 10",
           reason: "Multiplicar por 10 (7×10=70, 70×10=700).",
           commonMistakeHint: {
-            "+ 63": "7 + 63 = 70, pero 70 + 63 = 133 (no da 700). Al agregar un cero a la derecha se multiplica por 10.",
-            "+ 100": "7 + 100 = 107 (no da 70)."
+            "+ 63": "7 + 63 = 70, pero 70 + 63 = 133 (no da 700). La suma no conecta con 700. Observa cuántos ceros se agregan al final.",
+            "+ 100": "7 + 100 = 107 (no da 70). Prueba buscando una regla que multiplique."
           }
         }
       ]
@@ -1180,7 +1180,7 @@ export const MISSION_OPERACIONES = {
           options: ["24 ÷ 3", "40 - 24", "La resta"],
           correctOption: "24 ÷ 3",
           reason: "La división tiene mayor prioridad que la resta.",
-          commonMistakeHint: { "40 - 24": "La división se hace primero: 24 ÷ 3 = 8." }
+          commonMistakeHint: { "40 - 24": "Jerarquía de operaciones: las divisiones siempre se resuelven antes que las restas." }
         },
         {
           id: "op-r1-03",
@@ -1220,7 +1220,7 @@ export const MISSION_OPERACIONES = {
           options: ["15", "5", "35"],
           correctOption: "15",
           reason: "Paréntesis primero: 15 - 5 = 10. Luego 25 - 10 = 15.",
-          commonMistakeHint: { "5": "Verifica la resta final: 25 - 10 = 15." }
+          commonMistakeHint: { "5": "Resuelve primero el paréntesis (15 - 5) y luego calcula la resta final." }
         },
         {
           id: "op-r1-08",
