@@ -3502,6 +3502,32 @@ class ExpedicionApp {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.app = new ExpedicionApp();
-});
+function initExpedicion() {
+  if (!window.app) {
+    try {
+      window.app = new ExpedicionApp();
+    } catch (e) {
+      console.error('Error al inicializar ExpedicionApp:', e);
+      const root = document.getElementById('app');
+      if (root) {
+        root.innerHTML = `
+          <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid #ef4444; border-radius: 12px; padding: 24px; max-width: 480px; text-align: center; color: white; font-family: sans-serif;">
+              <h2 style="color: #f87171; margin-bottom: 12px;">⚠️ Aviso de Actualización</h2>
+              <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 18px;">Se ha detectado una nueva versión de la plataforma. Presiona el botón para cargarla.</p>
+              <button onclick="localStorage.clear(); location.reload();" style="background: #00ff9d; color: black; font-weight: 800; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                🔄 Actualizar Plataforma
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initExpedicion);
+} else {
+  initExpedicion();
+}
