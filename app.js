@@ -308,7 +308,33 @@ class ExpedicionApp {
       this.render();
     };
 
+    this.setupSessionActivityTracker();
     this.render();
+  }
+
+  setupSessionActivityTracker() {
+    let lastTouch = 0;
+    const updateActivity = () => {
+      const now = Date.now();
+      if (now - lastTouch > 30000) {
+        lastTouch = now;
+        storage.touchSession();
+      }
+    };
+
+    window.addEventListener('click', updateActivity, { passive: true });
+    window.addEventListener('keydown', updateActivity, { passive: true });
+    window.addEventListener('touchstart', updateActivity, { passive: true });
+
+    // Monitor de expiración de sesión por inactividad en segundo plano (cada 60s)
+    setInterval(() => {
+      if (this.user && !storage.getCurrentUser()) {
+        console.log("🔒 Sesión escolar expirada por inactividad. Redirigiendo al inicio de sesión.");
+        this.user = null;
+        this.currentView = 'LOGIN';
+        this.render();
+      }
+    }, 60000);
   }
 
   render() {
