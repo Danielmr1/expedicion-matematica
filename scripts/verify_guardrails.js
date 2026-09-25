@@ -74,6 +74,56 @@ try {
   failed = true;
 }
 
+// 2.5 Verificación de Guardrail 11: Integridad y Andamiaje de Pistas (Scaffold Protection)
+try {
+  const { validateScaffoldPedagogy } = await import('../data/guardrails.js');
+  const { WEEKLY_MISSION, MISSION_DIVISION, MISSION_FRACCIONES, MISSION_OPERACIONES } = await import('../data/curriculum.js');
+  const { getEmblemArticle, THEMED_EMBLEMS } = await import('../data/icons.js');
+  
+  const missions = [WEEKLY_MISSION, MISSION_DIVISION, MISSION_FRACCIONES, MISSION_OPERACIONES].filter(Boolean);
+  let scaffoldChecked = 0;
+  let scaffoldLeaks = 0;
+
+  missions.forEach(miss => {
+    miss.stations?.forEach(st => {
+      st.tasks?.forEach(t => {
+        if (t.scaffold && t.correctAnswer !== undefined) {
+          scaffoldChecked++;
+          try {
+            validateScaffoldPedagogy(t);
+          } catch (e) {
+            console.error(`❌ Fuga en ${miss.id} > ${st.id} > ${t.id}: ${e.message}`);
+            scaffoldLeaks++;
+          }
+        }
+      });
+    });
+  });
+
+  // Probar que el Guardrail efectivamente detecta una fuga simulada
+  let guardrailDetected = false;
+  try {
+    validateScaffoldPedagogy({ id: 'test-leak', scaffold: 'Descompón 64 x 4 = 256.', correctAnswer: 256 });
+  } catch (err) {
+    guardrailDetected = true;
+  }
+
+  // Probar concordancia de género de emblemas
+  const cyberBronceArticle = getEmblemArticle('cyber', 'bronce');
+  const andinaBronceArticle = getEmblemArticle('andina', 'bronce');
+  const grammarOk = (cyberBronceArticle === 'el' && andinaBronceArticle === 'la');
+
+  if (scaffoldLeaks === 0 && guardrailDetected && grammarOk) {
+    console.log(`✅ Guardrail 11: ${scaffoldChecked} pistas validadas sin fugas. Detector de andamiaje activo y concordancia de género verificada (el Sensor / la Brújula).`);
+  } else {
+    console.error(`❌ FALLÓ GUARDRAIL 11: leaks=${scaffoldLeaks}, detector=${guardrailDetected}, grammar=${grammarOk}`);
+    failed = true;
+  }
+} catch (err) {
+  console.error('❌ Error al probar Guardrail 11:', err.message);
+  failed = true;
+}
+
 // 3. Escaneo de index.html (Guardrail 4: Aislamiento de Errores)
 const indexHtmlPath = path.join(rootDir, 'index.html');
 const indexHtmlContent = fs.readFileSync(indexHtmlPath, 'utf-8');
@@ -97,13 +147,39 @@ let browserExe = chromePaths.find(p => fs.existsSync(p));
 if (!browserExe) {
   console.warn('⚠️ No se encontró Chrome/Edge en las rutas estándar para la prueba headless. Saltando paso 3.');
 } else {
+  // Servidor efímero local para probar el renderizado real de la app en Chrome headless
+  const httpModule = await import('http');
+  const mimeTypes = {
+    '.html': 'text/html; charset=utf-8',
+    '.js': 'text/javascript; charset=utf-8',
+    '.css': 'text/css; charset=utf-8',
+    '.json': 'application/json',
+    '.svg': 'image/svg+xml'
+  };
+
+  const server = httpModule.createServer((req, res) => {
+    let reqPath = req.url.split('?')[0];
+    if (reqPath === '/' || reqPath === '') reqPath = '/index.html';
+    const filePath = path.join(rootDir, reqPath);
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      const ext = path.extname(filePath);
+      res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'text/plain' });
+      res.end(fs.readFileSync(filePath));
+    } else {
+      res.writeHead(404);
+      res.end('Not found');
+    }
+  });
+
+  await new Promise(resolve => server.listen(3333, '127.0.0.1', resolve));
+
   try {
     const htmlDump = execFileSync(browserExe, [
       '--headless=new',
       '--disable-gpu',
       '--virtual-time-budget=3000',
       '--dump-dom',
-      'http://localhost:3000/'
+      'http://127.0.0.1:3333/'
     ], { encoding: 'utf-8', timeout: 10000 });
 
     const hasForm = htmlDump.includes('login-form');
@@ -119,7 +195,9 @@ if (!browserExe) {
       console.log('✅ Guardrail 1: Verificación en navegador Chrome exitosa (Login activo, 0 errores, 0 banners).');
     }
   } catch (err) {
-    console.warn('⚠️ Nota: La prueba en Chrome requiere que el servidor local esté activo (puerto 3000).', err.message);
+    console.warn('⚠️ Error en prueba Chrome headless:', err.message);
+  } finally {
+    server.close();
   }
 }
 

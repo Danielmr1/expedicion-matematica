@@ -294,7 +294,7 @@ export function attachPracticeStationEvents(app) {
     const handleJump = () => {
       const val = parseInt(inputEl?.value);
       if (isNaN(val)) return;
-      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold);
+      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold, task);
     };
 
     submitBtn?.addEventListener('click', handleJump);
@@ -311,7 +311,7 @@ export function attachPracticeStationEvents(app) {
     const handleMachine = () => {
       const val = parseInt(inputEl?.value);
       if (isNaN(val)) return;
-      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold);
+      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold, task);
     };
 
     submitBtn?.addEventListener('click', handleMachine);
@@ -328,7 +328,7 @@ export function attachPracticeStationEvents(app) {
     const handleApplied = () => {
       const val = parseInt(inputEl?.value);
       if (isNaN(val)) return;
-      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold);
+      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold, task);
     };
 
     submitBtn?.addEventListener('click', handleApplied);
@@ -364,7 +364,7 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
     app.playFeedbackTone('correct');
     clickedBtn.classList.add('selected-correct');
     showFeedbackBox(feedbackBox, true, `
-      <div style="font-size: 24px;">🎉</div>
+      ${ICONS.feedbackSuccess(app.currentTheme, 32)}
       <div>
         <div style="font-weight: 800; font-size: 15px;">¡Excelente! Regla Correcta</div>
         <div style="font-size: 13px; margin-top: 2px;">${task.reason}</div>
@@ -404,7 +404,7 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
     const hint = task.commonMistakeHint?.[chosen] || 'Prueba multiplicando en lugar de sumar para ver si funciona con todos los términos.';
     
     showFeedbackBox(feedbackBox, false, `
-      <div style="font-size: 24px;">💡</div>
+      ${ICONS.feedbackHint(30)}
       <div>
         <div style="font-weight: 800; font-size: 15px;">Pista de Razonamiento Finlandés:</div>
         <div style="font-size: 13px; margin-top: 2px;">${hint}</div>
@@ -424,7 +424,7 @@ export function evaluateRuleDetectorAnswer(app, chosen, task, clickedBtn) {
   }
 }
 
-export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffoldHint) {
+export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffoldHint, task = null) {
   app.currentAttemptCount++;
   const isCorrect = (enteredValue === correctAnswer);
   const feedbackBox = document.getElementById('task-feedback-container');
@@ -432,11 +432,12 @@ export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffold
 
   if (isCorrect) {
     app.playFeedbackTone('correct');
+    const praiseText = task?.explanation || '¡Excelente cálculo y precisión matemática!';
     showFeedbackBox(feedbackBox, true, `
-      <div style="font-size: 24px;">🎉</div>
+      ${ICONS.feedbackSuccess(app.currentTheme, 32)}
       <div>
         <div style="font-weight: 800; font-size: 15px;">¡Correcto! +1 Estrella ⭐</div>
-        <div style="font-size: 13px; margin-top: 2px;">${scaffoldHint}</div>
+        <div style="font-size: 13px; margin-top: 2px;">${praiseText}</div>
       </div>
     `);
 
@@ -470,9 +471,9 @@ export function evaluateNumericAnswer(app, enteredValue, correctAnswer, scaffold
   } else {
     app.playFeedbackTone('error');
     showFeedbackBox(feedbackBox, false, `
-      <div style="font-size: 24px;">💡</div>
+      ${ICONS.feedbackHint(30)}
       <div>
-        <div style="font-weight: 800; font-size: 15px;">Pista de Apoyo (Descomposición):</div>
+        <div style="font-weight: 800; font-size: 15px;">Pista de Apoyo (Estrategia):</div>
         <div style="font-size: 13px; margin-top: 2px;">${scaffoldHint}</div>
         <div style="font-size: 12px; margin-top: 4px; font-weight: 600;">Corrige tu número e inténtalo de nuevo.</div>
       </div>

@@ -27,6 +27,7 @@ class StorageManager {
     this.attempts = [];
     this.isSyncing = false;
     this.onDataUpdated = null;
+    this._syncPromise = null;
     this.init();
     // Iniciar sincronización inmediata con Supabase en segundo plano
     this.syncWithSupabase();
@@ -70,77 +71,83 @@ class StorageManager {
    * Sincronización transparente con Supabase (Carga alumnos reales + progreso remoto)
    */
   async syncWithSupabase() {
-    if (this.isSyncing) return;
+    if (this.isSyncing) return this._syncPromise;
     this.isSyncing = true;
-    try {
-      console.log("🔄 Sincronizando con Supabase...");
-      const remoteStudents = await fetchStudentsFromSupabase();
-      if (remoteStudents && remoteStudents.length > 0) {
-        const [progressList, activeTopic] = await Promise.all([
-          fetchProgressFromSupabase(),
-          fetchActiveTopicFromSupabase()
-        ]);
 
-        if (progressList && progressList.length > 0) {
-          const progressByStudent = {};
-          progressList.forEach(p => {
-            const sid = String(p.alumno_id);
-            if (!progressByStudent[sid]) progressByStudent[sid] = [];
-            progressByStudent[sid].push(p);
-          });
+    this._syncPromise = (async () => {
+      try {
+        console.log("🔄 Sincronizando con Supabase...");
+        const remoteStudents = await fetchStudentsFromSupabase();
+        if (remoteStudents && remoteStudents.length > 0) {
+          const [progressList, activeTopic] = await Promise.all([
+            fetchProgressFromSupabase(),
+            fetchActiveTopicFromSupabase()
+          ]);
 
-          remoteStudents.forEach(st => {
-            const plist = progressByStudent[st.id] || [];
-            st.stationProgress = st.stationProgress || {};
-            let totalStars = 0;
-            let totalSec = 0;
-            const completed = [];
-
-            plist.forEach(p => {
-              st.stationProgress[p.estacion_id] = {
-                completed: p.completed,
-                correctCount: p.score || 0,
-                errorCount: p.errors || 0,
-                timeSpentSec: p.time_seconds || 0,
-                trophies: p.trophies || []
-              };
-              totalStars += (p.score || 0);
-              totalSec += (p.time_seconds || 0);
-              if (p.completed) completed.push(p.estacion_id);
+          if (progressList && progressList.length > 0) {
+            const progressByStudent = {};
+            progressList.forEach(p => {
+              const sid = String(p.alumno_id);
+              if (!progressByStudent[sid]) progressByStudent[sid] = [];
+              progressByStudent[sid].push(p);
             });
 
-            st.stars = totalStars;
-            st.xp = totalStars * 15;
-            st.activeSeconds = totalSec;
-            st.timeMinutes = Math.max(0, Math.round(totalSec / 60));
-            st.completedChallenges = completed;
+            remoteStudents.forEach(st => {
+              const plist = progressByStudent[st.id] || [];
+              st.stationProgress = st.stationProgress || {};
+              let totalStars = 0;
+              let totalSec = 0;
+              const completed = [];
 
-            let trophy = 'ninguno';
-            if (completed.includes('estacion-diamante') || totalStars >= 29) trophy = 'diamante';
-            else if (completed.includes('estacion-3') || totalStars >= 26) trophy = 'oro';
-            else if (completed.includes('estacion-2') || totalStars >= 18) trophy = 'plata';
-            else if (completed.includes('estacion-1') || totalStars >= 8) trophy = 'bronce';
-            st.trophies = { patrones: trophy };
-          });
+              plist.forEach(p => {
+                st.stationProgress[p.estacion_id] = {
+                  completed: p.completed,
+                  correctCount: p.score || 0,
+                  errorCount: p.errors || 0,
+                  timeSpentSec: p.time_seconds || 0,
+                  trophies: p.trophies || []
+                };
+                totalStars += (p.score || 0);
+                totalSec += (p.time_seconds || 0);
+                if (p.completed) completed.push(p.estacion_id);
+              });
+
+              st.stars = totalStars;
+              st.xp = totalStars * 15;
+              st.activeSeconds = totalSec;
+              st.timeMinutes = Math.max(0, Math.round(totalSec / 60));
+              st.completedChallenges = completed;
+
+              let trophy = 'ninguno';
+              if (completed.includes('estacion-diamante') || totalStars >= 29) trophy = 'diamante';
+              else if (completed.includes('estacion-3') || totalStars >= 26) trophy = 'oro';
+              else if (completed.includes('estacion-2') || totalStars >= 18) trophy = 'plata';
+              else if (completed.includes('estacion-1') || totalStars >= 8) trophy = 'bronce';
+              st.trophies = { patrones: trophy };
+            });
+          }
+
+          this.students = remoteStudents;
+          this.saveStudents();
+          console.log(`✅ Sincronizado con éxito: ${this.students.length} alumnos de Supabase listos.`);
+
+          if (activeTopic) {
+            localStorage.setItem(STORAGE_KEYS.ACTIVE_TOPIC, activeTopic);
+          }
+
+          if (typeof this.onDataUpdated === 'function') {
+            this.onDataUpdated();
+          }
         }
-
-        this.students = remoteStudents;
-        this.saveStudents();
-        console.log(`✅ Sincronizado con éxito: ${this.students.length} alumnos de Supabase listos.`);
-
-        if (activeTopic) {
-          localStorage.setItem(STORAGE_KEYS.ACTIVE_TOPIC, activeTopic);
-        }
-
-        if (typeof this.onDataUpdated === 'function') {
-          this.onDataUpdated();
-        }
+      } catch (err) {
+        console.warn("⚠️ Conexión con Supabase no disponible en este momento, usando caché local:", err);
+      } finally {
+        this.isSyncing = false;
+        this._syncPromise = null;
       }
-    } catch (err) {
-      console.warn("⚠️ Conexión con Supabase no disponible en este momento, usando caché local:", err);
-    } finally {
-      this.isSyncing = false;
-    }
+    })();
+
+    return this._syncPromise;
   }
 
   saveStudents() {
@@ -193,10 +200,23 @@ class StorageManager {
       return { success: true, user: userObj, role: 'teacher' };
     }
 
+    // Esperar sincronización activa con Supabase si está en progreso
+    if (this._syncPromise) {
+      await this._syncPromise;
+    }
+
     // Check students
-    const student = this.students.find(
+    let student = this.students.find(
       s => s.username.toLowerCase() === cleanUser && s.pin === cleanPass
     );
+
+    // Si no se encuentra y los alumnos no han sido cargados desde Supabase, intentar recargar directamente
+    if (!student && this.students.length <= 30) {
+      await this.syncWithSupabase();
+      student = this.students.find(
+        s => s.username.toLowerCase() === cleanUser && s.pin === cleanPass
+      );
+    }
 
     if (student) {
       student.lastActive = 'Hoy';
@@ -313,6 +333,7 @@ class StorageManager {
     }
 
     if (taskData.timeSpentSec) {
+      sp.timeSpentSec = (sp.timeSpentSec || 0) + taskData.timeSpentSec;
       student.activeSeconds = (student.activeSeconds || 0) + taskData.timeSpentSec;
       student.timeMinutes = Math.max(1, Math.round(student.activeSeconds / 60));
     }
@@ -358,7 +379,7 @@ class StorageManager {
         completed: sp.completed,
         correctCount: sp.correctCount,
         errorCount: sp.errorCount,
-        timeSpentSec: student.activeSeconds,
+        timeSpentSec: sp.timeSpentSec || student.activeSeconds,
         trophies: [newTrophy]
       });
     }

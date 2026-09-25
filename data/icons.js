@@ -243,6 +243,41 @@ export const ICONS = {
       <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
+  `,
+
+  // Insignia / Ícono Vectorial de Felicitación Temática (Acierto de Micro-Ejercicio)
+  feedbackSuccess: (theme = 'andina', size = 32) => {
+    if (theme === 'cyber') {
+      return `
+        <svg width="${size}" height="${size}" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; flex-shrink:0;">
+          <polygon points="18,2 33,10 33,26 18,34 3,26 3,10" fill="rgba(132, 255, 0, 0.18)" stroke="#84ff00" stroke-width="2"/>
+          <circle cx="18" cy="18" r="9.5" fill="rgba(132, 255, 0, 0.3)"/>
+          <path d="M12 18 L16 22 L24 13" stroke="#84ff00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="8" cy="9" r="1.5" fill="#ffffff"/>
+          <circle cx="28" cy="27" r="1.5" fill="#84ff00"/>
+        </svg>
+      `;
+    }
+    // andina / expedicion: Estrella Inti Dorada Ceremonial
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; flex-shrink:0;">
+        <circle cx="18" cy="18" r="15" fill="rgba(245, 158, 11, 0.2)" stroke="#d97706" stroke-width="1.8"/>
+        <!-- Rayos ceremoniales Inti -->
+        <path d="M18 3 L18 6 M18 30 L18 33 M3 18 L6 18 M30 18 L33 18 M7 7 L9.5 9.5 M26.5 26.5 L29 29 M7 29 L9.5 26.5 M26.5 9.5 L29 7" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="18" cy="18" r="10" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+        <path d="M12.5 18 L16.5 22 L23.5 14" stroke="#b45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+  },
+
+  // Foco / Bombilla Vectorial para Pistas de Apoyo Pedagógico
+  feedbackHint: (size = 30) => `
+    <svg width="${size}" height="${size}" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; flex-shrink:0;">
+      <circle cx="18" cy="18" r="15" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="1.6"/>
+      <path d="M13 14a5 5 0 1 1 10 0a4 4 0 0 0 -2 3.5v1.5h-6v-1.5a4 4 0 0 0 -2 -3.5" fill="rgba(245, 158, 11, 0.3)" stroke="#f59e0b" stroke-width="1.8"/>
+      <path d="M15 22h6m-5 3h4" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="18" cy="13" r="1.5" fill="#fef08a"/>
+    </svg>
   `
 };
 
@@ -331,6 +366,7 @@ export const THEMED_EMBLEMS = {
   expedicion: {
     bronce: {
       name: 'Brújula Solar Andina',
+      article: 'la',
       tierLabel: 'Bronce',
       short: 'Brújula',
       color: '#b78f5c',
@@ -360,6 +396,7 @@ export const THEMED_EMBLEMS = {
     },
     plata: {
       name: 'Sendero de Olas del Lago',
+      article: 'el',
       tierLabel: 'Plata',
       short: 'Sendero',
       color: '#94a3b8',
@@ -381,6 +418,7 @@ export const THEMED_EMBLEMS = {
     },
     oro: {
       name: 'Disco Solar Inti Ceremonial',
+      article: 'el',
       tierLabel: 'Oro',
       short: 'Sol Inti',
       color: '#f59e0b',
@@ -410,6 +448,7 @@ export const THEMED_EMBLEMS = {
     },
     diamante: {
       name: 'Chakana Sagrada de los Andes',
+      article: 'la',
       tierLabel: 'Chakana',
       short: 'Chakana',
       color: '#244663',
@@ -454,6 +493,7 @@ export const THEMED_EMBLEMS = {
     },
     ninguno: {
       name: 'Ruta en Preparación',
+      article: 'la',
       tierLabel: 'Sin Rango',
       short: 'Sin rango',
       color: '#cebdaa',
@@ -469,6 +509,7 @@ export const THEMED_EMBLEMS = {
   cyber: {
     bronce: {
       name: 'Sensor Radar Orbital',
+      article: 'el',
       tierLabel: 'Bronce',
       short: 'Sensor',
       color: '#f59e0b',
@@ -490,6 +531,7 @@ export const THEMED_EMBLEMS = {
     },
     plata: {
       name: 'Propulsor Vectorial Warp',
+      article: 'el',
       tierLabel: 'Plata',
       short: 'Vector Warp',
       color: '#38bdf8',
@@ -508,6 +550,7 @@ export const THEMED_EMBLEMS = {
     },
     oro: {
       name: 'Reactor Cuántico de Fusión',
+      article: 'el',
       tierLabel: 'Oro',
       short: 'Reactor',
       color: '#84ff00',
@@ -527,6 +570,7 @@ export const THEMED_EMBLEMS = {
     },
     diamante: {
       name: 'Prisma Hiperespacial Alfa',
+      article: 'el',
       tierLabel: 'Prisma Alfa',
       short: 'Prisma Alfa',
       color: '#c084fc',
@@ -550,6 +594,7 @@ export const THEMED_EMBLEMS = {
     },
     ninguno: {
       name: 'Sistema en Espera',
+      article: 'el',
       tierLabel: 'Sin Rango',
       short: 'Sin rango',
       color: '#52525b',
@@ -572,4 +617,14 @@ export function getThemedEmblem(theme, tier) {
   const mode = (theme === 'cyber') ? 'cyber' : 'expedicion';
   const modeEmblems = THEMED_EMBLEMS[mode] || THEMED_EMBLEMS.expedicion;
   return modeEmblems[tier] || modeEmblems.ninguno;
+}
+
+/**
+ * Obtiene el artículo gramatical ('el' o 'la') del emblema temático
+ * @param {string} theme - 'andina' | 'expedicion' | 'cyber'
+ * @param {string} tier - 'bronce' | 'plata' | 'oro' | 'diamante' | 'ninguno'
+ */
+export function getEmblemArticle(theme, tier) {
+  const emblem = getThemedEmblem(theme, tier);
+  return emblem.article || 'el';
 }

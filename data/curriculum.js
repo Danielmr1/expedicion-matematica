@@ -148,7 +148,7 @@ export const WEEKLY_MISSION = {
           rule: "× 2",
           missingIndex: 3,
           correctAnswer: 16,
-          scaffold: "Multiplica el término anterior (8) por 2: 8 × 2 = 16."
+          scaffold: "Multiplica el término anterior (8) por la regla (× 2): ¿Cuánto es 8 × 2?"
         },
         {
           id: "j2-02",
@@ -156,7 +156,7 @@ export const WEEKLY_MISSION = {
           rule: "× 3",
           missingIndex: 3,
           correctAnswer: 81,
-          scaffold: "Descompón para multiplicar 27 × 3: (20 × 3 = 60) + (7 × 3 = 21) = 81."
+          scaffold: "Descompón 27 × 3 en dos partes fáciles: (20 × 3) + (7 × 3). ¡Calcula y suma ambos resultados!"
         },
         {
           id: "j2-03",
@@ -164,7 +164,7 @@ export const WEEKLY_MISSION = {
           rule: "× 3",
           missingIndex: 3,
           correctAnswer: 135,
-          scaffold: "Descompón 45 × 3: (40 × 3 = 120) + (5 × 3 = 15) = 135."
+          scaffold: "Descompón 45 × 3 en dos partes: (40 × 3) + (5 × 3). ¡Suma ambos resultados!"
         },
         {
           id: "j2-04",
@@ -172,7 +172,7 @@ export const WEEKLY_MISSION = {
           rule: "× 4",
           missingIndex: 3,
           correctAnswer: 256,
-          scaffold: "Descompón 64 × 4: (60 × 4 = 240) + (4 × 4 = 16) = 256."
+          scaffold: "Descompón 64 × 4 en dos partes fáciles: (60 × 4) + (4 × 4). ¡Calcula la suma de ambos resultados!"
         },
         {
           id: "j2-05",
@@ -180,7 +180,7 @@ export const WEEKLY_MISSION = {
           rule: "× 2",
           missingIndex: 3,
           correctAnswer: 80,
-          scaffold: "Duplica el 40: 40 × 2 = 80."
+          scaffold: "Duplica el número anterior aplicando la regla: ¿Cuánto es 40 × 2?"
         },
         {
           id: "j2-06",
@@ -188,7 +188,7 @@ export const WEEKLY_MISSION = {
           rule: "× 5",
           missingIndex: 3,
           correctAnswer: 250,
-          scaffold: "Multiplica 50 × 5: piensa en 5 × 5 = 25, y agrega el cero: 250."
+          scaffold: "Multiplica 50 × 5: primero piensa en 5 × 5 y luego agrégale un cero al final."
         },
         {
           id: "j2-07",
@@ -196,7 +196,7 @@ export const WEEKLY_MISSION = {
           rule: "× 3",
           missingIndex: 1,
           correctAnswer: 9,
-          scaffold: "Aplica la regla desde el primer número: 3 × 3 = 9. (Comprueba: 9 × 3 = 27)."
+          scaffold: "Aplica la regla desde el primer término: ¿Cuánto es 3 × 3? (Comprueba que el siguiente paso dé 27)."
         },
         {
           id: "j2-08",
@@ -204,7 +204,7 @@ export const WEEKLY_MISSION = {
           rule: "× 4",
           missingIndex: 1,
           correctAnswer: 16,
-          scaffold: "Multiplica el primer número por 4: 4 × 4 = 16. (Comprueba: 16 × 4 = 64)."
+          scaffold: "Multiplica el primer término por la regla (× 4): ¿Cuánto es 4 × 4?"
         },
         {
           id: "j2-09",
@@ -212,7 +212,7 @@ export const WEEKLY_MISSION = {
           rule: "× 5",
           missingIndex: 2,
           correctAnswer: 125,
-          scaffold: "Multiplica 25 × 5: 25, 50, 75, 100, 125. (Comprueba: 125 × 5 = 625)."
+          scaffold: "Multiplica 25 × 5: avanza de 25 en 25 cinco veces o descompón (20 × 5) + (5 × 5)."
         },
         {
           id: "j2-10",
@@ -220,7 +220,7 @@ export const WEEKLY_MISSION = {
           rule: "× 3",
           missingIndex: 2,
           correctAnswer: 54,
-          scaffold: "Multiplica 18 × 3: (10 × 3 = 30) + (8 × 3 = 24) = 54."
+          scaffold: "Multiplica 18 × 3 descomponiendo: (10 × 3) + (8 × 3). ¡Suma ambos productos!"
         }
       ]
     },
@@ -252,7 +252,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¿Qué número sale cuando entra el 5?",
           correctAnswer: 20,
-          scaffold: "Aplica la regla de la máquina: 5 × 4 = 20."
+          scaffold: "Aplica la regla de la máquina al número de entrada: calcula 5 × 4."
         },
         {
           id: "m3-02",
@@ -265,7 +265,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¿Qué número sale cuando entra el 10?",
           correctAnswer: 30,
-          scaffold: "Aplica la regla: 10 × 3 = 30."
+          scaffold: "Aplica la regla de la máquina al número que entra: calcula 10 × 3."
         },
         {
           id: "m3-03",
@@ -278,7 +278,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¿Qué número sale cuando entra el 8?",
           correctAnswer: 40,
-          scaffold: "Aplica la regla: 8 × 5 = 40."
+          scaffold: "Aplica la regla de la máquina: calcula 8 × 5."
         },
         {
           id: "m3-04",
@@ -291,7 +291,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¿Qué número sale cuando entra el 7?",
           correctAnswer: 42,
-          scaffold: "Aplica la regla: 7 × 6 = 42."
+          scaffold: "Aplica la regla de la máquina: calcula 7 × 6."
         },
         {
           id: "m3-05",
@@ -304,7 +304,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¡Pregunta Inversa! Si la salida es 32, ¿qué número entró a la máquina?",
           correctAnswer: 8,
-          scaffold: "Pensamiento inverso: ¿qué número multiplicado por 4 da 32? Divide: 32 ÷ 4 = 8."
+          scaffold: "Pensamiento inverso: ¿qué número multiplicado por 4 da 32? Puedes calcular 32 ÷ 4."
         },
         {
           id: "m3-06",
@@ -317,7 +317,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¡Pregunta Inversa! Si la salida es 27, ¿qué número entró a la máquina?",
           correctAnswer: 9,
-          scaffold: "¿Qué número multiplicado por 3 da 27? Divide: 27 ÷ 3 = 9."
+          scaffold: "¿Qué número multiplicado por 3 da 27? Puedes calcular 27 ÷ 3."
         },
         {
           id: "m3-07",
@@ -330,7 +330,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¡Pregunta Inversa! Si la salida es 50, ¿qué número entró?",
           correctAnswer: 10,
-          scaffold: "¿Qué número multiplicado por 5 da 50? Divide: 50 ÷ 5 = 10."
+          scaffold: "¿Qué número multiplicado por 5 da 50? Puedes calcular 50 ÷ 5."
         },
         {
           id: "m3-08",
@@ -343,7 +343,7 @@ export const WEEKLY_MISSION = {
           ],
           prompt: "¿Qué número sale cuando entra el 6?",
           correctAnswer: 48,
-          scaffold: "Multiplica: 6 × 8 = 48."
+          scaffold: "Aplica la regla fija al número de entrada: calcula 6 × 8."
         }
       ]
     },
@@ -373,7 +373,7 @@ export const WEEKLY_MISSION = {
           question: "¿Cuántos rombos tejerán en la Fila 5?",
           formulaTrack: "2 ➔ 6 ➔ 18 ➔ 54 ➔ [ Fila 5 ]",
           correctAnswer: 162,
-          scaffold: "Multiplica el último término (54) por 3: 54 × 3 = (50 × 3) + (4 × 3) = 150 + 12 = 162."
+          scaffold: "Multiplica el último término (54) por 3: descompón en (50 × 3) + (4 × 3) y suma ambos productos."
         },
         {
           id: "d4-02",
@@ -383,7 +383,7 @@ export const WEEKLY_MISSION = {
           question: "Calcula primero el valor de A y de B. Luego responde: ¿cuánto vale la suma de A + B?",
           formulaTrack: "3 ➔ 15 ➔ [ A ] ➔ [ B ] ➔ 1875 (Regla: × 5)",
           correctAnswer: 450,
-          scaffold: "Paso 1: A = 15 × 5 = 75. Paso 2: B = 75 × 5 = 375. Paso 3: Suma A + B = 75 + 375 = 450."
+          scaffold: "Paso 1: Calcula A (15 × 5). Paso 2: Con ese valor calcula B (A × 5). Paso 3: Suma A + B."
         },
         {
           id: "d4-03",
@@ -393,7 +393,7 @@ export const WEEKLY_MISSION = {
           question: "¿Cuánto dinero en total (en Soles S/.) recaudarán por los sacos del Año 4?",
           formulaTrack: "Año 1: 8 ➔ Año 2: 16 ➔ Año 3: 32 ➔ Año 4: [ ? sacos ] × S/. 150",
           correctAnswer: 9600,
-          scaffold: "Paso 1: Año 4 = 32 × 2 = 64 sacos. Paso 2: Recaudación = 64 sacos × S/. 150 = S/. 9600 Soles."
+          scaffold: "Paso 1: Duplica 32 sacos para hallar el total del Año 4. Paso 2: Multiplica esa cantidad de sacos por el precio (S/. 150)."
         }
       ]
     }
@@ -612,7 +612,7 @@ export const MISSION_DIVISION = {
           track: [80, 40, 20, 10],
           missingIndex: 2,
           correctAnswer: 20,
-          scaffold: "Paso 1: 80 ÷ 2 = 40. Paso 2: 40 ÷ 2 = 20."
+          scaffold: "Paso 1: 80 ÷ 2 = 40. Paso 2: Ahora halla la mitad de 40."
         },
         {
           id: "div-j2-02",
@@ -621,7 +621,7 @@ export const MISSION_DIVISION = {
           track: [81, 27, 9, 3],
           missingIndex: 2,
           correctAnswer: 9,
-          scaffold: "Paso 1: 81 ÷ 3 = 27. Paso 2: 27 ÷ 3 = 9."
+          scaffold: "Paso 1: 81 ÷ 3 = 27. Paso 2: Ahora divide 27 ÷ 3."
         },
         {
           id: "div-j2-03",
@@ -630,7 +630,7 @@ export const MISSION_DIVISION = {
           track: [64, 32, 16, 8],
           missingIndex: 3,
           correctAnswer: 8,
-          scaffold: "Paso 1: 16 ÷ 2 = 8."
+          scaffold: "Aplica la regla de dividir entre 2 al término anterior: ¿Cuánto es 16 ÷ 2?"
         },
         {
           id: "div-j2-04",
@@ -639,7 +639,7 @@ export const MISSION_DIVISION = {
           track: [125, 25, 5],
           missingIndex: 1,
           correctAnswer: 25,
-          scaffold: "125 ÷ 5 = 25 (porque 25 × 5 = 125)."
+          scaffold: "Aplica la regla de reducción: calcula 125 dividido entre 5."
         },
         {
           id: "div-j2-05",
@@ -648,7 +648,7 @@ export const MISSION_DIVISION = {
           track: [120, 60, 30, 15],
           missingIndex: 2,
           correctAnswer: 30,
-          scaffold: "60 ÷ 2 = 30."
+          scaffold: "Aplica la regla dividiendo entre 2: calcula la mitad de 60."
         },
         {
           id: "div-j2-06",
@@ -657,7 +657,7 @@ export const MISSION_DIVISION = {
           track: [64, 16, 4],
           missingIndex: 1,
           correctAnswer: 16,
-          scaffold: "64 ÷ 4 = 16 (porque 16 × 4 = 64)."
+          scaffold: "Divide 64 ÷ 4: descompón en (40 ÷ 4) + (24 ÷ 4) y suma ambos cocientes."
         },
         {
           id: "div-j2-07",
@@ -666,7 +666,7 @@ export const MISSION_DIVISION = {
           track: [90, 30, 10],
           missingIndex: 1,
           correctAnswer: 30,
-          scaffold: "90 ÷ 3 = 30."
+          scaffold: "Divide 90 ÷ 3: piensa en 9 ÷ 3 y agrégale el cero al final."
         },
         {
           id: "div-j2-08",
@@ -675,7 +675,7 @@ export const MISSION_DIVISION = {
           track: [100, 50, 25],
           missingIndex: 2,
           correctAnswer: 25,
-          scaffold: "50 ÷ 2 = 25."
+          scaffold: "Aplica la regla de reducción: calcula 50 ÷ 2."
         }
       ]
     },
@@ -701,7 +701,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 6 × 9 ) + 4",
           correctAnswer: 58,
-          scaffold: "Paso 1: 6 × 9 = 54. Paso 2: Suma el residuo 54 + 4 = 58."
+          scaffold: "Paso 1: Multiplica cociente por divisor (6 × 9). Paso 2: Súmale el residuo (4)."
         },
         {
           id: "div-m3-02",
@@ -711,7 +711,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 8 × 7 ) + 5",
           correctAnswer: 61,
-          scaffold: "8 × 7 = 56, más 5 de residuo = 61."
+          scaffold: "Multiplica divisor por cociente (8 × 7) y súmale 5 de residuo."
         },
         {
           id: "div-m3-03",
@@ -721,7 +721,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 9 × 8 ) + 6",
           correctAnswer: 78,
-          scaffold: "9 × 8 = 72, más 6 de residuo = 78."
+          scaffold: "Calcula 9 × 8 y súmale los 6 que sobraron."
         },
         {
           id: "div-m3-04",
@@ -731,7 +731,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 5 × 9 ) + 2",
           correctAnswer: 47,
-          scaffold: "5 × 9 = 45, más 2 de residuo = 47."
+          scaffold: "Calcula el producto 5 × 9 y súmale 2 de residuo."
         },
         {
           id: "div-m3-05",
@@ -741,7 +741,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 8 × 8 ) + 7",
           correctAnswer: 71,
-          scaffold: "8 × 8 = 64, más 7 de residuo = 71."
+          scaffold: "Multiplica 8 × 8 y suma el residuo de 7."
         },
         {
           id: "div-m3-06",
@@ -751,7 +751,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 7 × 7 ) + 6",
           correctAnswer: 55,
-          scaffold: "7 × 7 = 49, más 6 de residuo = 55."
+          scaffold: "Calcula 7 × 7 y súmale los 6 de residuo."
         },
         {
           id: "div-m3-07",
@@ -761,7 +761,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 6 × 8 ) + 5",
           correctAnswer: 53,
-          scaffold: "6 × 8 = 48, más 5 de residuo = 53."
+          scaffold: "Multiplica 6 × 8 y suma el residuo (5)."
         },
         {
           id: "div-m3-08",
@@ -771,7 +771,7 @@ export const MISSION_DIVISION = {
           ],
           prompt: "Calcula el dividendo: ( 9 × 7 ) + 4",
           correctAnswer: 67,
-          scaffold: "9 × 7 = 63, más 4 de residuo = 67."
+          scaffold: "Multiplica 9 × 7 y súmale los 4 de residuo."
         }
       ]
     },
@@ -797,7 +797,7 @@ export const MISSION_DIVISION = {
           question: "¿Cuántas bolsas completas se pueden llenar?",
           formulaTrack: "94 ÷ 8 = Cociente [ ? bolsas completas ] con residuo de kg sobrantes",
           correctAnswer: 11,
-          scaffold: "94 ÷ 8 = 11 (8 × 11 = 88 kg). Sobran 6 kg. Se llenan 11 bolsas completas."
+          scaffold: "Divide 94 ÷ 8: busca el número más cercano que multiplicado por 8 no pase de 94 (8 × ? ≤ 94)."
         },
         {
           id: "div-d4-02",
@@ -807,7 +807,7 @@ export const MISSION_DIVISION = {
           question: "¿Cuántos mangos sobraron luego de llenar todas las cajas posibles?",
           formulaTrack: "115 ÷ 9 = 12 cajas completas con residuo de [ ? mangos ]",
           correctAnswer: 7,
-          scaffold: "115 ÷ 9 = 12 cajas (12 × 9 = 108). Sobran 115 - 108 = 7 mangos."
+          scaffold: "Calcula 12 cajas de 9 mangos (12 × 9). Luego resta ese total de 115 para hallar los que sobran."
         },
         {
           id: "div-d4-03",
@@ -817,7 +817,7 @@ export const MISSION_DIVISION = {
           question: "¿Cuántos atados de espárragos se colocaron en cada contenedor?",
           formulaTrack: "150 ÷ 6 = [ ? atados por contenedor ] (División exacta)",
           correctAnswer: 25,
-          scaffold: "150 ÷ 6 = 25 atados exactamente (6 × 25 = 150)."
+          scaffold: "Divide 150 ÷ 6: descompón 150 en (120 ÷ 6) + (30 ÷ 6) y suma los resultados."
         }
       ]
     }
@@ -932,7 +932,7 @@ export const MISSION_FRACCIONES = {
           track: [2, 4, 8, 16],
           missingIndex: 3,
           correctAnswer: 16,
-          scaffold: "8 × 2 = 16. La fracción equivalente es 8/16."
+          scaffold: "Para hallar la fracción equivalente con numerador 8 (4 × 2), duplica también el denominador (8 × 2)."
         },
         {
           id: "frc-j2-02",
@@ -941,7 +941,7 @@ export const MISSION_FRACCIONES = {
           track: [3, 6, 9, 12],
           missingIndex: 3,
           correctAnswer: 12,
-          scaffold: "Los denominadores van de 3 en 3: 3, 6, 9, 12."
+          scaffold: "Observa la secuencia de los denominadores: van aumentando de 3 en 3 (3, 6, 9...)."
         },
         {
           id: "frc-j2-03",
@@ -950,7 +950,7 @@ export const MISSION_FRACCIONES = {
           track: [4, 8, 12, 16],
           missingIndex: 3,
           correctAnswer: 16,
-          scaffold: "Los denominadores avanzan de 4 en 4: 4, 8, 12, 16."
+          scaffold: "Observa cómo avanzan los denominadores de 4 en 4: ¿cuál sigue después de 12?"
         },
         {
           id: "frc-j2-04",
@@ -959,7 +959,7 @@ export const MISSION_FRACCIONES = {
           track: [5, 10, 15, 20],
           missingIndex: 3,
           correctAnswer: 20,
-          scaffold: "5, 10, 15, 20."
+          scaffold: "Los denominadores son múltiplos de 5: 5, 10, 15... ¿cuál sigue?"
         },
         {
           id: "frc-j2-05",
@@ -968,7 +968,7 @@ export const MISSION_FRACCIONES = {
           track: [1, 2, 4, 8],
           missingIndex: 2,
           correctAnswer: 4,
-          scaffold: "1 × 2 = 2; 2 × 2 = 4. El numerador es 4 (4/8)."
+          scaffold: "Si el denominador se duplicó de 4 a 8 (4 × 2), multiplica el numerador anterior (2) por 2."
         },
         {
           id: "frc-j2-06",
@@ -977,7 +977,7 @@ export const MISSION_FRACCIONES = {
           track: [2, 4, 8],
           missingIndex: 2,
           correctAnswer: 8,
-          scaffold: "Para denominador 12 (3 × 4), el numerador es 2 × 4 = 8."
+          scaffold: "Si el denominador se cuadruplicó (3 × 4 = 12), calcula el nuevo numerador multiplicando 2 × 4."
         },
         {
           id: "frc-j2-07",
@@ -986,7 +986,7 @@ export const MISSION_FRACCIONES = {
           track: [5, 10, 15],
           missingIndex: 2,
           correctAnswer: 15,
-          scaffold: "5 × 3 = 15."
+          scaffold: "Si el numerador se triplicó (2 × 3 = 6), triplica también el denominador: calcula 5 × 3."
         },
         {
           id: "frc-j2-08",
@@ -995,7 +995,7 @@ export const MISSION_FRACCIONES = {
           track: [3, 6, 12],
           missingIndex: 2,
           correctAnswer: 12,
-          scaffold: "Si el denominador se cuadruplica (4 × 4 = 16), el numerador también: 3 × 4 = 12."
+          scaffold: "Si el denominador se multiplicó por 4 (4 × 4 = 16), multiplica también el numerador: calcula 3 × 4."
         }
       ]
     },
@@ -1021,7 +1021,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 1/3 de 27",
           correctAnswer: 9,
-          scaffold: "27 ÷ 3 = 9. 9 × 1 = 9."
+          scaffold: "Para hallar 1/3 de 27, divide 27 entre 3."
         },
         {
           id: "frc-m3-02",
@@ -1031,7 +1031,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 1/5 de 35",
           correctAnswer: 7,
-          scaffold: "35 ÷ 5 = 7."
+          scaffold: "Para calcular 1/5 de 35, divide el total (35) entre 5."
         },
         {
           id: "frc-m3-03",
@@ -1041,7 +1041,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 2/3 de 18",
           correctAnswer: 12,
-          scaffold: "18 ÷ 3 = 6. Luego 6 × 2 = 12."
+          scaffold: "Paso 1: Divide 18 ÷ 3 para hallar 1/3. Paso 2: Multiplica ese resultado por 2 para obtener 2/3."
         },
         {
           id: "frc-m3-04",
@@ -1051,7 +1051,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 3/4 de 20",
           correctAnswer: 15,
-          scaffold: "20 ÷ 4 = 5. Luego 5 × 3 = 15."
+          scaffold: "Paso 1: Divide 20 ÷ 4 para hallar 1/4. Paso 2: Multiplica ese resultado por 3 para obtener 3/4."
         },
         {
           id: "frc-m3-05",
@@ -1061,7 +1061,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 2/5 de 30",
           correctAnswer: 12,
-          scaffold: "30 ÷ 5 = 6. Luego 6 × 2 = 12."
+          scaffold: "Paso 1: Divide 30 ÷ 5 para calcular 1/5. Paso 2: Multiplica ese valor por 2 para tener 2/5."
         },
         {
           id: "frc-m3-06",
@@ -1071,7 +1071,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 3/8 de 32",
           correctAnswer: 12,
-          scaffold: "32 ÷ 8 = 4. Luego 4 × 3 = 12."
+          scaffold: "Paso 1: Divide 32 ÷ 8 para hallar 1/8. Paso 2: Multiplica ese cociente por 3."
         },
         {
           id: "frc-m3-07",
@@ -1081,7 +1081,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 5/6 de 24",
           correctAnswer: 20,
-          scaffold: "24 ÷ 6 = 4. Luego 4 × 5 = 20."
+          scaffold: "Paso 1: Divide 24 ÷ 6 para hallar 1/6. Paso 2: Multiplica ese resultado por 5."
         },
         {
           id: "frc-m3-08",
@@ -1091,7 +1091,7 @@ export const MISSION_FRACCIONES = {
           ],
           prompt: "Calcula: 3/5 de 45",
           correctAnswer: 27,
-          scaffold: "45 ÷ 5 = 9. Luego 9 × 3 = 27."
+          scaffold: "Paso 1: Divide 45 ÷ 5 para calcular 1/5. Paso 2: Multiplica ese resultado por 3."
         }
       ]
     },
@@ -1117,7 +1117,7 @@ export const MISSION_FRACCIONES = {
           question: "¿Cuántos kilogramos de maíz morado se enviaron a Lima?",
           formulaTrack: "3/4 de 120 kg = (120 ÷ 4) × 3 = [ ? kg ]",
           correctAnswer: 90,
-          scaffold: "Paso 1: 120 ÷ 4 = 30 kg. Paso 2: 30 × 3 = 90 kg."
+          scaffold: "Paso 1: Divide 120 ÷ 4 para hallar 1/4 de queso. Paso 2: Multiplica ese resultado por 3."
         },
         {
           id: "frc-d4-02",
@@ -1127,7 +1127,7 @@ export const MISSION_FRACCIONES = {
           question: "¿Cuántos moldes de queso se vendieron en total?",
           formulaTrack: "2/3 de 60 moldes = (60 ÷ 3) × 2 = [ ? moldes ]",
           correctAnswer: 40,
-          scaffold: "Paso 1: 60 ÷ 3 = 20. Paso 2: 20 × 2 = 40 moldes."
+          scaffold: "Paso 1: Divide 60 ÷ 3 para hallar 1/3. Paso 2: Multiplica por 2 para obtener los 2/3 vendidos."
         },
         {
           id: "frc-d4-03",
@@ -1137,7 +1137,7 @@ export const MISSION_FRACCIONES = {
           question: "¿Cuántos sacos de azúcar se descargaron en la primera tienda?",
           formulaTrack: "3/5 de 80 sacos = (80 ÷ 5) × 3 = [ ? sacos ]",
           correctAnswer: 48,
-          scaffold: "Paso 1: 80 ÷ 5 = 16 sacos. Paso 2: 16 × 3 = 48 sacos."
+          scaffold: "Paso 1: Divide 80 ÷ 5 para calcular 1/5. Paso 2: Multiplica por 3 para obtener los 3/5 donados."
         }
       ]
     }
@@ -1252,7 +1252,7 @@ export const MISSION_OPERACIONES = {
           track: [10, 20, 30],
           missingIndex: 2,
           correctAnswer: 30,
-          scaffold: "(4 + 6) = 10. Luego 10 × 3 = 30."
+          scaffold: "Jerarquía: primero resuelve el paréntesis (4 + 6 = 10). Luego multiplica ese resultado por 3."
         },
         {
           id: "op-j2-02",
@@ -1261,7 +1261,7 @@ export const MISSION_OPERACIONES = {
           track: [8, 20, 40],
           missingIndex: 2,
           correctAnswer: 40,
-          scaffold: "(12 - 4) = 8. Luego 8 × 5 = 40."
+          scaffold: "Jerarquía: primero resuelve el paréntesis (12 - 4). Luego multiplica el resultado por 5."
         },
         {
           id: "op-j2-03",
@@ -1270,7 +1270,7 @@ export const MISSION_OPERACIONES = {
           track: [50, 30, 20],
           missingIndex: 2,
           correctAnswer: 20,
-          scaffold: "6 × 5 = 30. Luego 50 - 30 = 20."
+          scaffold: "Jerarquía: primero la multiplicación (6 × 5). Luego resta ese resultado a 50."
         },
         {
           id: "op-j2-04",
@@ -1279,7 +1279,7 @@ export const MISSION_OPERACIONES = {
           track: [36, 18, 9],
           missingIndex: 2,
           correctAnswer: 9,
-          scaffold: "20 + 16 = 36. Luego 36 ÷ 4 = 9."
+          scaffold: "Jerarquía: primero suma dentro del paréntesis (20 + 16). Luego divide esa suma entre 4."
         },
         {
           id: "op-j2-05",
@@ -1288,7 +1288,7 @@ export const MISSION_OPERACIONES = {
           track: [32, 22, 20],
           missingIndex: 2,
           correctAnswer: 20,
-          scaffold: "8 × 4 = 32. Luego 32 - 12 = 20."
+          scaffold: "Jerarquía: primero multiplica 8 × 4. Luego réstale 12."
         },
         {
           id: "op-j2-06",
@@ -1297,7 +1297,7 @@ export const MISSION_OPERACIONES = {
           track: [60, 30, 10],
           missingIndex: 2,
           correctAnswer: 10,
-          scaffold: "2 + 4 = 6. Luego 60 ÷ 6 = 10."
+          scaffold: "Jerarquía: primero suma dentro del paréntesis (2 + 4). Luego divide 60 entre esa suma."
         },
         {
           id: "op-j2-07",
@@ -1306,7 +1306,7 @@ export const MISSION_OPERACIONES = {
           track: [40, 20, 8],
           missingIndex: 2,
           correctAnswer: 8,
-          scaffold: "15 + 25 = 40. Luego 40 ÷ 5 = 8."
+          scaffold: "Jerarquía: primero suma dentro del paréntesis (15 + 25). Luego divide esa suma entre 5."
         },
         {
           id: "op-j2-08",
@@ -1315,7 +1315,7 @@ export const MISSION_OPERACIONES = {
           track: [49, 39, 30],
           missingIndex: 2,
           correctAnswer: 30,
-          scaffold: "7 × 7 = 49. Luego 49 - 19 = 30."
+          scaffold: "Jerarquía: primero la multiplicación (7 × 7). Luego réstale 19."
         }
       ]
     },
@@ -1341,7 +1341,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: 45 - ( 8 × 4 )",
           correctAnswer: 13,
-          scaffold: "8 × 4 = 32. Luego 45 - 32 = 13."
+          scaffold: "Paso 1: Multiplica 8 × 4. Paso 2: Resta ese resultado a 45 (45 - producto)."
         },
         {
           id: "op-m3-02",
@@ -1351,7 +1351,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: ( 18 ÷ 2 ) + ( 7 × 3 )",
           correctAnswer: 30,
-          scaffold: "18 ÷ 2 = 9 y 7 × 3 = 21. Suma 9 + 21 = 30."
+          scaffold: "Paso 1: Divide 18 ÷ 2. Paso 2: Multiplica 7 × 3. Paso 3: Suma ambos resultados."
         },
         {
           id: "op-m3-03",
@@ -1361,7 +1361,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: ( 50 - 20 ) ÷ 6",
           correctAnswer: 5,
-          scaffold: "50 - 20 = 30. Luego 30 ÷ 6 = 5."
+          scaffold: "Paso 1: Resuelve la resta entre paréntesis (50 - 20). Paso 2: Divide ese resultado entre 6."
         },
         {
           id: "op-m3-04",
@@ -1371,7 +1371,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: 6 × ( 4 + 5 )",
           correctAnswer: 54,
-          scaffold: "4 + 5 = 9. Luego 6 × 9 = 54."
+          scaffold: "Paso 1: Suma dentro del paréntesis (4 + 5). Paso 2: Multiplica 6 por esa suma."
         },
         {
           id: "op-m3-05",
@@ -1381,7 +1381,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: ( 9 × 9 ) - ( 10 × 3 )",
           correctAnswer: 51,
-          scaffold: "9 × 9 = 81 y 10 × 3 = 30. Luego 81 - 30 = 51."
+          scaffold: "Paso 1: Multiplica 9 × 9. Paso 2: Multiplica 10 × 3. Paso 3: Resta ambos productos."
         },
         {
           id: "op-m3-06",
@@ -1391,7 +1391,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: 80 - ( 6 × 8 )",
           correctAnswer: 32,
-          scaffold: "6 × 8 = 48. Luego 80 - 48 = 32."
+          scaffold: "Paso 1: Resuelve primero la multiplicación (6 × 8). Paso 2: Réstala de 80."
         },
         {
           id: "op-m3-07",
@@ -1401,7 +1401,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: ( 100 ÷ 10 ) + ( 6 × 7 )",
           correctAnswer: 52,
-          scaffold: "100 ÷ 10 = 10 y 6 × 7 = 42. Suma 10 + 42 = 52."
+          scaffold: "Paso 1: Divide 100 ÷ 10. Paso 2: Multiplica 6 × 7. Paso 3: Suma ambos resultados."
         },
         {
           id: "op-m3-08",
@@ -1411,7 +1411,7 @@ export const MISSION_OPERACIONES = {
           ],
           prompt: "Calcula: ( 72 ÷ 8 ) × ( 15 - 11 )",
           correctAnswer: 36,
-          scaffold: "72 ÷ 8 = 9 y 15 - 11 = 4. Multiplica 9 × 4 = 36."
+          scaffold: "Paso 1: Divide 72 ÷ 8. Paso 2: Resta (15 - 11). Paso 3: Multiplica ambos resultados."
         }
       ]
     },
@@ -1437,7 +1437,7 @@ export const MISSION_OPERACIONES = {
           question: "¿Cuántos cuadernos en total tiene el salón?",
           formulaTrack: "( 5 × 12 ) + 25 = 60 + 25 = [ ? cuadernos ]",
           correctAnswer: 85,
-          scaffold: "Paso 1: 5 × 12 = 60 cuadernos. Paso 2: 60 + 25 = 85 cuadernos en total."
+          scaffold: "Paso 1: Multiplica 5 docenas (5 × 12). Paso 2: Suma los 25 cuadernos sueltos."
         },
         {
           id: "op-d4-02",
@@ -1447,7 +1447,7 @@ export const MISSION_OPERACIONES = {
           question: "¿Cuántos retablos le quedaron por vender?",
           formulaTrack: "( 4 × 12 ) - 18 = 48 - 18 = [ ? retablos ]",
           correctAnswer: 30,
-          scaffold: "Paso 1: 4 × 12 = 48 retablos. Paso 2: 48 - 18 = 30 retablos restantes."
+          scaffold: "Paso 1: Multiplica 4 docenas de retablos (4 × 12). Paso 2: Resta los 18 que se vendieron."
         },
         {
           id: "op-d4-03",
@@ -1457,7 +1457,7 @@ export const MISSION_OPERACIONES = {
           question: "¿Cuántos kilogramos de aceitunas seleccionadas quedaron en buen estado?",
           formulaTrack: "( 6 × 15 ) - 16 = 90 - 16 = [ ? kg ]",
           correctAnswer: 74,
-          scaffold: "Paso 1: 6 × 15 = 90 kg. Paso 2: 90 - 16 = 74 kg de aceitunas buenas."
+          scaffold: "Paso 1: Multiplica 6 cajones por 15 kg (6 × 15). Paso 2: Resta los 16 kg descartados."
         }
       ]
     }

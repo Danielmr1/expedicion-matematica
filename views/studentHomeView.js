@@ -208,13 +208,13 @@ export function renderStudentHomeView(app) {
             </div>
             <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px; font-family: var(--font-sans);">
               ${(student.stars || 0) >= 29 
-                ? `¡Felicitaciones! Has conquistado la ${app.getEmblemName('diamante')}` 
+                ? `¡Felicitaciones! Has conquistado ${app.getEmblemArticle('diamante')} ${app.getEmblemName('diamante')}` 
                 : (student.stars || 0) >= 26 
-                ? `Logro supremo: ${app.getEmblemName('oro')} (Meta Oficial 100%)` 
+                ? `Logro supremo: ${app.getEmblemArticle('oro')} ${app.getEmblemName('oro')} (Meta Oficial 100%)` 
                 : (student.stars || 0) >= 18 
-                ? `Has obtenido el ${app.getEmblemName('plata')}` 
+                ? `Has obtenido ${app.getEmblemArticle('plata')} ${app.getEmblemName('plata')}` 
                 : (student.stars || 0) >= 8 
-                ? `Has obtenido la ${app.getEmblemName('bronce')}` 
+                ? `Has obtenido ${app.getEmblemArticle('bronce')} ${app.getEmblemName('bronce')}` 
                 : `Supera la Estación 1 para obtener tu primer emblema (${app.getEmblemShort('bronce')})`}
             </div>
           </div>

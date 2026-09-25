@@ -4,7 +4,7 @@
 // Responsable de barajado aleatorio, preparación y validación de retos
 // ==============================================================
 
-import { validateAndAssertTaskOptions } from '../data/guardrails.js';
+import { validateAndAssertTaskOptions, validateScaffoldPedagogy } from '../data/guardrails.js';
 
 /**
  * Algoritmo Fisher-Yates (Knuth) para barajar arrays de forma equitativa y sin sesgo
@@ -29,6 +29,7 @@ export function shuffleArray(array) {
 /**
  * Prepara una tarea individual para su despliegue ante el estudiante:
  * - Clona la estructura de la tarea
+ * - Valida que la pista de apoyo no regale la respuesta (Guardrail 11)
  * - Baraja aleatoriamente sus alternativas si existen (previniendo sesgo posicional)
  * - Valida la integridad curricular (la respuesta correcta debe seguir presente)
  * @param {Object} rawTask
@@ -40,6 +41,9 @@ export function prepareTask(rawTask) {
   }
 
   const task = { ...rawTask };
+
+  // Guardrail 11: Validar que la pista pedagógica no filtre la solución numérica
+  validateScaffoldPedagogy(task);
 
   // Si la pregunta tiene alternativas múltiples, barajarlas aleatoriamente
   if (Array.isArray(rawTask.options)) {

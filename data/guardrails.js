@@ -239,4 +239,37 @@ export function validateAndAssertTaskOptions(task) {
   return true;
 }
 
+/**
+ * Guardrail 11: Integridad y Andamiaje Pedagógico de Pistas (Scaffold Protection)
+ * Garantiza que:
+ * 1. Ninguna pista de apoyo (scaffold) regale directamente la respuesta numérica final.
+ * 2. La pista no termine con "= respuesta" ni contenga la solución revelada, preservando
+ *    el andamiaje cognitivo del estudiante (Finlandia/Eduten).
+ */
+export function validateScaffoldPedagogy(task) {
+  if (!task || !task.scaffold || task.correctAnswer === undefined) return true;
+
+  const ansStr = String(task.correctAnswer).trim();
+  const scaffold = String(task.scaffold).trim();
+
+  // 1. Prohibir expresiones directas de respuesta: "= [ans]" o "= [ans]."
+  const regexEquals = new RegExp('=\\s*' + ansStr + '(\\D|$)', 'i');
+  if (regexEquals.test(scaffold)) {
+    throw new CurriculumGuardrailError(
+      `Fuga pedagógica en la pista de la tarea ${task.id || ''}: La pista regala la respuesta final "= ${ansStr}".`
+    );
+  }
+
+  // 2. Prohibir que la pista termine revelando el número exacto
+  const regexEnds = new RegExp('\\b' + ansStr + '\\.?$', 'i');
+  if (regexEnds.test(scaffold)) {
+    throw new CurriculumGuardrailError(
+      `Fuga pedagógica en la pista de la tarea ${task.id || ''}: La pista termina revelando el número ${ansStr}.`
+    );
+  }
+
+  return true;
+}
+
+
 
