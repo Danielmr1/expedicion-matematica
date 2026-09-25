@@ -8,6 +8,7 @@ import { storage } from '../data/storage.js';
 import { CLASSROOMS } from '../data/students.js';
 import { AVAILABLE_TOPICS } from '../data/curriculum.js';
 import { escapeHtml } from '../data/guardrails.js';
+import { prepareStationTasks } from '../engine/taskEngine.js';
 
 const AVATAR_ICONS = {
   chasqui: '🏃‍♂️',
@@ -43,14 +44,14 @@ export function renderStudentHomeView(app) {
 
   return `
     <!-- Cabecera Superior Adaptativa -->
-    <header style="background: var(--bg-header); border-bottom: 1px solid var(--border-subtle); padding: 14px 24px; position: sticky; top: 0; z-index: 10;">
-      <div style="max-width: 1050px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+    <header class="student-header" style="background: var(--bg-header); border-bottom: 1px solid var(--border-subtle); padding: 12px 20px; position: sticky; top: 0; z-index: 100;">
+      <div class="student-header-inner">
         
-        <div style="display: flex; align-items: center; gap: 14px;">
-          ${renderCyberAvatar(student.avatar, 42)}
+        <div class="student-profile-bar">
+          ${renderCyberAvatar(student.avatar, 40)}
           <div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 17px; font-weight: 800; color: var(--text-white); font-family: var(--font-title);">¡Hola, ${escapeHtml(student.firstName || student.displayName || student.name)}!</span>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span style="font-size: 16px; font-weight: 800; color: var(--text-white); font-family: var(--font-title);">¡Hola, ${escapeHtml(student.firstName || student.displayName || student.name)}!</span>
               <span class="${classBadgeClass}">
                 ${classroomMeta.name}
               </span>
@@ -61,7 +62,7 @@ export function renderStudentHomeView(app) {
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <div class="student-nav-bar">
           <button id="open-student-guide-btn" class="btn-dark" style="padding: 7px 12px; font-size: 12px; border-color: var(--neon-green); color: var(--neon-green); display: inline-flex; align-items: center; gap: 6px; cursor: pointer;" title="Ver cómo explorar y alcanzar tu meta semanal">
             ${app.currentTheme === 'andina' ? ICONS.compass(16, 'var(--neon-green)') : ICONS.pixelLogo(16, 'var(--neon-green)')} ¿Cómo Explorar?
           </button>
@@ -74,6 +75,9 @@ export function renderStudentHomeView(app) {
           <div class="badge-tech badge-delta" style="padding: 6px 10px; font-size: 12px;">
             ${ICONS.bolt(14, 'var(--color-delta)')} <span>${student.xp || 0}</span> XP
           </div>
+        </div>
+
+        <div class="student-menu-bar">
           ${app.renderSettingsMenu()}
         </div>
 
@@ -340,8 +344,9 @@ export function attachStudentHomeEvents(app) {
     btn.addEventListener('click', (e) => {
       const stationId = e.currentTarget.getAttribute('data-station-id');
       const mission = app.getCurrentMission();
-      app.selectedStation = mission.stations.find(s => s.id === stationId);
-      if (app.selectedStation) {
+      const rawStation = mission.stations.find(s => s.id === stationId);
+      if (rawStation) {
+        app.selectedStation = prepareStationTasks(rawStation);
         app.currentTaskIndex = 0;
         app.currentAttemptCount = 0;
         app.taskStartTime = Date.now();

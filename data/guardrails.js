@@ -162,3 +162,81 @@ export function sanitizePin(pin) {
   return clean.length >= 4 ? clean.slice(0, 4) : clean.padStart(4, '0');
 }
 
+/**
+ * Guardrail 7: Anticolisión DOM vs Window Scope
+ * Prohíbe nombrar instancias o variables globales con el mismo ID que elementos del DOM (ej. <div id="app">).
+ * Los navegadores crean window[id] automáticamente, causando colisiones críticas.
+ */
+export function assertNoDomWindowCollision(globalVarName, domId) {
+  if (globalVarName && domId && globalVarName.toLowerCase() === domId.toLowerCase()) {
+    throw new Error(`[GUARDRAIL CRÍTICO]: Colisión detectada. La variable global "window.${globalVarName}" colisiona con el elemento HTML <... id="${domId}">.`);
+  }
+  return true;
+}
+
+/**
+ * Guardrail 8: Escáner de Sintaxis Estricta para Navegadores
+ * Analiza código JavaScript para prevenir patrones que fallan en motores de navegación reales.
+ */
+export function scanCodeForBrowserSyntaxRisks(sourceCode) {
+  const issues = [];
+  const lines = sourceCode.split('\n');
+
+  lines.forEach((line, idx) => {
+    const lineNum = idx + 1;
+    // 1. Asignación a encadenamiento opcional (SyntaxError: Invalid left-hand side in assignment)
+    if (/\?\.[\w$]+\s*=[^=]/.test(line)) {
+      issues.push(`Línea ${lineNum}: Asignación prohibida a encadenamiento opcional (?.). Usa 'if (el) el.prop = val' o addEventListener.`);
+    }
+    // 2. Colisión window.app
+    if (/\bwindow\.app\s*=[^=]/.test(line) || /if\s*\(\s*!window\.app\s*\)/.test(line)) {
+      issues.push(`Línea ${lineNum}: Uso peligroso de window.app colisiona con <div id="app">.`);
+    }
+  });
+
+  return {
+    valid: issues.length === 0,
+    issues
+  };
+}
+
+/**
+ * Guardrail 9: Enlace Seguro de Eventos
+ * Garantiza asignación de eventos sin riesgo de error de asignación opcional.
+ */
+export function safeBindClick(elementOrId, handler) {
+  const el = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
+  if (el && typeof handler === 'function') {
+    el.onclick = handler;
+  }
+}
+
+/**
+ * Guardrail 10: Integridad y Aleatoriedad de Alternativas de Respuesta
+ * Garantiza que:
+ * 1. Toda pregunta con opciones múltiples contenga la respuesta correcta dentro del array de opciones.
+ * 2. No existan alternativas duplicadas dentro de la misma pregunta.
+ * 3. Las alternativas tengan al menos 2 opciones válidas.
+ */
+export function validateAndAssertTaskOptions(task) {
+  if (!task || !Array.isArray(task.options)) return true;
+
+  if (task.options.length < 2) {
+    throw new CurriculumGuardrailError(`La pregunta ${task.id || ''} debe tener al menos 2 alternativas.`);
+  }
+
+  // Verificar que la respuesta correcta esté entre las opciones
+  if (task.correctOption && !task.options.includes(task.correctOption)) {
+    throw new CurriculumGuardrailError(`La alternativa correcta "${task.correctOption}" no se encuentra entre las opciones de la pregunta ${task.id || ''}.`);
+  }
+
+  // Verificar que no haya opciones duplicadas
+  const uniqueOptions = new Set(task.options);
+  if (uniqueOptions.size !== task.options.length) {
+    throw new CurriculumGuardrailError(`La pregunta ${task.id || ''} contiene alternativas duplicadas: ${JSON.stringify(task.options)}.`);
+  }
+
+  return true;
+}
+
+

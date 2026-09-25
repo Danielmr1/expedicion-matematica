@@ -6,6 +6,7 @@
 import { ICONS } from '../data/icons.js';
 import { storage } from '../data/storage.js';
 import { escapeHtml } from '../data/guardrails.js';
+import { prepareStationTasks } from '../engine/taskEngine.js';
 
 export function renderPracticeStationView(app) {
   const station = app.selectedStation;
@@ -529,7 +530,7 @@ export function showStationVictoryModal(app) {
     const mission = app.getCurrentMission();
     const currentIdx = mission.stations.findIndex(s => s.id === station.id);
     if (currentIdx !== -1 && currentIdx < mission.stations.length - 1) {
-      app.selectedStation = mission.stations[currentIdx + 1];
+      app.selectedStation = prepareStationTasks(mission.stations[currentIdx + 1]);
       app.currentTaskIndex = 0;
       app.currentAttemptCount = 0;
       app.taskStartTime = Date.now();
