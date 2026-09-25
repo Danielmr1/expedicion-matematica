@@ -208,7 +208,21 @@ class ExpedicionApp {
     btn?.addEventListener('click', (e) => {
       e.stopPropagation();
       if (menu) {
-        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        const isHidden = menu.style.display === 'none' || !menu.style.display;
+        if (isHidden) {
+          menu.style.display = 'block';
+          // Prevenir desbordamientos laterales en pantallas pequeñas
+          const rect = menu.getBoundingClientRect();
+          if (rect.left < 8) {
+            menu.style.left = '0';
+            menu.style.right = 'auto';
+          } else if (rect.right > window.innerWidth - 8) {
+            menu.style.right = '0';
+            menu.style.left = 'auto';
+          }
+        } else {
+          menu.style.display = 'none';
+        }
       }
     });
 

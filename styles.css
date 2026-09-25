@@ -1222,8 +1222,77 @@ body[data-theme="expedicion"],
   background: #f3ede4 !important;
 }
 
+/* Cabecera de Alumno Responsive */
+.student-header-inner {
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.student-profile-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.student-nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.student-menu-bar {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+#settings-dropdown-menu {
+  max-width: calc(100vw - 20px);
+}
+
 /* Reglas específicas para pantallas de Celulares y Tablets */
 @media screen and (max-width: 768px) {
+  /* Cabecera del alumno en móvil: Fila 1 = Perfil + 3 Puntos a la derecha; Fila 2 = Navegación y Badges */
+  .student-header-inner {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 10px 8px !important;
+    align-items: center !important;
+  }
+
+  .student-profile-bar {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .student-menu-bar {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    margin-left: 0 !important;
+    justify-self: end !important;
+  }
+
+  .student-nav-bar {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  #settings-dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+    width: 215px !important;
+  }
+
   /* Cabeceras adaptables en una sola fila compacta */
   header {
     padding: 10px 14px !important;
