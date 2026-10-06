@@ -262,6 +262,8 @@ export function renderTaskWorkspace(app, station, task) {
         </div>
       </div>
     `;
+  }
+
   // 5. ESTACIÓN DE FRECUENCIAS TEMPORALES (MINIJUEGO TÁCTIL)
   if (station.type === 'time-match') {
     const leftList = task.shuffledLeft || (task.pairs ? task.pairs.map(p => ({ id: p.id, text: p.left })) : []);
