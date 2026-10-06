@@ -434,78 +434,303 @@ export const AVAILABLE_TOPICS = [
     ]
   },
   {
-    id: "division-reparto",
+    id: "unidades-tiempo",
     bimestre: 3,
     bimestreName: "3.° Bimestre",
     weekNumber: 2,
-    title: "Semana 2: División y Reparto Equitativo",
-    subtitle: "3.° Bimestre • Número y Operaciones • Algoritmo y Residuo",
+    title: "Semana 2: Unidades de Medida de Tiempo",
+    subtitle: "3.° Bimestre • Magnitudes y Medida • Calendarios, Décadas y Siglos",
     status: "available",
-    description: "Reparto equitativo, comprobación de la división y problemas de sobrante.",
-    worksheetTitle: "3.° Bimestre • Número y Operaciones • División y Reparto Equitativo",
+    description: "Equivalencias temporales, tablas de conversión, cálculo de periodos y cronología.",
+    worksheetTitle: "3.° Bimestre • Magnitudes y Medida • Unidades de Medida de Tiempo",
     stationNames: {
-      s1: "Estación 1: Reparto Concreto y Pictórico",
-      s2: "Estación 2: Algoritmo y Residuo",
-      s3: "Estación 3: Comprobación Dividendo (Oro)",
-      sDiam: "Reto Diamante: Problemas de Sobrante"
+      s1: "Estación 1: Frecuencias Temporales (Minijuego)",
+      s2: "Estación 2: Conversiones y Tablas",
+      s3: "Estación 3: Problemas de Tiempo (Oro)",
+      sDiam: "Reto Diamante: Cronología Histórica"
     },
     difficulties: [
-      { id: "confusion", label: "Confusión entre Residuo y Cociente", color: "#ef4444" },
-      { id: "jump", label: "Falla en Tabla de Multiplicar asociada", color: "#f59e0b" },
-      { id: "calc", label: "Dificultad en Reparto No Equitativo", color: "#3b82f6" },
-      { id: "clean", label: "Dominio en Reparto Exacto e Inexacto", color: "var(--neon-green)" }
-    ]
-  },
-  {
-    id: "fracciones-unidad",
-    bimestre: 3,
-    bimestreName: "3.° Bimestre",
-    weekNumber: 3,
-    title: "Semana 3: Fracciones y Partes de la Unidad",
-    subtitle: "3.° Bimestre • Número y Operaciones • Fracciones Propias y Equivalentes",
-    status: "available",
-    description: "Tiras de fracciones, comparación y equivalencias con representaciones concretas.",
-    worksheetTitle: "3.° Bimestre • Número y Operaciones • Fracciones y Partes de la Unidad",
-    stationNames: {
-      s1: "Estación 1: Tira de Fracciones y Partes",
-      s2: "Estación 2: Fracciones Equivalentes",
-      s3: "Estación 3: Comparación y Orden (Oro)",
-      sDiam: "Reto Diamante: Fracción de Cantidad"
-    },
-    difficulties: [
-      { id: "confusion", label: "Confusión Numerador vs Denominador", color: "#ef4444" },
-      { id: "jump", label: "Error en Equivalencias Visuales (1/2 = 2/4)", color: "#f59e0b" },
-      { id: "calc", label: "Dificultad en Fracción de una Colección", color: "#3b82f6" },
-      { id: "clean", label: "Comprensión Gráfica y Numérica Completa", color: "var(--neon-green)" }
-    ]
-  },
-  {
-    id: "operaciones-combinadas",
-    bimestre: 3,
-    bimestreName: "3.° Bimestre",
-    weekNumber: 4,
-    title: "Semana 4: Operaciones Combinadas y Enigmas",
-    subtitle: "3.° Bimestre • Resolución de Problemas • Jerarquía y Paréntesis",
-    status: "available",
-    description: "Jerarquía de operaciones básicas en problemas de dos etapas.",
-    worksheetTitle: "3.° Bimestre • Resolución de Problemas • Operaciones Combinadas",
-    stationNames: {
-      s1: "Estación 1: Jerarquía Básica (× y ÷)",
-      s2: "Estación 2: Regla de Paréntesis",
-      s3: "Estación 3: Enigmas de Dos Etapas (Oro)",
-      sDiam: "Reto Diamante: Desafíos Integrados"
-    },
-    difficulties: [
-      { id: "confusion", label: "Infracción de Jerarquía (Suma antes de ×)", color: "#ef4444" },
-      { id: "jump", label: "Omisión de Regla de Paréntesis", color: "#f59e0b" },
-      { id: "calc", label: "Dificultad en Problemas de Dos Etapas", color: "#3b82f6" },
-      { id: "clean", label: "Resolución Ordenada y Correcta", color: "var(--neon-green)" }
+      { id: "confusion", label: "Confusión Décadas vs Siglos (10 vs 100)", color: "#ef4444" },
+      { id: "jump", label: "Falla en Trimestres y Semestres (3 vs 6 meses)", color: "#f59e0b" },
+      { id: "calc", label: "Dificultad en Conversión de Días y Semanas", color: "#3b82f6" },
+      { id: "clean", label: "Dominio de Equivalencias y Problemas", color: "var(--neon-green)" }
     ]
   }
 ];
 
 // ==============================================================
-// MISIÓN SEMANA 2: DIVISIÓN Y REPARTO EQUITATIVO
+// MISIÓN SEMANA 2: UNIDADES DE MEDIDA DE TIEMPO (SANTILLANA U4 PÁG. 126-127)
+// ==============================================================
+export const MISSION_TIEMPO = {
+  id: "unidades-tiempo",
+  title: "Misión Semanal: Unidades de Medida de Tiempo",
+  subtitle: "Entrenamiento de Equivalencias, Calendarios y Cronología",
+  icon: "⏳",
+  stations: [
+    {
+      id: "estacion-1",
+      number: 1,
+      name: "Estación 1: Frecuencias Temporales (Minijuego)",
+      shortTitle: "Frecuencias Temporales",
+      trophy: "bronce",
+      trophyName: "Trofeo de Bronce",
+      trophyIcon: "🥉",
+      targetExercises: 4,
+      type: "time-match",
+      description: "Empareja las expresiones de tiempo equivalentes conectando sus tarjetas de energía.",
+      instructions: "Toca una tarjeta de tiempo y luego toca su equivalente para conectarlas.",
+      tasks: [
+        {
+          id: "tm-01",
+          roundTitle: "Ronda 1: Días, Semanas y Meses",
+          pairs: [
+            { id: "p1", left: "1 semana", right: "7 días" },
+            { id: "p2", left: "2 semanas", right: "14 días" },
+            { id: "p3", left: "1 bimestre", right: "2 meses" },
+            { id: "p4", left: "1 trimestre", right: "3 meses" }
+          ],
+          hints: {
+            "1 semana": "Recuerda: 1 semana completa agrupa siete días seguidos.",
+            "2 semanas": "Si 1 semana tiene 7 días, calcula el doble (2 veces 7).",
+            "1 bimestre": "El prefijo 'bi' indica dos: un bimestre reúne 2 meses.",
+            "1 trimestre": "El prefijo 'tri' indica tres: un trimestre reúne 3 meses."
+          }
+        },
+        {
+          id: "tm-02",
+          roundTitle: "Ronda 2: Meses, Años y Semestres",
+          pairs: [
+            { id: "p1", left: "1 año", right: "12 meses" },
+            { id: "p2", left: "2 años", right: "24 meses" },
+            { id: "p3", left: "1 semestre", right: "6 meses" },
+            { id: "p4", left: "3 semestres", right: "18 meses" }
+          ],
+          hints: {
+            "1 año": "Recuerda: Un año regular tiene 12 meses (enero a diciembre).",
+            "2 años": "Multiplica 2 años por los doce meses que tiene cada año.",
+            "1 semestre": "Un semestre agrupa la mitad del año: 6 meses.",
+            "3 semestres": "Multiplica 3 semestres por los seis meses de cada uno."
+          }
+        },
+        {
+          id: "tm-03",
+          roundTitle: "Ronda 3: Años, Décadas y Siglos",
+          pairs: [
+            { id: "p1", left: "1 década", right: "10 años" },
+            { id: "p2", left: "2 décadas", right: "20 años" },
+            { id: "p3", left: "1 siglo", right: "100 años" },
+            { id: "p4", left: "5 siglos", right: "500 años" }
+          ],
+          hints: {
+            "1 década": "Una década es un período de diez años.",
+            "2 décadas": "Multiplica 2 décadas por los diez años de cada una.",
+            "1 siglo": "Un siglo o centuria representa 100 años completos.",
+            "5 siglos": "Multiplica 5 siglos por los cien años de cada siglo."
+          }
+        },
+        {
+          id: "tm-04",
+          roundTitle: "Ronda 4: Desafío de Equivalencias Santillana",
+          pairs: [
+            { id: "p1", left: "48 meses", right: "4 años" },
+            { id: "p2", left: "500 años", right: "5 siglos" },
+            { id: "p3", left: "18 meses", right: "3 semestres" },
+            { id: "p4", left: "20 años", right: "2 décadas" }
+          ],
+          hints: {
+            "48 meses": "Divide los meses entre 12 o busca qué número por 12 da 48.",
+            "500 años": "Divide los 500 años entre los 100 años de cada siglo.",
+            "18 meses": "Divide los 18 meses entre los 6 meses de cada semestre.",
+            "20 años": "Divide los 20 años entre los diez años de cada década."
+          }
+        }
+      ]
+    },
+    {
+      id: "estacion-2",
+      number: 2,
+      name: "Estación 2: Conversiones y Tablas de Tiempo",
+      shortTitle: "Conversiones de Tiempo",
+      trophy: "plata",
+      trophyName: "Trofeo de Plata",
+      trophyIcon: "🥈",
+      targetExercises: 6,
+      type: "jump-track",
+      description: "Completa las tablas de equivalencia aplicando multiplicaciones por 10, 100 y 3.",
+      instructions: "Calcula el valor faltante y escríbelo en la casilla vacía.",
+      tasks: [
+        {
+          id: "t2-01",
+          rule: "× 10",
+          ruleLabel: "Décadas a Años: Multiplicar por 10",
+          track: ["1 déc. (10)", "3 déc. (30)", "7 déc. (70)", "9 déc. (?)"],
+          missingIndex: 3,
+          correctAnswer: 90,
+          scaffold: "Multiplica 9 décadas por los diez años que tiene cada década."
+        },
+        {
+          id: "t2-02",
+          rule: "× 10",
+          ruleLabel: "Décadas a Años: Multiplicar por 10",
+          track: ["3 déc. (30)", "7 déc. (70)", "9 déc. (90)", "10 déc. (?)"],
+          missingIndex: 3,
+          correctAnswer: 100,
+          scaffold: "Multiplica 10 décadas por 10 años cada una (equivale a 1 siglo)."
+        },
+        {
+          id: "t2-03",
+          rule: "× 100",
+          ruleLabel: "Siglos a Años: Multiplicar por 100",
+          track: ["1 siglo (100)", "2 siglos (200)", "3 siglos (?)"],
+          missingIndex: 2,
+          correctAnswer: 300,
+          scaffold: "Multiplica 3 siglos por los cien años de cada siglo."
+        },
+        {
+          id: "t2-04",
+          rule: "× 100",
+          ruleLabel: "Siglos a Años: Multiplicar por 100",
+          track: ["2 siglos (200)", "5 siglos (500)", "10 siglos (?)"],
+          missingIndex: 2,
+          correctAnswer: 1000,
+          scaffold: "Multiplica 10 siglos por los 100 años (equivale a un milenio)."
+        },
+        {
+          id: "t2-05",
+          rule: "× 3",
+          ruleLabel: "Trimestres a Meses: Multiplicar por 3",
+          track: ["1 trim. (3)", "2 trim. (6)", "4 trim. (?)"],
+          missingIndex: 2,
+          correctAnswer: 12,
+          scaffold: "Recuerda: 1 trimestre tiene 3 meses. Multiplica cuatro por tres."
+        },
+        {
+          id: "t2-06",
+          rule: "× 3",
+          ruleLabel: "Trimestres a Meses: Multiplicar por 3",
+          track: ["4 trim. (12)", "5 trim. (15)", "7 trim. (?)"],
+          missingIndex: 2,
+          correctAnswer: 21,
+          scaffold: "Multiplica 7 trimestres por los 3 meses de cada uno."
+        }
+      ]
+    },
+    {
+      id: "estacion-3",
+      number: 3,
+      name: "Estación 3: Problemas Cotidianos y Calendarios",
+      shortTitle: "Problemas de Tiempo",
+      trophy: "oro",
+      trophyName: "Trofeo de Oro",
+      trophyIcon: "🥇",
+      targetExercises: 4,
+      type: "function-machine",
+      description: "Resuelve problemas con calendarios, consultas y presupuestos trimestrales.",
+      instructions: "Analiza los datos y escribe el número correspondiente.",
+      tasks: [
+        {
+          id: "t3-01",
+          ruleDisplay: "Consulta Médica: 1 semana = 7 días",
+          table: [
+            { in: "1 semana", out: "7 días" },
+            { in: "2 semanas (Sandra)", out: "14 días" },
+            { in: "Espera de Carlos", out: "12 días" },
+            { in: "Diferencia de espera (14 - 12)", out: "?" }
+          ],
+          prompt: "¿Cuántos días más que Carlos debe esperar Sandra para su consulta (14 - 12)?",
+          correctAnswer: 2,
+          scaffold: "Resta los 14 días de espera de Sandra menos los 12 días de Carlos."
+        },
+        {
+          id: "t3-02",
+          ruleDisplay: "Arbitrios Municipales: 1 año = 4 trimestres",
+          table: [
+            { in: "Pago Anual Total", out: "S/ 640" },
+            { in: "Cantidad de Trimestres", out: "4" },
+            { in: "Pago por cada Trimestre (640 ÷ 4)", out: "?" }
+          ],
+          prompt: "Divide el pago anual entre 4 trimestres: ¿Cuánto se paga cada trimestre (640 ÷ 4)?",
+          correctAnswer: 160,
+          scaffold: "Divide 640 entre 4 trimestres (64 ÷ 4 = 16, agrega el cero)."
+        },
+        {
+          id: "t3-03",
+          ruleDisplay: "Ciclos Biológicos: Gestación de 9 meses",
+          table: [
+            { in: "1 mes promedio", out: "30 días" },
+            { in: "3 meses (1 trimestre)", out: "90 días" },
+            { in: "6 meses (1 semestre)", out: "180 días" },
+            { in: "9 meses de gestación (9 × 30)", out: "?" }
+          ],
+          prompt: "Calcula los días aproximados de gestación humana (9 × 30):",
+          correctAnswer: 270,
+          scaffold: "Multiplica 9 meses por 30 días de cada mes (9 × 3 = 27, agrega el cero)."
+        },
+        {
+          id: "t3-04",
+          ruleDisplay: "Astronomía: Movimiento de Traslación de la Tierra",
+          table: [
+            { in: "1 año regular", out: "365 días" },
+            { in: "1 año bisiesto", out: "366 días" },
+            { in: "Días de traslación en año no bisiesto", out: "?" }
+          ],
+          prompt: "¿Cuántos días dura la traslación de la Tierra alrededor del Sol en un año común?",
+          correctAnswer: 365,
+          scaffold: "El año común o regular tiene trescientos sesenta y cinco días."
+        }
+      ]
+    },
+    {
+      id: "estacion-diamante",
+      number: 4,
+      name: "Reto Diamante: Cronología Histórica y Desafíos Integrados",
+      shortTitle: "Cronología y Desafíos",
+      trophy: "diamante",
+      trophyName: "Trofeo de Diamante",
+      trophyIcon: "💎",
+      targetExercises: 3,
+      type: "applied-problem",
+      isOptionalMastery: true,
+      description: "Líneas de tiempo históricas y cálculos combinados de períodos de tiempo.",
+      instructions: "Lee atentamente la situación y escribe tu respuesta final.",
+      tasks: [
+        {
+          id: "t4-01",
+          location: "Lima (Plaza Mayor)",
+          title: "Independencia del Perú (1821)",
+          story: "Don José de San Martín proclamó la Independencia del Perú en el año 1821. Cada siglo abarca 100 años (por ejemplo, el siglo 19 abarca de 1801 a 1900).",
+          question: "¿A qué siglo (escribe el número: ej. 18, 19, 20) pertenece el año 1821?",
+          formulaTrack: "Año 1821 está entre 1801 y 1900 -> [ ? ]",
+          correctAnswer: 19,
+          scaffold: "Observa los dos primeros dígitos (18) y suma 1 para hallar el siglo correspondiente."
+        },
+        {
+          id: "t4-02",
+          location: "Cusco (Cronología Histórica)",
+          title: "Llegada al Continente Americano (1492)",
+          story: "La llegada de Cristóbal Colón ocurrió en el año 1492. El siglo 15 abarca desde 1401 hasta 1500.",
+          question: "¿A qué siglo (en número: ej. 14, 15, 16) pertenece el año 1492?",
+          formulaTrack: "Año 1492 está entre 1401 y 1500 -> [ ? ]",
+          correctAnswer: 15,
+          scaffold: "Observa que el año 1492 está en la centuria del mil cuatrocientos. Suma 1 al 14."
+        },
+        {
+          id: "t4-03",
+          location: "Arequipa (Registro Laboral)",
+          title: "El Gran Desafío de Tatiana",
+          story: "Tatiana trabajó 2 décadas, 2 años y 6 meses (un total de 270 meses). La empresa le paga S/ 1800 por cada bloque de 15 meses cumplidos. Al dividir 270 ÷ 15, resultan exactamente 18 bloques.",
+          question: "¿Cuánto dinero en soles (S/) recibirá Tatiana en total (18 × 1800)?",
+          formulaTrack: "18 bloques × S/ 1800 = [ ? soles ]",
+          correctAnswer: 32400,
+          scaffold: "Multiplica 18 × 18 (que da 324) y agrégale los dos ceros al final."
+        }
+      ]
+    }
+  ]
+};
+
+// ==============================================================
+// MISIÓN SEMANA 2: DIVISIÓN Y REPARTO EQUITATIVO (HISTÓRICO)
 // ==============================================================
 export const MISSION_DIVISION = {
   id: "division-reparto",
@@ -1468,6 +1693,7 @@ export const MISSION_OPERACIONES = {
 // FUNCIÓN CENTRAL: OBTENER MISIÓN SEGÚN TEMA SELECCIONADO
 // ==============================================================
 export function getWeeklyMission(topicId) {
+  if (topicId === 'unidades-tiempo') return MISSION_TIEMPO;
   if (topicId === 'division-reparto') return MISSION_DIVISION;
   if (topicId === 'fracciones-unidad') return MISSION_FRACCIONES;
   if (topicId === 'operaciones-combinadas') return MISSION_OPERACIONES;
