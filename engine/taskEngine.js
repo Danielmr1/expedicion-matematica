@@ -51,6 +51,12 @@ export function prepareTask(rawTask) {
     validateAndAssertTaskOptions(task);
   }
 
+  // Si la pregunta es de emparejamiento interactivo (minijuego de tiempo), barajar ambas columnas
+  if (Array.isArray(rawTask.pairs)) {
+    task.shuffledLeft = shuffleArray(rawTask.pairs.map(p => ({ id: p.id, text: p.left })));
+    task.shuffledRight = shuffleArray(rawTask.pairs.map(p => ({ id: p.id, text: p.right })));
+  }
+
   return task;
 }
 
