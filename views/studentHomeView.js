@@ -43,8 +43,21 @@ export function renderStudentHomeView(app) {
   const progressPercent = Math.min(100, Math.round((totalStars / goldThreshold) * 100));
 
   return `
+    ${app.isTeacherSimulating ? `
+      <!-- Banner de Modo Prueba Docente -->
+      <div style="background: rgba(245, 158, 11, 0.16); border-bottom: 2px solid #f59e0b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; z-index: 1000; position: sticky; top: 0;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #f59e0b; font-family: var(--font-mono); font-weight: 700;">
+          <span>🧪 MODO PRUEBA DOCENTE:</span>
+          <span style="color: var(--text-white);">Estás probando <strong>${escapeHtml(currentTopicObj.title)}</strong> con Alumno Virtual. (Tus alumnos reales siguen en ${escapeHtml(storage.getActiveTopic() === 'unidades-tiempo' ? 'Semana 2' : 'Semana 1: Patrones Multiplicativos')}).</span>
+        </div>
+        <button id="exit-preview-to-dashboard-btn" class="btn-dark" style="padding: 5px 14px; font-size: 12px; border-color: #f59e0b; color: #f59e0b; cursor: pointer; font-weight: 700;">
+          🏛️ Volver al Panel Docente
+        </button>
+      </div>
+    ` : ''}
+
     <!-- Cabecera Superior Adaptativa -->
-    <header class="student-header" style="background: var(--bg-header); border-bottom: 1px solid var(--border-subtle); padding: 12px 20px; position: sticky; top: 0; z-index: 100;">
+    <header class="student-header" style="background: var(--bg-header); border-bottom: 1px solid var(--border-subtle); padding: 12px 20px; position: sticky; top: ${app.isTeacherSimulating ? '45px' : '0'}; z-index: 100;">
       <div class="student-header-inner">
         
         <div class="student-profile-bar">
@@ -332,6 +345,14 @@ export function attachStudentHomeEvents(app) {
     storage.logout();
     app.user = null;
     app.currentView = 'LOGIN';
+    app.render();
+  });
+
+  document.getElementById('exit-preview-to-dashboard-btn')?.addEventListener('click', () => {
+    app.isTeacherSimulating = false;
+    app.simulatedTopicId = null;
+    app.user = app.simulatedTeacherSession || { username: 'profesor', role: 'teacher', isTeacher: true };
+    app.currentView = 'TEACHER_DASHBOARD';
     app.render();
   });
 

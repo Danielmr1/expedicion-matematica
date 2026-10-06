@@ -21,6 +21,11 @@ export function renderPracticeStationView(app) {
         <button id="exit-practice-btn" class="btn-dark" style="padding: 6px 14px; font-size: 12px;">
           ✕ Salir
         </button>
+        ${app.isTeacherSimulating ? `
+          <button id="exit-sim-dashboard-btn" class="btn-dark" style="padding: 6px 12px; font-size: 11px; border-color: #f59e0b; color: #f59e0b; font-weight: 700; cursor: pointer;" title="Volver al Panel de Monitoreo Docente">
+            🏛️ Panel Docente
+          </button>
+        ` : ''}
         <div style="font-weight: 800; color: var(--text-white); font-size: 15px; font-family: var(--font-title); display: flex; align-items: center; gap: 8px;">
           ${app.getEmblemSvg(station.trophy, 22)}
           <span>${station.name}</span>
@@ -257,6 +262,54 @@ export function renderTaskWorkspace(app, station, task) {
         </div>
       </div>
     `;
+  // 5. ESTACIÓN DE FRECUENCIAS TEMPORALES (MINIJUEGO TÁCTIL)
+  if (station.type === 'time-match') {
+    const leftList = task.shuffledLeft || (task.pairs ? task.pairs.map(p => ({ id: p.id, text: p.left })) : []);
+    const rightList = task.shuffledRight || (task.pairs ? task.pairs.map(p => ({ id: p.id, text: p.right })) : []);
+    const isAndina = app.currentTheme === 'andina';
+    const leftIcon = isAndina ? '☀️' : '⚡';
+    const rightIcon = isAndina ? '⏱️' : '🛸';
+
+    return `
+      <div class="time-match-container">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <span class="badge-tech badge-delta" style="font-size: 13px; padding: 5px 16px;">
+            ${escapeHtml(task.roundTitle || 'Conecta las frecuencias temporales equivalentes')}
+          </span>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 8px;">
+            Toca una tarjeta de la izquierda y luego su equivalente en la derecha para sincronizarlas.
+          </p>
+        </div>
+
+        <div class="time-match-grid">
+          <div class="time-match-column" id="time-left-col">
+            <div class="time-column-header">${isAndina ? 'UNIDADES TEMPORALES' : 'CANAL TEMPORAL A'}</div>
+            ${leftList.map(item => `
+              <button class="time-match-card" data-col="left" data-id="${item.id}" data-text="${escapeHtml(item.text)}">
+                <span class="time-card-icon">${leftIcon}</span>
+                <span class="time-card-text">${escapeHtml(item.text)}</span>
+              </button>
+            `).join('')}
+          </div>
+
+          <div class="time-match-column" id="time-right-col">
+            <div class="time-column-header">${isAndina ? 'EQUIVALENCIAS' : 'FRECUENCIA DESTINO B'}</div>
+            ${rightList.map(item => `
+              <button class="time-match-card" data-col="right" data-id="${item.id}" data-text="${escapeHtml(item.text)}">
+                <span class="time-card-icon">${rightIcon}</span>
+                <span class="time-card-text">${escapeHtml(item.text)}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 22px;">
+          <div id="time-match-counter" class="time-match-counter-chip">
+            ⚡ Conexiones realizadas: <span id="time-matched-count" style="color: var(--neon-green); font-weight: 800;">0</span> de ${task.pairs ? task.pairs.length : 0}
+          </div>
+        </div>
+      </div>
+    `;
   }
 
   return '';
@@ -274,6 +327,14 @@ export function attachPracticeStationEvents(app) {
       app.currentView = 'STUDENT_HOME';
       app.render();
     }
+  });
+
+  document.getElementById('exit-sim-dashboard-btn')?.addEventListener('click', () => {
+    app.isTeacherSimulating = false;
+    app.simulatedTopicId = null;
+    app.user = app.simulatedTeacherSession || { username: 'profesor', role: 'teacher', isTeacher: true };
+    app.currentView = 'TEACHER_DASHBOARD';
+    app.render();
   });
 
   // 1. ESTACIÓN 1: Clic en opciones de regla
@@ -334,6 +395,117 @@ export function attachPracticeStationEvents(app) {
     submitBtn?.addEventListener('click', handleApplied);
     inputEl?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') handleApplied();
+    });
+  }
+
+  // 5. ESTACIÓN DE FRECUENCIAS TEMPORALES (MINIJUEGO)
+  if (station.type === 'time-match') {
+    let selectedLeft = null;
+    let selectedRight = null;
+    let matchedCount = 0;
+    const totalPairs = task.pairs ? task.pairs.length : 0;
+
+    const cards = document.querySelectorAll('.time-match-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        if (card.classList.contains('matched') || card.classList.contains('shake')) return;
+
+        const col = card.getAttribute('data-col');
+        const id = card.getAttribute('data-id');
+        const text = card.getAttribute('data-text');
+
+        if (col === 'left') {
+          document.querySelectorAll('.time-match-card[data-col="left"]').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedLeft = { id, text, el: card };
+        } else {
+          document.querySelectorAll('.time-match-card[data-col="right"]').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          selectedRight = { id, text, el: card };
+        }
+
+        if (selectedLeft && selectedRight) {
+          app.currentAttemptCount++;
+          const feedbackBox = document.getElementById('task-feedback-container');
+          const isMatch = (selectedLeft.id === selectedRight.id);
+
+          if (isMatch) {
+            app.playFeedbackTone('correct');
+            selectedLeft.el.classList.remove('selected');
+            selectedRight.el.classList.remove('selected');
+            selectedLeft.el.classList.add('matched');
+            selectedRight.el.classList.add('matched');
+
+            matchedCount++;
+            const counterEl = document.getElementById('time-matched-count');
+            if (counterEl) counterEl.textContent = matchedCount;
+
+            selectedLeft = null;
+            selectedRight = null;
+
+            if (matchedCount === totalPairs) {
+              const durationSec = Math.max(3, Math.round((Date.now() - app.taskStartTime) / 1000));
+              showFeedbackBox(feedbackBox, true, `
+                ${ICONS.feedbackSuccess(app.currentTheme, 32)}
+                <div>
+                  <div style="font-weight: 800; font-size: 15px;">¡Frecuencias Sincronizadas! +1 Estrella ⭐</div>
+                  <div style="font-size: 13px; margin-top: 2px;">Completaste todas las equivalencias de esta ronda.</div>
+                </div>
+              `);
+
+              const isStationComplete = (app.currentTaskIndex === app.selectedStation.tasks.length - 1);
+              const updatedStudent = storage.recordTaskAttempt(app.user.id, {
+                stationId: app.selectedStation.id,
+                taskId: task.id,
+                taskIndex: app.currentTaskIndex,
+                isCorrect: true,
+                attemptNumber: app.currentAttemptCount,
+                timeSpentSec: durationSec,
+                isStationComplete
+              });
+
+              if (updatedStudent) {
+                app.user.stars = updatedStudent.stars;
+                app.user.xp = updatedStudent.xp;
+                app.user.completedChallenges = updatedStudent.completedChallenges;
+                app.user.stationProgress = updatedStudent.stationProgress;
+                app.user.trophies = updatedStudent.trophies;
+                app.user.timeMinutes = updatedStudent.timeMinutes;
+              }
+
+              const starsBadge = document.getElementById('student-stars-badge');
+              if (starsBadge) starsBadge.textContent = app.user.stars || 0;
+
+              setTimeout(() => {
+                advanceToNextTask(app);
+              }, 1400);
+            }
+          } else {
+            app.playFeedbackTone('error');
+            const leftCardEl = selectedLeft.el;
+            const rightCardEl = selectedRight.el;
+            const hint = task.hints?.[selectedLeft.text] || 'Revisa la relación entre estas unidades de tiempo.';
+
+            leftCardEl.classList.add('shake');
+            rightCardEl.classList.add('shake');
+
+            showFeedbackBox(feedbackBox, false, `
+              ${ICONS.feedbackHint(30)}
+              <div>
+                <div style="font-weight: 800; font-size: 14px;">Pista de Frecuencia:</div>
+                <div style="font-size: 13px; margin-top: 2px;">${hint}</div>
+              </div>
+            `);
+
+            setTimeout(() => {
+              leftCardEl.classList.remove('selected', 'shake');
+              rightCardEl.classList.remove('selected', 'shake');
+              selectedLeft = null;
+              selectedRight = null;
+            }, 800);
+          }
+        }
+      });
     });
   }
 }

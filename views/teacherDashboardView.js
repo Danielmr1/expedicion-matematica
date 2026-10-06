@@ -163,6 +163,9 @@ export function renderTeacherDashboard(app) {
                 </option>
               `).join('')}
             </select>
+            <button id="preview-active-topic-btn" class="btn-dark" style="padding: 10px 16px; font-size: 13px; border-color: #f59e0b; color: #f59e0b; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="Probar las estaciones de la semana seleccionada con el Alumno Virtual sin activarla a los alumnos reales">
+              🧪 PROBAR ESTACIONES
+            </button>
             <button id="save-active-topic-btn" class="btn-neon" style="padding: 10px 18px; font-size: 13px;">
               ACTIVAR TEMA ${ICONS.check(14, 'var(--text-black)')}
             </button>
@@ -739,6 +742,20 @@ export function attachTeacherEvents(app) {
       }
     });
   }
+
+  // Probar estaciones de tema con alumno virtual (sin activar a los alumnos reales)
+  document.getElementById('preview-active-topic-btn')?.addEventListener('click', () => {
+    const selectEl = document.getElementById('select-active-topic');
+    const chosenTopic = selectEl ? selectEl.value : 'unidades-tiempo';
+    app.simulatedTeacherSession = app.user || { username: 'profesor', role: 'teacher', isTeacher: true };
+    app.isTeacherSimulating = true;
+    app.selectedWorksheetTopicId = chosenTopic;
+    app.simulatedTopicId = chosenTopic;
+    const filter = app.selectedClassroomFilter || 'sigma';
+    app.user = storage.initVirtualStudent(`virtual-${filter}`, filter);
+    app.currentView = 'STUDENT_HOME';
+    app.render();
+  });
 
   // Guardar y activar tema
   document.getElementById('save-active-topic-btn')?.addEventListener('click', () => {
