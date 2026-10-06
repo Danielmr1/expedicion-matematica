@@ -163,6 +163,63 @@ export function renderTaskWorkspace(app, station, task) {
     `;
   }
 
+  // 2.5 TABLAS DE CONVERSIÓN DE SANTILLANA (ESTACIÓN 2 SEMANA 2)
+  if (station.type === 'conversion-table') {
+    return `
+      <div class="conversion-table-wrapper" style="max-width: 650px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 22px;">
+          <span class="badge-tech badge-delta" style="font-size: 13.5px; padding: 6px 18px;">
+            ${escapeHtml(task.prompt)}
+          </span>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;">
+          <div class="santillana-table-container">
+            <table class="santillana-table">
+              <tbody>
+                <tr class="santillana-table-row-top">
+                  <th class="santillana-th">${escapeHtml(task.headerTop)}</th>
+                  ${task.topRow.map((val, idx) => `
+                    <td class="santillana-td ${idx === task.missingIndex && task.missingRow === 'top' ? 'target-cell' : ''}">
+                      ${idx === task.missingIndex && task.missingRow === 'top' ? `
+                        <input type="number" id="conversion-input" class="conversion-target-input" placeholder="?" autofocus autocomplete="off" />
+                      ` : val}
+                    </td>
+                  `).join('')}
+                </tr>
+                <tr class="santillana-table-row-bottom">
+                  <th class="santillana-th">${escapeHtml(task.headerBottom)}</th>
+                  ${task.bottomRow.map((val, idx) => `
+                    <td class="santillana-td ${idx === task.missingIndex && task.missingRow !== 'top' ? 'target-cell' : ''}">
+                      ${idx === task.missingIndex && task.missingRow !== 'top' ? `
+                        <input type="number" id="conversion-input" class="conversion-target-input" placeholder="?" autofocus autocomplete="off" />
+                      ` : val}
+                    </td>
+                  `).join('')}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="santillana-rule-badge">
+            <span style="font-size: 18px; line-height: 1;">↓</span>
+            <span style="font-weight: 800; font-family: var(--font-mono); margin-top: 2px;">${escapeHtml(task.rule)}</span>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 26px;">
+          <button 
+            id="submit-conversion-btn" 
+            class="btn-neon"
+            style="padding: 14px 38px; font-size: 15px;"
+          >
+            COMPROBAR RESPUESTA ${ICONS.arrowRight(16, 'var(--text-black)')}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   // 3. ESTACIÓN 3: LA MÁQUINA DE FUNCIONES
   if (station.type === 'function-machine') {
     return `
@@ -363,6 +420,23 @@ export function attachPracticeStationEvents(app) {
     submitBtn?.addEventListener('click', handleJump);
     inputEl?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') handleJump();
+    });
+  }
+
+  // 2.5 TABLA DE CONVERSIÓN DE SANTILLANA
+  if (station.type === 'conversion-table') {
+    const inputEl = document.getElementById('conversion-input');
+    const submitBtn = document.getElementById('submit-conversion-btn');
+
+    const handleConversion = () => {
+      const val = parseInt(inputEl?.value);
+      if (isNaN(val)) return;
+      evaluateNumericAnswer(app, val, task.correctAnswer, task.scaffold, task);
+    };
+
+    submitBtn?.addEventListener('click', handleConversion);
+    inputEl?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleConversion();
     });
   }
 

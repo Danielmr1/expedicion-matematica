@@ -137,9 +137,9 @@ export function renderStudentHomeView(app) {
         ${mission.stations.map((st, index) => {
           const isCompleted = completedChallenges.includes(st.id);
           
-          // Lógica de desbloqueo estricta y progresiva
+          // Lógica de desbloqueo: en modo prueba docente todas están disponibles para testeo
           let isUnlocked = false;
-          if (index === 0) {
+          if (index === 0 || app.isTeacherSimulating) {
             isUnlocked = true;
           } else {
             const prevStation = mission.stations[index - 1];

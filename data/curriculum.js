@@ -549,69 +549,87 @@ export const MISSION_TIEMPO = {
     {
       id: "estacion-2",
       number: 2,
-      name: "Estación 2: Conversiones y Tablas de Tiempo",
-      shortTitle: "Conversiones de Tiempo",
+      name: "Estación 2: Tablas de Equivalencias (Santillana)",
+      shortTitle: "Tablas de Equivalencias",
       trophy: "plata",
       trophyName: "Trofeo de Plata",
       trophyIcon: "🥈",
       targetExercises: 6,
-      type: "jump-track",
-      description: "Completa las tablas de equivalencia aplicando multiplicaciones por 10, 100 y 3.",
-      instructions: "Calcula el valor faltante y escríbelo en la casilla vacía.",
+      type: "conversion-table",
+      description: "Completa las tablas de equivalencias multiplicando de arriba hacia abajo (× 10, × 100, × 3).",
+      instructions: "Observa la tabla de Santillana y escribe el número faltante en la casilla vacía.",
       tasks: [
         {
           id: "t2-01",
           rule: "× 10",
-          ruleLabel: "Décadas a Años: Multiplicar por 10",
-          track: ["1 déc. (10)", "3 déc. (30)", "7 déc. (70)", "9 déc. (?)"],
+          headerTop: "N.° de décadas",
+          headerBottom: "N.° de años",
+          topRow: [1, 3, 7, 9, 10],
+          bottomRow: [10, 30, 70, "?", 100],
           missingIndex: 3,
           correctAnswer: 90,
-          scaffold: "Multiplica 9 décadas por los diez años que tiene cada década."
+          prompt: "Completa la tabla: Si 1 década = 10 años, ¿cuántos años son 9 décadas (9 × 10)?",
+          scaffold: "Multiplica 9 décadas por los diez años de cada una (9 × 10)."
         },
         {
           id: "t2-02",
           rule: "× 10",
-          ruleLabel: "Décadas a Años: Multiplicar por 10",
-          track: ["3 déc. (30)", "7 déc. (70)", "9 déc. (90)", "10 déc. (?)"],
-          missingIndex: 3,
+          headerTop: "N.° de décadas",
+          headerBottom: "N.° de años",
+          topRow: [1, 3, 7, 9, 10],
+          bottomRow: [10, 30, 70, 90, "?"],
+          missingIndex: 4,
           correctAnswer: 100,
-          scaffold: "Multiplica 10 décadas por 10 años cada una (equivale a 1 siglo)."
+          prompt: "Completa la tabla: ¿Cuántos años equivalen a 10 décadas (equivale a 1 siglo)?",
+          scaffold: "Multiplica 10 décadas por los diez años de cada una (10 × 10)."
         },
         {
           id: "t2-03",
           rule: "× 100",
-          ruleLabel: "Siglos a Años: Multiplicar por 100",
-          track: ["1 siglo (100)", "2 siglos (200)", "3 siglos (?)"],
+          headerTop: "N.° de siglos",
+          headerBottom: "N.° de años",
+          topRow: [1, 2, 5, 10, 3],
+          bottomRow: [100, 200, "?", 1000, 300],
           missingIndex: 2,
-          correctAnswer: 300,
-          scaffold: "Multiplica 3 siglos por los cien años de cada siglo."
+          correctAnswer: 500,
+          prompt: "Completa la tabla: Si 1 siglo = 100 años, ¿cuántos años son 5 siglos (5 × 100)?",
+          scaffold: "Multiplica 5 siglos por los cien años de cada siglo (5 × 100)."
         },
         {
           id: "t2-04",
           rule: "× 100",
-          ruleLabel: "Siglos a Años: Multiplicar por 100",
-          track: ["2 siglos (200)", "5 siglos (500)", "10 siglos (?)"],
-          missingIndex: 2,
+          headerTop: "N.° de siglos",
+          headerBottom: "N.° de años",
+          topRow: [1, 2, 5, 10, 3],
+          bottomRow: [100, 200, 500, "?", 300],
+          missingIndex: 3,
           correctAnswer: 1000,
-          scaffold: "Multiplica 10 siglos por los 100 años (equivale a un milenio)."
+          prompt: "Completa la tabla: ¿Cuántos años son 10 siglos (un milenio entero)?",
+          scaffold: "Multiplica 10 siglos por los cien años de cada siglo (10 × 100)."
         },
         {
           id: "t2-05",
           rule: "× 3",
-          ruleLabel: "Trimestres a Meses: Multiplicar por 3",
-          track: ["1 trim. (3)", "2 trim. (6)", "4 trim. (?)"],
+          headerTop: "N.° de trimestres",
+          headerBottom: "N.° de meses",
+          topRow: [1, 2, 4, 5, 7],
+          bottomRow: [3, 6, "?", 15, 21],
           missingIndex: 2,
           correctAnswer: 12,
-          scaffold: "Recuerda: 1 trimestre tiene 3 meses. Multiplica cuatro por tres."
+          prompt: "Completa la tabla: Si 1 trimestre = 3 meses, ¿cuántos meses son 4 trimestres (1 año)?",
+          scaffold: "Recuerda: 1 trimestre tiene 3 meses. Multiplica cuatro por tres (4 × 3)."
         },
         {
           id: "t2-06",
           rule: "× 3",
-          ruleLabel: "Trimestres a Meses: Multiplicar por 3",
-          track: ["4 trim. (12)", "5 trim. (15)", "7 trim. (?)"],
-          missingIndex: 2,
+          headerTop: "N.° de trimestres",
+          headerBottom: "N.° de meses",
+          topRow: [1, 2, 4, 5, 7],
+          bottomRow: [3, 6, 12, 15, "?"],
+          missingIndex: 4,
           correctAnswer: 21,
-          scaffold: "Multiplica 7 trimestres por los 3 meses de cada uno."
+          prompt: "Completa la tabla: ¿Cuántos meses equivalen a 7 trimestres (7 × 3)?",
+          scaffold: "Multiplica 7 trimestres por los 3 meses de cada uno (7 × 3)."
         }
       ]
     },
