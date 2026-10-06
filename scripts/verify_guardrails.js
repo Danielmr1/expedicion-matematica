@@ -77,10 +77,10 @@ try {
 // 2.5 Verificación de Guardrail 11: Integridad y Andamiaje de Pistas (Scaffold Protection)
 try {
   const { validateScaffoldPedagogy } = await import('../data/guardrails.js');
-  const { WEEKLY_MISSION, MISSION_DIVISION, MISSION_FRACCIONES, MISSION_OPERACIONES } = await import('../data/curriculum.js');
+  const { WEEKLY_MISSION, MISSION_TIEMPO, MISSION_DIVISION, MISSION_FRACCIONES, MISSION_OPERACIONES } = await import('../data/curriculum.js');
   const { getEmblemArticle, THEMED_EMBLEMS } = await import('../data/icons.js');
   
-  const missions = [WEEKLY_MISSION, MISSION_DIVISION, MISSION_FRACCIONES, MISSION_OPERACIONES].filter(Boolean);
+  const missions = [WEEKLY_MISSION, MISSION_TIEMPO, MISSION_DIVISION, MISSION_FRACCIONES, MISSION_OPERACIONES].filter(Boolean);
   let scaffoldChecked = 0;
   let scaffoldLeaks = 0;
 
