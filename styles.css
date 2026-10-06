@@ -1541,3 +1541,77 @@ body[data-theme="expedicion"],
   }
 }
 
+/* ==============================================================
+   ESTACIÓN 2: TABLAS DE CONVERSIÓN DE SANTILLANA
+   ============================================================== */
+.santillana-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.santillana-table {
+  border-collapse: collapse;
+  text-align: center;
+  font-family: var(--font-mono);
+}
+
+.santillana-th {
+  background: rgba(36, 70, 99, 0.25);
+  color: var(--color-delta);
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: left;
+  border-right: 1.5px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.santillana-td {
+  padding: 10px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-white);
+  border-right: 1px solid var(--border-subtle);
+  min-width: 58px;
+}
+
+.santillana-table-row-top {
+  border-bottom: 1.5px solid var(--border-subtle);
+}
+
+.santillana-td.target-cell {
+  background: rgba(132, 255, 0, 0.08);
+  padding: 4px;
+}
+
+.conversion-target-input {
+  width: 72px;
+  height: 48px;
+  background: var(--bg-canvas) !important;
+  border: 2px solid var(--neon-green) !important;
+  color: var(--neon-green) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  text-align: center;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: 0 0 12px var(--neon-green-glow);
+}
+
+.santillana-rule-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1.5px solid #f59e0b;
+  color: #f59e0b;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
